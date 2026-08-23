@@ -169,10 +169,13 @@ export interface InventoryItemLocation {
   name: string;
   quantity: number;
   isHq?: boolean;
+  source?: string; // Character name, Retainer, or FC (e.g. "Moja Kun", "Asagi Kun", "Halelea")
 }
 
 export interface InventorySyncData {
   timestamp: number;
   character?: string;
+  selectedCharacter?: string; // 'ALL' or specific character/source name (e.g. "Moja Kun")
+  characters?: string[]; // Unique list of all detected character/source names
   inventories: InventoryItemLocation[];
 }

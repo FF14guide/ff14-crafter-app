@@ -307,7 +307,7 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                 製作ワークフロー & ToDo (FF14 レストラネット式)
               </h2>
               <span className="text-xs bg-amber-500/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/40">
-                Patch 7.1
+                Patch {recipe.patch || '7.2'}
               </span>
             </div>
             <p className="text-xs text-slate-400">
@@ -317,13 +317,34 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
         </div>
 
         {/* Inventory Sync Action */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2">
           <button
             onClick={onOpenInventorySync}
-            className="flex items-center gap-2 px-3.5 py-2 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white rounded-xl text-xs font-semibold shadow-lg shadow-indigo-950/50 border border-indigo-400/30 transition-all"
+            className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold shadow-lg transition-all border ${
+              inventoryData && inventoryData.inventories.length > 0
+                ? 'bg-emerald-600/20 hover:bg-emerald-600/30 text-emerald-300 border-emerald-500/40 shadow-emerald-950/30'
+                : 'bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white border-indigo-400/30 shadow-indigo-950/50'
+            }`}
           >
-            <Layers className="w-4 h-4" />
-            <span>📥 プラグイン所持数を一括反映</span>
+            {inventoryData && inventoryData.inventories.length > 0 ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>
+                  📥 所持数反映中:{' '}
+                  {inventoryData.selectedCharacter && inventoryData.selectedCharacter !== 'ALL'
+                    ? `👤 ${inventoryData.selectedCharacter}`
+                    : inventoryData.characters && inventoryData.characters.length > 1
+                    ? '🌐 全キャラ合算'
+                    : inventoryData.character || '同期済'}
+                  <span className="ml-1 opacity-80 font-rajdhani">({inventoryData.inventories.length}品)</span>
+                </span>
+              </>
+            ) : (
+              <>
+                <Layers className="w-4 h-4" />
+                <span>📥 プラグイン所持数を一括反映</span>
+              </>
+            )}
           </button>
         </div>
       </div>

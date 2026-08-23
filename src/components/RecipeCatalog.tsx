@@ -31,7 +31,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   const filteredRecipes = recipes.filter((recipe) => {
     // Purpose filter
     if (currentPurpose === 'latestPatch') {
-      if (recipe.patch !== '7.1' && recipe.patch !== '7.05' && recipe.stars < 2) return false;
+      if (recipe.patch !== '7.2' && recipe.ilvl < 740) return false;
     } else if (currentPurpose !== 'all') {
       if (recipe.category !== currentPurpose) return false;
     }
@@ -55,7 +55,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   });
 
   const categories = [
-    { id: 'latestPatch', label: '🔥 最新パッチ 7.55/7.4', desc: '新式IL770・宝薬G3・最新飯' },
+    { id: 'latestPatch', label: '🔥 最新パッチ 7.2', desc: '新式IL770・宝薬G3・最新飯' },
     { id: 'foodPotion', label: '🍗 レイド飯・薬', desc: '最新飯・宝薬G3/G2・薬茶' },
     { id: 'gear', label: '🛡️ 新式装備・防具', desc: 'IL770 コートリーラヴァー / IL710' },
     { id: 'intermediate', label: '🟫 中間素材', desc: '黄金のレザー・インゴット・布' },

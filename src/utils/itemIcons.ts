@@ -58,23 +58,30 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   '巨匠の薬茶': getGarlandIconUrl(24412),
 
   // Intermediate Materials (Crafted Master / 7.05 - 7.55)
-  'スーパージュラルミンインゴット': getGarlandIconUrl(20833),
-  'オルコ・リネン': getGarlandIconUrl(23252),
+  'スーパージュラルミンインゴット': getGarlandIconUrl(20828),
+  'オルコ・リネン': getGarlandIconUrl(21621),
+  'ゴールデンチタンインゴット': getGarlandIconUrl(20829),
+  'ペルペルレザー': getGarlandIconUrl(22008),
   'マストドンレザー': getGarlandIconUrl(21836),
-  '高密度軽銀鉱': getGarlandIconUrl(21221),
-  '被膜形成材': getGarlandIconUrl(22654),
-  '多色錬金薬': getGarlandIconUrl(22683),
-  '大聖水': getGarlandIconUrl(22680),
-  'ウィンドパセリ': getGarlandIconUrl(25009),
+  '高密度軽銀鉱': getGarlandIconUrl(21206),
+  '被膜形成材': getGarlandIconUrl(22663),
+  '多色錬金薬': getGarlandIconUrl(22670),
+  '大聖水': getGarlandIconUrl(22653),
+  'ウィンドパセリ': getGarlandIconUrl(25211),
+  'ウインドパセリ': getGarlandIconUrl(25211),
   'マルエージングインゴット': getGarlandIconUrl(20833),
   'スターリングシルバーインゴット': getGarlandIconUrl(20826),
   'イペー材': getGarlandIconUrl(22467),
   '海島綿布': getGarlandIconUrl(23252),
   'プルスサウルスレザー': getGarlandIconUrl(21836),
+  '剛力の宝水G4': getGarlandIconUrl(22680),
+  '眼力の宝水G4': getGarlandIconUrl(22681),
+  '活力の宝水G4': getGarlandIconUrl(22680),
+  '知力の宝水G4': getGarlandIconUrl(22679),
+  '心力の宝水G4': getGarlandIconUrl(22678),
   '剛力の宝水G3': getGarlandIconUrl(22683),
   '剛力の宝水G2': getGarlandIconUrl(22683),
   '眼力の宝水G2': getGarlandIconUrl(22682),
-  '活力の宝水G4': getGarlandIconUrl(22680),
   '活力の宝水G2': getGarlandIconUrl(22680),
   '知力の宝水G2': getGarlandIconUrl(22679),
   '心力の宝水G2': getGarlandIconUrl(22681),
@@ -84,6 +91,11 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'クラロウォルナット材': getGarlandIconUrl(22464),
   'エレクトラムインゴット': getGarlandIconUrl(20812),
   'ローズガーネット': getGarlandIconUrl(21336),
+  'ガーデン・ソフトウォーター': getGarlandIconUrl(22678),
+  'ヤクテル天然水': getGarlandIconUrl(22614),
+  'タンブルクラブの枯草': getGarlandIconUrl(21689),
+  'オルコ亜麻': getGarlandIconUrl(25033),
+  'トライヨラの染料': getGarlandIconUrl(22648),
   '絶縁塗料': getGarlandIconUrl(22654),
   '高山食塩': getGarlandIconUrl(25104),
   'フラントーヨオイル': getGarlandIconUrl(25451),
@@ -192,6 +204,11 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   44842: getGarlandIconUrl(24337), // セビーチェ
 
   // Potions
+  45995: getGarlandIconUrl(20710), // 剛力の宝薬G3
+  45996: getGarlandIconUrl(20709), // 眼力の宝薬G3
+  45997: getGarlandIconUrl(20707), // 活力の宝薬G3
+  45998: getGarlandIconUrl(20706), // 知力の宝薬G3
+  45999: getGarlandIconUrl(20708), // 心力の宝薬G3
   44162: getGarlandIconUrl(20710), // 剛力の宝薬G2
   44163: getGarlandIconUrl(20709), // 眼力の宝薬G2
   44164: getGarlandIconUrl(20707), // 活力の宝薬G2
@@ -210,6 +227,25 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   19883: getGarlandIconUrl(24412), // 巨匠の薬茶
 
   // Intermediates
+  44051: getGarlandIconUrl(22653), // 大聖水 (実機アイコン)
+  44039: getGarlandIconUrl(25211), // ウィンドパセリ
+  45989: getGarlandIconUrl(22670), // 多色錬金薬
+  49214: getGarlandIconUrl(20828), // スーパージュラルミンインゴット
+  49217: getGarlandIconUrl(21621), // オルコ・リネン
+  49215: getGarlandIconUrl(20829), // ゴールデンチタンインゴット
+  49216: getGarlandIconUrl(22008), // ペルペルレザー
+  49218: getGarlandIconUrl(22680), // 剛力の宝水G4
+  49219: getGarlandIconUrl(22681), // 眼力の宝水G4
+  49220: getGarlandIconUrl(22680), // 活力の宝水G4
+  49221: getGarlandIconUrl(22679), // 知力の宝水G4
+  49222: getGarlandIconUrl(22678), // 心力の宝水G4
+  49208: getGarlandIconUrl(21206), // 高密度軽銀鉱
+  49224: getGarlandIconUrl(22663), // 被膜形成材
+  49211: getGarlandIconUrl(25033), // オルコ亜麻
+  49227: getGarlandIconUrl(22648), // トライヨラの染料
+  49212: getGarlandIconUrl(22678), // ガーデン・ソフトウォーター
+  44034: getGarlandIconUrl(22614), // ヤクテル天然水
+  44071: getGarlandIconUrl(21689), // タンブルクラブの枯草
   44147: getGarlandIconUrl(20833), // マルエージングインゴット
   44148: getGarlandIconUrl(20826), // スターリングシルバーインゴット
   44149: getGarlandIconUrl(22467), // イペー材
@@ -224,6 +260,17 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   44033: getGarlandIconUrl(21622), // サンダーヤードシルク
   44012: getGarlandIconUrl(21338), // ブラックスター
   44023: getGarlandIconUrl(22464), // クラロウォルナット材
+
+  // Patch 7.2 Gear (コートリーラヴァー IL770)
+  49272: getGarlandIconUrl(57321), // コートリーラヴァー・ディフェンダーサーコート
+  49277: getGarlandIconUrl(57322), // コートリーラヴァー・スレイヤーサーコート
+  49282: getGarlandIconUrl(57325), // コートリーラヴァー・ストライカークローク
+  49292: getGarlandIconUrl(57327), // コートリーラヴァー・スカウトシャツ
+  49302: getGarlandIconUrl(57324), // コートリーラヴァー・キャスターバトルドレス
+  49322: getGarlandIconUrl(54761), // コートリーラヴァー・アタッカーリング
+  49307: getGarlandIconUrl(55565), // コートリーラヴァー・アタッカーイヤリング
+  49312: getGarlandIconUrl(55110), // コートリーラヴァー・アタッカーチョーカー
+  49317: getGarlandIconUrl(55908), // コートリーラヴァー・アタッカーリストレット
 
   // Raw & Gathering
   44170: getGarlandIconUrl(25158), // ラムプレスチキン

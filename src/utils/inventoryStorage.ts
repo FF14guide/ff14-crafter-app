@@ -3,39 +3,250 @@ import { safeJsonParse } from './jsonSafe';
 
 const STORAGE_KEY = 'eorzean_crafter_inventory_sync';
 
-export const SAMPLE_INVENTORY_DATA: InventorySyncData = {
+// Known Item Dictionary for fast name <-> itemId resolution
+export interface KnownItemMeta {
+  itemId: number;
+  name: string;
+  enName?: string;
+  category?: string;
+  icon?: string;
+}
+
+export const KNOWN_FF14_ITEMS: KnownItemMeta[] = [
+  // Crystals & Clusters
+  { itemId: 8, name: '火のクリスタル', enName: 'Fire Crystal', icon: '20001' },
+  { itemId: 9, name: '氷のクリスタル', enName: 'Ice Crystal', icon: '20002' },
+  { itemId: 10, name: '風のクリスタル', enName: 'Wind Crystal', icon: '20003' },
+  { itemId: 11, name: '土のクリスタル', enName: 'Earth Crystal', icon: '20004' },
+  { itemId: 12, name: '雷のクリスタル', enName: 'Lightning Crystal', icon: '20005' },
+  { itemId: 13, name: '水のクリスタル', enName: 'Water Crystal', icon: '20006' },
+  { itemId: 14, name: 'ファイアクラスター', enName: 'Fire Cluster', icon: '20007' },
+  { itemId: 15, name: 'アイスクラスター', enName: 'Ice Cluster', icon: '20008' },
+  { itemId: 16, name: 'ウィンドクラスター', enName: 'Wind Cluster', icon: '20009' },
+  { itemId: 17, name: 'アースクラスター', enName: 'Earth Cluster', icon: '20010' },
+  { itemId: 18, name: 'ライトニングクラスター', enName: 'Lightning Cluster', icon: '20011' },
+  { itemId: 19, name: 'ウォータークラスター', enName: 'Water Cluster', icon: '20012' },
+
+  // Patch 7.2 霊砂・素材
+  { itemId: 46246, name: '紫電の霊砂', enName: 'Thundervale Aethersand', icon: '22682' },
+  { itemId: 44035, name: '黄金の霊砂', enName: 'Mythbrine Aethersand', icon: '22681' },
+  { itemId: 49208, name: '高密度軽銀鉱', enName: 'High-density Silver Ore', icon: '21340' },
+  { itemId: 49211, name: 'オルコ亜麻', enName: 'Orqo Flax', icon: '21623' },
+  { itemId: 44145, name: 'プルスサウルスの粗皮', enName: 'Purussaurus Skin', icon: '22009' },
+  { itemId: 49224, name: '被膜形成材', enName: 'Coating Agent', icon: '22675' },
+  { itemId: 49227, name: 'トライヨラの染料', enName: 'Tuliyollal Pigment', icon: '22676' },
+  { itemId: 49212, name: 'ガーデン・ソフトウォーター', enName: 'Garden Softwater', icon: '22654' },
+  { itemId: 44034, name: 'ヤクテル天然水', enName: 'Yak T\'el Spring Water', icon: '22650' },
+  { itemId: 44071, name: 'タンブルクラブの枯草', enName: 'Tumble Crab Grass', icon: '25210' },
+  { itemId: 44039, name: 'ウィンドパセリ', enName: 'Wind Parsley', icon: '25211' },
+  { itemId: 44040, name: 'マウンテンセージ', enName: 'Mountain Sage', icon: '25212' },
+  { itemId: 44041, name: 'ウィンドローレル', enName: 'Wind Laurel', icon: '25213' },
+  { itemId: 44042, name: 'ユーカリ', enName: 'Eucalyptus', icon: '25214' },
+  { itemId: 44028, name: '帯雷繭', enName: 'Charged Cocoon', icon: '21620' },
+  { itemId: 44006, name: 'ブラックスター原石', enName: 'Raw Black Star', icon: '21337' },
+
+  // Patch 7.2 中間素材
+  { itemId: 49214, name: 'スーパージュラルミンインゴット', enName: 'Super Duralumin Ingot', icon: '20828' },
+  { itemId: 49215, name: 'ゴールデンチタンインゴット', enName: 'Golden Titanium Ingot', icon: '20829' },
+  { itemId: 49217, name: 'オルコ・リネン', enName: 'Orqo Linen', icon: '21621' },
+  { itemId: 49216, name: 'ペルペルレザー', enName: 'Pelupelu Leather', icon: '22008' },
+  { itemId: 44033, name: 'サンダーヤードシルク', enName: 'Thunderyard Silk', icon: '21622' },
+  { itemId: 44012, name: 'ブラックスター', enName: 'Black Star', icon: '21338' },
+  { itemId: 49218, name: '剛力の宝水G4', enName: 'Grade 4 Infusion of Strength', icon: '22680' },
+  { itemId: 49219, name: '眼力の宝水G4', enName: 'Grade 4 Infusion of Dexterity', icon: '22681' },
+  { itemId: 49220, name: '活力の宝水G4', enName: 'Grade 4 Infusion of Vitality', icon: '22680' },
+  { itemId: 49221, name: '知力の宝水G4', enName: 'Grade 4 Infusion of Intelligence', icon: '22679' },
+  { itemId: 44051, name: '大聖水', enName: 'Grand Holy Water', icon: '22653' },
+  { itemId: 45989, name: '多色錬金薬', enName: 'Multicolor Alkahest', icon: '22670' },
+
+  // Patch 7.2 宝薬G3
+  { itemId: 45995, name: '剛力の宝薬G3', enName: 'Grade 3 Gemdraught of Strength', icon: '20710' },
+  { itemId: 45996, name: '眼力の宝薬G3', enName: 'Grade 3 Gemdraught of Dexterity', icon: '20709' },
+  { itemId: 45997, name: '活力の宝薬G3', enName: 'Grade 3 Gemdraught of Vitality', icon: '20707' },
+  { itemId: 45998, name: '知力の宝薬G3', enName: 'Grade 3 Gemdraught of Intelligence', icon: '20706' },
+  { itemId: 45999, name: '心力の宝薬G3', enName: 'Grade 3 Gemdraught of Mind', icon: '20708' },
+
+  // Patch 7.2 戦闘新式 (コートリーラヴァー IL770)
+  { itemId: 49272, name: 'コートリーラヴァー・ディフェンダーサーコート', enName: 'Courtly Lover Surcoat of Fending', icon: '57321' },
+  { itemId: 49277, name: 'コートリーラヴァー・スレイヤーサーコート', enName: 'Courtly Lover Surcoat of Maiming', icon: '57322' },
+  { itemId: 49282, name: 'コートリーラヴァー・ストライカークローク', enName: 'Courtly Lover Cloak of Striking', icon: '57325' },
+  { itemId: 49292, name: 'コートリーラヴァー・スカウトシャツ', enName: 'Courtly Lover Shirt of Scouting', icon: '57327' },
+  { itemId: 49302, name: 'コートリーラヴァー・キャスターバトルドレス', enName: 'Courtly Lover Battledress of Casting', icon: '57324' },
+  { itemId: 49307, name: 'コートリーラヴァー・アタッカーイヤリング', enName: 'Courtly Lover Earrings of Slaying', icon: '55565' },
+  { itemId: 49312, name: 'コートリーラヴァー・アタッカーチョーカー', enName: 'Courtly Lover Choker of Slaying', icon: '55110' },
+  { itemId: 49322, name: 'コートリーラヴァー・アタッカーリング', enName: 'Courtly Lover Ring of Slaying', icon: '54761' },
+
+  // Patch 7.05 中間素材・飯薬
+  { itemId: 44147, name: 'マルエージングインゴット', enName: 'Maraging Ingot', icon: '20833' },
+  { itemId: 44148, name: 'スターリングシルバーインゴット', enName: 'Sterling Silver Ingot', icon: '20826' },
+  { itemId: 44149, name: 'メガテリウムレザー', enName: 'Megatherium Leather', icon: '22006' },
+  { itemId: 44150, name: 'ブラックスター・サフィア', enName: 'Black Star Sapphire', icon: '21339' },
+  { itemId: 44151, name: 'ウィンドシルク', enName: 'Wind Silk', icon: '21619' },
+  { itemId: 44152, name: '剛力の宝水G2', enName: 'Grade 2 Infusion of Strength', icon: '22678' },
+  { itemId: 44153, name: '眼力の宝水G2', enName: 'Grade 2 Infusion of Dexterity', icon: '22677' },
+  { itemId: 44155, name: '知力の宝水G2', enName: 'Grade 2 Infusion of Intelligence', icon: '22676' },
+  { itemId: 44135, name: '混鉄鉱', enName: 'Raw Hematite', icon: '21336' },
+  { itemId: 44136, name: '真銀鉱', enName: 'Raw Sterling Silver', icon: '21335' },
+  { itemId: 44137, name: 'メガテリウムの粗皮', enName: 'Megatherium Skin', icon: '22005' },
+  { itemId: 44175, name: 'ローストチキン', enName: 'Roast Chicken', icon: '24359' },
+  { itemId: 44178, name: 'ムケッカ', enName: 'Moqueca', icon: '24105' },
+  { itemId: 44177, name: 'シュラスコ', enName: 'Churrasco', icon: '24371' },
+  { itemId: 44180, name: 'コーヒーククルラスク', enName: 'Coffee Kukuru Rusk', icon: '24090' },
+  { itemId: 44842, name: 'セビーチェ', enName: 'Ceviche', icon: '24337' },
+  { itemId: 44174, name: 'ロイヤルロブスター', enName: 'Royal Lobster', icon: '28080' },
+  { itemId: 44170, name: 'ラムプレスチキン', enName: 'Lampreys Chicken', icon: '28081' },
+  { itemId: 43977, name: '高山食塩', enName: 'Alpine Salt', icon: '24089' },
+  { itemId: 43985, name: 'ヤースラニガーリック', enName: 'Yyaslani Garlic', icon: '24088' },
+  { itemId: 44106, name: 'ロネークの肩肉', enName: 'Rroneek Shoulder Meat', icon: '24087' },
+  { itemId: 44171, name: 'ブラウンカルダモン', enName: 'Brown Cardamom', icon: '24086' },
+  { itemId: 44172, name: 'ワイルドコーヒービーン', enName: 'Wild Coffee Beans', icon: '24085' },
+  { itemId: 4833, name: 'ククルビーン', enName: 'Kukuru Bean', icon: '24084' },
+  { itemId: 43975, name: 'トラルバター', enName: 'Tural Butter', icon: '24083' },
+  { itemId: 43976, name: 'ココナッツミルク', enName: 'Coconut Milk', icon: '24082' },
+  { itemId: 27838, name: 'フラントーヨオイル', enName: 'Frantoio Oil', icon: '24081' },
+  { itemId: 27835, name: 'リトルレモン', enName: 'Little Lemon', icon: '24080' },
+  { itemId: 19884, name: '魔匠の薬茶', enName: 'Cunning Craftsman Tea', icon: '24411' },
+];
+
+/**
+ * Fast item resolver by name or ID
+ */
+export function resolveItemInfo(identifier: number | string): KnownItemMeta | undefined {
+  if (typeof identifier === 'number') {
+    return KNOWN_FF14_ITEMS.find((i) => i.itemId === identifier);
+  }
+  const clean = identifier.trim().toLowerCase();
+  return KNOWN_FF14_ITEMS.find(
+    (i) =>
+      i.name.toLowerCase() === clean ||
+      i.name.toLowerCase().includes(clean) ||
+      (i.enName && i.enName.toLowerCase() === clean) ||
+      (i.enName && i.enName.toLowerCase().includes(clean))
+  );
+}
+
+// Preset 1: Patch 7.2 最新戦闘新式 & 宝薬G3 (リアルな実用ストック)
+export const PRESET_PATCH_72: InventorySyncData = {
   timestamp: Date.now(),
-  character: 'Hikari Light@Bahamut (Mana)',
+  character: 'Hikari Light@Bahamut (Patch 7.2)',
   inventories: [
-    // プレイヤー手持ち
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44320, name: 'エレクトロインゴット', quantity: 2, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44410, name: 'エレクトロピン原木', quantity: 12, isHq: false },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44105, name: '火のクリスタル', quantity: 240, isHq: false },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44117, name: 'アースクリスタル', quantity: 180, isHq: false },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44104, name: '黄金の霊砂', quantity: 4, isHq: true },
+    // プレイヤー手持ち (中間素材・霊砂・クリスタル)
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 2, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'オルコ・リネン', quantity: 3, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '紫電の霊砂', quantity: 6, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44051, name: '大聖水', quantity: 4, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 45989, name: '多色錬金薬', quantity: 3, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 18, name: 'ライトニングクラスター', quantity: 120, isHq: false },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 16, name: 'ウィンドクラスター', quantity: 95, isHq: false },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 15, name: 'アイスクラスター', quantity: 80, isHq: false },
 
-    // リテイナー Nana (素材庫)
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44320, name: 'エレクトロインゴット', quantity: 2, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44321, name: 'ローズガーネット', quantity: 3, isHq: true },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44412, name: 'ローズガーネット原石', quantity: 18, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44301, name: 'ガルガンチュアレザー', quantity: 2, isHq: true },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44302, name: 'サンダーヤードクロス', quantity: 1, isHq: true },
+    // リテイナー Nana (7.2 採集素材・末端素材)
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 18, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'オルコ亜麻', quantity: 24, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44145, name: 'プルスサウルスの粗皮', quantity: 12, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44039, name: 'ウィンドパセリ', quantity: 15, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44034, name: 'ヤクテル天然水', quantity: 30, isHq: false },
+    { itemId: 44071, name: 'タンブルクラブの枯草', location: 'Retainer: Nana', locationType: 'Retainer', quantity: 20, isHq: false },
 
-    // リテイナー Bob (中間素材)
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44303, name: 'オルコ・ブラスインゴット', quantity: 2, isHq: false },
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44401, name: 'ガルガンチュアの粗皮', quantity: 14, isHq: false },
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44402, name: 'サンダーヤード繭', quantity: 8, isHq: false },
+    // リテイナー Bob (7.2 特殊中間素材・錬金薬)
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49215, name: 'ゴールデンチタンインゴット', quantity: 2, isHq: true },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49216, name: 'ペルペルレザー', quantity: 2, isHq: true },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49218, name: '剛力の宝水G4', quantity: 3, isHq: true },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49221, name: '知力の宝水G4', quantity: 2, isHq: true },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44033, name: 'サンダーヤードシルク', quantity: 4, isHq: true },
 
-    // FCチェスト (Tab 1: 共有素材)
-    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 44411, name: '絶縁塗料', quantity: 6, isHq: false },
-    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 44112, name: 'トラルの研磨剤', quantity: 8, isHq: false },
-    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 44322, name: '紫電の霊砂', quantity: 2, isHq: false },
+    // FCチェスト (共有交換素材・クリスタル)
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: '被膜形成材', quantity: 20, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49227, name: 'トライヨラの染料', quantity: 16, isHq: false },
+    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 49212, name: 'ガーデン・ソフトウォーター', quantity: 25, isHq: false },
+    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 46246, name: '紫電の霊砂', quantity: 4, isHq: false },
 
-    // チョコボかばん
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 44118, name: '風のクリスタル', quantity: 450, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 44106, name: '水のクリスタル', quantity: 380, isHq: false },
+    // チョコボかばん (クリスタル・霊砂)
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: '雷のクリスタル', quantity: 450, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 380, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 500, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: '風のクリスタル', quantity: 420, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 44035, name: '黄金の霊砂', quantity: 8, isHq: true },
   ],
 };
+
+// Preset 2: Patch 7.05 新式・飯薬ストック
+export const PRESET_PATCH_705: InventorySyncData = {
+  timestamp: Date.now(),
+  character: 'Hikari Light@Bahamut (Patch 7.05)',
+  inventories: [
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44147, name: 'マルエージングインゴット', quantity: 3, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44148, name: 'スターリングシルバーインゴット', quantity: 2, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44149, name: 'メガテリウムレザー', quantity: 2, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44035, name: '黄金の霊砂', quantity: 12, isHq: true },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44135, name: '混鉄鉱', quantity: 30, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44136, name: '真銀鉱', quantity: 24, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44174, name: 'ロイヤルロブスター', quantity: 16, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 43985, name: 'ヤースラニガーリック', quantity: 20, isHq: false },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 43977, name: '高山食塩', quantity: 18, isHq: false },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44170, name: 'ラムプレスチキン', quantity: 14, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 44152, name: '剛力の宝水G2', quantity: 4, isHq: true },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 450, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 500, isHq: false },
+  ],
+};
+
+// Preset 3: クラフターガチ勢 潤沢ストック
+export const PRESET_FULL_STOCK: InventorySyncData = {
+  timestamp: Date.now(),
+  character: 'Master Crafter@Bahamut (Full Stock)',
+  inventories: [
+    // 7.2 Intermediates
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 10, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49215, name: 'ゴールデンチタンインゴット', quantity: 10, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'オルコ・リネン', quantity: 12, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49216, name: 'ペルペルレザー', quantity: 8, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44033, name: 'サンダーヤードシルク', quantity: 8, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49218, name: '剛力の宝水G4', quantity: 12, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49221, name: '知力の宝水G4', quantity: 12, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49219, name: '眼力の宝水G4', quantity: 12, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49220, name: '活力の宝水G4', quantity: 12, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44051, name: '大聖水', quantity: 20, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 45989, name: '多色錬金薬', quantity: 20, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '紫電の霊砂', quantity: 30, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44035, name: '黄金の霊砂', quantity: 40, isHq: true },
+
+    // Retainer 1 (Raw Mats)
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 99, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'オルコ亜麻', quantity: 99, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44145, name: 'プルスサウルスの粗皮', quantity: 60, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44039, name: 'ウィンドパセリ', quantity: 50, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44040, name: 'マウンテンセージ', quantity: 50, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44041, name: 'ウィンドローレル', quantity: 50, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44042, name: 'ユーカリ', quantity: 50, isHq: false },
+
+    // Retainer 2 (Food & Intermediate)
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44174, name: 'ロイヤルロブスター', quantity: 40, isHq: false },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 43985, name: 'ヤースラニガーリック', quantity: 60, isHq: false },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 43977, name: '高山食塩', quantity: 80, isHq: false },
+    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 27835, name: 'リトルレモン', quantity: 40, isHq: false },
+
+    // FC Chest
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: '被膜形成材', quantity: 60, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49227, name: 'トライヨラの染料', quantity: 60, isHq: false },
+    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 49212, name: 'ガーデン・ソフトウォーター', quantity: 50, isHq: false },
+    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 44034, name: 'ヤクテル天然水', quantity: 60, isHq: false },
+    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 44071, name: 'タンブルクラブの枯草', quantity: 50, isHq: false },
+
+    // Saddlebag (Crystals & Clusters maxed)
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: '風のクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 11, name: '土のクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: '雷のクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 14, name: 'ファイアクラスター', quantity: 500, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 16, name: 'ウィンドクラスター', quantity: 500, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 18, name: 'ライトニングクラスター', quantity: 500, isHq: false },
+  ],
+};
+
+// Default sample data points to modern Patch 7.2 stock
+export const SAMPLE_INVENTORY_DATA: InventorySyncData = PRESET_PATCH_72;
 
 /**
  * Load stored inventory from localStorage safely
@@ -68,130 +279,435 @@ export function saveStoredInventory(data: InventorySyncData | null): void {
 }
 
 /**
- * Parse raw input string from clipboard, file upload, or Allagan Tools / Teamcraft format
+ * Extract item location type
  */
-export function parseInventoryJson(input: string): { success: boolean; data?: InventorySyncData; error?: string } {
-  try {
-    const parsed = JSON.parse(input.trim());
-
-    // Format 1: Standard format { timestamp, character, inventories: [...] }
-    if (parsed && Array.isArray(parsed.inventories)) {
-      const items: InventoryItemLocation[] = [];
-      for (const raw of parsed.inventories) {
-        if (!raw || typeof raw.itemId !== 'number') continue;
-        const loc = String(raw.location || 'Player');
-        let locType: InventoryLocationType = 'Player';
-        if (loc.toLowerCase().includes('retainer')) locType = 'Retainer';
-        else if (loc.toLowerCase().includes('fc') || loc.toLowerCase().includes('chest')) locType = 'FC_Chest';
-        else if (loc.toLowerCase().includes('saddlebag') || loc.toLowerCase().includes('chocobo')) locType = 'Saddlebag';
-
-        items.push({
-          location: loc,
-          locationType: locType,
-          itemId: raw.itemId,
-          name: String(raw.name || `Item #${raw.itemId}`),
-          quantity: Math.max(0, Number(raw.quantity) || 1),
-          isHq: Boolean(raw.isHq || raw.hq),
-        });
-      }
-
-      return {
-        success: true,
-        data: {
-          timestamp: parsed.timestamp || Date.now(),
-          character: parsed.character || 'Imported Character',
-          inventories: items,
-        },
-      };
-    }
-
-    // Format 2: Direct Array of items [{ itemId, name, quantity, location }]
-    if (Array.isArray(parsed)) {
-      const items: InventoryItemLocation[] = [];
-      for (const raw of parsed) {
-        if (!raw || (!raw.itemId && !raw.id && !raw.ItemId)) continue;
-        const id = Number(raw.itemId || raw.id || raw.ItemId);
-        const loc = String(raw.location || raw.Location || raw.container || 'Player');
-        let locType: InventoryLocationType = 'Player';
-        if (loc.toLowerCase().includes('retainer')) locType = 'Retainer';
-        else if (loc.toLowerCase().includes('fc') || loc.toLowerCase().includes('chest')) locType = 'FC_Chest';
-        else if (loc.toLowerCase().includes('saddlebag') || loc.toLowerCase().includes('chocobo')) locType = 'Saddlebag';
-
-        items.push({
-          location: loc,
-          locationType: locType,
-          itemId: id,
-          name: String(raw.name || raw.Name || `Item #${id}`),
-          quantity: Math.max(0, Number(raw.quantity || raw.Quantity || raw.count || raw.amount) || 1),
-          isHq: Boolean(raw.isHq || raw.hq || raw.HQ),
-        });
-      }
-
-      return {
-        success: true,
-        data: {
-          timestamp: Date.now(),
-          character: 'Dalamud Import',
-          inventories: items,
-        },
-      };
-    }
-
-    // Format 3: Allagan Tools or nested container map { "Player": [...], "Retainers": { ... } }
-    if (typeof parsed === 'object') {
-      const items: InventoryItemLocation[] = [];
-      for (const [containerName, containerItems] of Object.entries(parsed)) {
-        if (Array.isArray(containerItems)) {
-          for (const raw of containerItems as any[]) {
-            const id = Number(raw.itemId || raw.id || raw.ItemId);
-            if (!id) continue;
-            let locType: InventoryLocationType = 'Player';
-            if (containerName.toLowerCase().includes('retainer')) locType = 'Retainer';
-            else if (containerName.toLowerCase().includes('fc')) locType = 'FC_Chest';
-            else if (containerName.toLowerCase().includes('saddlebag')) locType = 'Saddlebag';
-
-            items.push({
-              location: containerName,
-              locationType: locType,
-              itemId: id,
-              name: String(raw.name || raw.Name || `Item #${id}`),
-              quantity: Math.max(0, Number(raw.quantity || raw.count || raw.amount) || 1),
-              isHq: Boolean(raw.isHq || raw.hq),
-            });
-          }
-        }
-      }
-
-      if (items.length > 0) {
-        return {
-          success: true,
-          data: {
-            timestamp: Date.now(),
-            character: 'Allagan Tools Export',
-            inventories: items,
-          },
-        };
-      }
-    }
-
-    return {
-      success: false,
-      error: '有効なインベントリJSON形式を認識できませんでした。Dalamud / Allagan Tools等のJSONをご確認ください。',
-    };
-  } catch (e: any) {
-    return {
-      success: false,
-      error: `JSON解析エラー: ${e?.message || '構文が不正です'}`,
-    };
-  }
+function normalizeLocationType(loc: string): InventoryLocationType {
+  const l = loc.toLowerCase();
+  if (l.includes('retainer') || l.includes('リテイナー') || l.includes('market')) return 'Retainer';
+  if (l.includes('fc') || l.includes('chest') || l.includes('カンパニー') || l.includes('チェスト') || l.includes('free company')) return 'FC_Chest';
+  if (l.includes('saddlebag') || l.includes('chocobo') || l.includes('チョコボ') || l.includes('かばん')) return 'Saddlebag';
+  if (l.includes('armory') || l.includes('armoury') || l.includes('アーマリー') || l.includes('equipped') || l.includes('armoire') || l.includes('glamour')) return 'Armoury';
+  return 'Player';
 }
 
 /**
- * Get total quantity owned across all inventory locations
+ * Helper to build inventory sync data with character list
  */
-export function getItemStockTotal(itemId: number, syncData: InventorySyncData | null): number {
-  if (!syncData || !syncData.inventories) return 0;
-  return syncData.inventories
+function buildSyncResult(
+  items: InventoryItemLocation[],
+  defaultCharacter = 'Imported Inventory'
+): InventorySyncData {
+  const charSet = new Set<string>();
+  for (const item of items) {
+    if (item.source && item.source.trim()) {
+      charSet.add(item.source.trim());
+    }
+  }
+  const characters = Array.from(charSet);
+  let characterName = defaultCharacter;
+  if (characters.length === 1) {
+    characterName = characters[0];
+  } else if (characters.length > 1) {
+    characterName = `複数キャラ (${characters.length}名)`;
+  }
+
+  return {
+    timestamp: Date.now(),
+    character: characterName,
+    selectedCharacter: 'ALL',
+    characters,
+    inventories: items,
+  };
+}
+
+/**
+ * Comprehensive parser for:
+ * 1. Standard sync JSON { character, inventories: [...] }
+ * 2. Flat array of items [ { id, name, type, "quantity/total quantity available", source, "inventory location" } ]
+ * 3. Allagan Tools nested dumps: { "Inventory": [...], "Retainers": { ... }, "FreeCompany": [...] } or { "Bags": [...] }
+ * 4. Teamcraft exports / key-value dicts: { "49214": 5 } or { "スーパージュラルミンインゴット": 3 }
+ * 5. Plaintext / CSV / TSV format:
+ *    スーパージュラルミンインゴット, 5, Retainer: Nana, Moja Kun
+ *    49214, 10
+ *    オルコ・リネン x3
+ */
+export function parseInventoryJson(input: string): { success: boolean; data?: InventorySyncData; error?: string } {
+  if (!input || !input.trim()) {
+    return { success: false, error: '入力データが空です。JSONまたはテキストを入力してください。' };
+  }
+
+  const trimmed = input.trim();
+
+  // Try JSON Parse first
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    try {
+      const parsed = JSON.parse(trimmed);
+
+      // 1. Standard format: { timestamp, character, inventories: [...] }
+      if (parsed && Array.isArray(parsed.inventories)) {
+        const items: InventoryItemLocation[] = [];
+        for (const raw of parsed.inventories) {
+          if (!raw) continue;
+          let id = Number(raw.itemId || raw.id || raw.ItemId || raw.item_id);
+          let name = String(raw.name || raw.Name || raw.item_name || '');
+
+          if (!id && name) {
+            const meta = resolveItemInfo(name);
+            if (meta) {
+              id = meta.itemId;
+              name = meta.name;
+            }
+          }
+          if (id && !name) {
+            const meta = resolveItemInfo(id);
+            name = meta ? meta.name : `Item #${id}`;
+          }
+
+          if (!id) continue;
+
+          const loc = String(raw.location || raw.Location || raw['inventory location'] || raw.container || raw.bag || 'Player');
+          const source = String(raw.source || raw.Source || raw.character || raw.Character || raw.owner || raw.Owner || parsed.character || '').trim();
+          const qty = Math.max(0, Number(raw.quantity || raw.Quantity || raw['quantity/total quantity available'] || raw.count || raw.Count || raw.amount || raw.Amount) || 1);
+          const isHq = raw.type === 'HQ' || Boolean(raw.isHq || raw.hq || raw.IsHq || raw.HQ);
+
+          items.push({
+            location: loc,
+            locationType: normalizeLocationType(loc),
+            itemId: id,
+            name: name || `Item #${id}`,
+            quantity: qty,
+            isHq,
+            source: source || undefined,
+          });
+        }
+
+        if (items.length > 0) {
+          const syncRes = buildSyncResult(items, parsed.character || 'Imported Character');
+          if (parsed.selectedCharacter) {
+            syncRes.selectedCharacter = parsed.selectedCharacter;
+          }
+          return {
+            success: true,
+            data: syncRes,
+          };
+        }
+      }
+
+      // 2. Direct Array format: [ { id, name, "inventory location", source, "quantity/total quantity available", type: "HQ"/"NQ" } ]
+      if (Array.isArray(parsed)) {
+        const items: InventoryItemLocation[] = [];
+        for (const raw of parsed) {
+          if (!raw) continue;
+          let id = Number(raw.itemId || raw.id || raw.ItemId || raw.item_id);
+          let name = String(raw.name || raw.Name || raw.item_name || '');
+
+          if (!id && name) {
+            const meta = resolveItemInfo(name);
+            if (meta) {
+              id = meta.itemId;
+              name = meta.name;
+            }
+          }
+          if (id && !name) {
+            const meta = resolveItemInfo(id);
+            name = meta ? meta.name : `Item #${id}`;
+          }
+
+          if (!id) continue;
+
+          const loc = String(raw['inventory location'] || raw.location || raw.Location || raw.container || raw.bag || 'Player');
+          const source = String(raw.source || raw.Source || raw.character || raw.Character || raw.owner || raw.Owner || '').trim();
+          const qty = Math.max(
+            0,
+            Number(
+              raw['quantity/total quantity available'] !== undefined
+                ? raw['quantity/total quantity available']
+                : (raw.quantity || raw.Quantity || raw.count || raw.Count || raw.amount || raw.Amount)
+            ) || 1
+          );
+          const isHq = raw.type === 'HQ' || Boolean(raw.isHq || raw.hq || raw.IsHq || raw.HQ);
+
+          items.push({
+            location: loc,
+            locationType: normalizeLocationType(loc),
+            itemId: id,
+            name: name || `Item #${id}`,
+            quantity: qty,
+            isHq,
+            source: source || undefined,
+          });
+        }
+
+        if (items.length > 0) {
+          return {
+            success: true,
+            data: buildSyncResult(items, 'Dalamud / Allagan Tools Export'),
+          };
+        }
+      }
+
+      // 3. Allagan Tools Bag Dump: { "CharacterName": "...", "Bags": [ { "Slots": [ { ItemId, Count, IsHq } ] } ] }
+      if (parsed && Array.isArray(parsed.Bags)) {
+        const items: InventoryItemLocation[] = [];
+        const charName = parsed.CharacterName || 'Allagan Tools Export';
+        for (const bag of parsed.Bags) {
+          const bagName = bag.BagType !== undefined ? `Bag #${bag.BagType}` : (bag.Name || 'Inventory');
+          const slots = bag.Slots || bag.Items || [];
+          for (const slot of slots) {
+            const id = Number(slot.ItemId || slot.itemId || slot.id);
+            if (!id) continue;
+            const meta = resolveItemInfo(id);
+            items.push({
+              location: bagName,
+              locationType: normalizeLocationType(bagName),
+              itemId: id,
+              name: meta ? meta.name : `Item #${id}`,
+              quantity: Math.max(0, Number(slot.Count || slot.quantity || slot.amount) || 1),
+              isHq: Boolean(slot.IsHq || slot.isHq || slot.hq),
+              source: charName,
+            });
+          }
+        }
+        if (items.length > 0) {
+          return {
+            success: true,
+            data: buildSyncResult(items, charName),
+          };
+        }
+      }
+
+      // 4. Nested Container Object: { "Player": [...], "Retainers": { "Nana": [...] } }
+      if (typeof parsed === 'object') {
+        const items: InventoryItemLocation[] = [];
+        const rootCharacter = parsed.CharacterName || parsed.character || parsed.Character || '';
+
+        const walkObject = (obj: any, currentContainer: string, currentSource: string) => {
+          if (!obj || typeof obj !== 'object') return;
+
+          if (Array.isArray(obj)) {
+            for (const entry of obj) {
+              if (typeof entry === 'object' && entry !== null) {
+                let id = Number(entry.itemId || entry.id || entry.ItemId);
+                let name = String(entry.name || entry.Name || '');
+                if (!id && name) {
+                  const meta = resolveItemInfo(name);
+                  if (meta) {
+                    id = meta.itemId;
+                    name = meta.name;
+                  }
+                }
+                if (id && !name) {
+                  const meta = resolveItemInfo(id);
+                  name = meta ? meta.name : `Item #${id}`;
+                }
+                if (id) {
+                  const src = String(entry.source || entry.Source || entry.character || currentSource || '').trim();
+                  const loc = String(entry['inventory location'] || entry.location || currentContainer || 'Player');
+                  items.push({
+                    location: loc,
+                    locationType: normalizeLocationType(loc),
+                    itemId: id,
+                    name: name || `Item #${id}`,
+                    quantity: Math.max(0, Number(entry['quantity/total quantity available'] || entry.quantity || entry.count || entry.amount || entry.Count) || 1),
+                    isHq: entry.type === 'HQ' || Boolean(entry.isHq || entry.hq || entry.IsHq),
+                    source: src || undefined,
+                  });
+                }
+              }
+            }
+          } else {
+            // Nested subcontainers or Key-Value map
+            for (const [key, val] of Object.entries(obj)) {
+              if (typeof val === 'number') {
+                // Key-value pair like { "49214": 5 } or { "スーパージュラルミンインゴット": 3 }
+                let id = Number(key);
+                let name = '';
+                if (!id || isNaN(id)) {
+                  const meta = resolveItemInfo(key);
+                  if (meta) {
+                    id = meta.itemId;
+                    name = meta.name;
+                  }
+                } else {
+                  const meta = resolveItemInfo(id);
+                  name = meta ? meta.name : `Item #${id}`;
+                }
+                if (id) {
+                  items.push({
+                    location: currentContainer || 'Player',
+                    locationType: normalizeLocationType(currentContainer || 'Player'),
+                    itemId: id,
+                    name: name || `Item #${id}`,
+                    quantity: Math.max(0, val),
+                    isHq: false,
+                    source: currentSource || undefined,
+                  });
+                }
+              } else if (typeof val === 'object' && val !== null) {
+                // Check if val is item object with quantity: { "49214": { "quantity": 5, "hq": true } }
+                if ('quantity' in val || 'count' in val || 'amount' in val || 'Count' in val) {
+                  let id = Number(key);
+                  let name = '';
+                  if (!id || isNaN(id)) {
+                    const meta = resolveItemInfo(key);
+                    if (meta) {
+                      id = meta.itemId;
+                      name = meta.name;
+                    }
+                  } else {
+                    const meta = resolveItemInfo(id);
+                    name = meta ? meta.name : `Item #${id}`;
+                  }
+                  if (id) {
+                    const v: any = val;
+                    const src = String(v.source || v.character || currentSource || '').trim();
+                    items.push({
+                      location: currentContainer || 'Player',
+                      locationType: normalizeLocationType(currentContainer || 'Player'),
+                      itemId: id,
+                      name: name || `Item #${id}`,
+                      quantity: Math.max(0, Number(v.quantity || v.count || v.amount || v.Count) || 1),
+                      isHq: v.type === 'HQ' || Boolean(v.isHq || v.hq || v.HQ),
+                      source: src || undefined,
+                    });
+                    continue;
+                  }
+                }
+                const nextContainer = currentContainer ? `${currentContainer} > ${key}` : key;
+                const nextSource = currentSource || (key.length > 2 && !key.startsWith('Bag') && !key.startsWith('Slot') ? key : '');
+                walkObject(val, nextContainer, nextSource);
+              }
+            }
+          }
+        };
+
+        walkObject(parsed, '', rootCharacter);
+
+        if (items.length > 0) {
+          return {
+            success: true,
+            data: buildSyncResult(items, rootCharacter || 'Dalamud Object Export'),
+          };
+        }
+      }
+    } catch {
+      // Fall through to text/csv parser
+    }
+  }
+
+  // 5. Plaintext / CSV / TSV parser fallback
+  const lines = trimmed.split('\n').map((l) => l.trim()).filter(Boolean);
+  const items: InventoryItemLocation[] = [];
+
+  for (const line of lines) {
+    // Format: "Name / ID, Quantity, Location, Character/Source"
+    let parts = line.split(/[,\t|]/).map((p) => p.trim());
+    if (parts.length >= 2) {
+      let rawIdentifier = parts[0];
+      let rawQty = parts[1];
+      let rawLoc = parts[2] || 'Player';
+      let rawSource = parts[3] || '';
+
+      let id = Number(rawIdentifier);
+      let name = '';
+      if (!id || isNaN(id)) {
+        const meta = resolveItemInfo(rawIdentifier);
+        if (meta) {
+          id = meta.itemId;
+          name = meta.name;
+        }
+      } else {
+        const meta = resolveItemInfo(id);
+        name = meta ? meta.name : `Item #${id}`;
+      }
+
+      const qty = parseInt(rawQty.replace(/[^0-9]/g, '')) || 0;
+      if (id && qty > 0) {
+        items.push({
+          location: rawLoc,
+          locationType: normalizeLocationType(rawLoc),
+          itemId: id,
+          name: name || `Item #${id}`,
+          quantity: qty,
+          isHq: rawQty.toLowerCase().includes('hq'),
+          source: rawSource || undefined,
+        });
+        continue;
+      }
+    }
+
+    // Pattern like "スーパージュラルミンインゴット x5 (Moja Kun)" or "スーパージュラルミンインゴット : 5"
+    const match = line.match(/^(.+?)(?:\s*[xX:：\s]\s*|\s+)(\d+)(?:\s*個|\s*HQ|\s*hq|\s*NQ)?(?:\s*\((.*?)\))?$/);
+    if (match) {
+      const rawName = match[1].trim();
+      const qty = parseInt(match[2]);
+      const locOrSrc = match[3] || 'Player';
+
+      let id = Number(rawName);
+      let name = '';
+      if (!id || isNaN(id)) {
+        const meta = resolveItemInfo(rawName);
+        if (meta) {
+          id = meta.itemId;
+          name = meta.name;
+        }
+      } else {
+        const meta = resolveItemInfo(id);
+        name = meta ? meta.name : `Item #${id}`;
+      }
+
+      if (id && qty > 0) {
+        items.push({
+          location: locOrSrc,
+          locationType: normalizeLocationType(locOrSrc),
+          itemId: id,
+          name: name || `Item #${id}`,
+          quantity: qty,
+          isHq: line.toLowerCase().includes('hq'),
+          source: locOrSrc !== 'Player' ? locOrSrc : undefined,
+        });
+      }
+    }
+  }
+
+  if (items.length > 0) {
+    return {
+      success: true,
+      data: buildSyncResult(items, 'Text/CSV Import'),
+    };
+  }
+
+  return {
+    success: false,
+    error: '有効なインベントリ形式（JSON、Allagan Tools、Teamcraft、CSV、アイテム名と個数）を認識できませんでした。',
+  };
+}
+
+/**
+ * Helper to filter items based on selected character / source
+ */
+export function getFilteredInventoryItems(
+  syncData: InventorySyncData | null,
+  characterFilter?: string
+): InventoryItemLocation[] {
+  if (!syncData || !syncData.inventories) return [];
+  const targetChar = characterFilter !== undefined ? characterFilter : (syncData.selectedCharacter || 'ALL');
+  if (!targetChar || targetChar === 'ALL') {
+    return syncData.inventories;
+  }
+  return syncData.inventories.filter((inv) => !inv.source || inv.source === targetChar);
+}
+
+/**
+ * Get total quantity owned across selected inventory locations
+ */
+export function getItemStockTotal(
+  itemId: number,
+  syncData: InventorySyncData | null,
+  characterFilter?: string
+): number {
+  const items = getFilteredInventoryItems(syncData, characterFilter);
+  return items
     .filter((inv) => inv.itemId === itemId)
     .reduce((sum, inv) => sum + inv.quantity, 0);
 }
@@ -199,9 +715,13 @@ export function getItemStockTotal(itemId: number, syncData: InventorySyncData | 
 /**
  * Get item breakdown locations
  */
-export function getItemStockBreakdown(itemId: number, syncData: InventorySyncData | null): InventoryItemLocation[] {
-  if (!syncData || !syncData.inventories) return [];
-  return syncData.inventories.filter((inv) => inv.itemId === itemId);
+export function getItemStockBreakdown(
+  itemId: number,
+  syncData: InventorySyncData | null,
+  characterFilter?: string
+): InventoryItemLocation[] {
+  const items = getFilteredInventoryItems(syncData, characterFilter);
+  return items.filter((inv) => inv.itemId === itemId);
 }
 
 /**
@@ -218,7 +738,8 @@ export function generateWithdrawalList(
       if (remaining <= 0) break;
       const take = Math.min(remaining, loc.quantity);
       if (take > 0 && loc.locationType !== 'Player') {
-        instructions.push(`・${loc.location} から 「${item.name}」 を ${take}個 引き出す`);
+        const sourcePrefix = loc.source ? `【${loc.source}】` : '';
+        instructions.push(`・${sourcePrefix}${loc.location} から 「${item.name}」 を ${take}個 引き出す`);
         remaining -= take;
       }
     }

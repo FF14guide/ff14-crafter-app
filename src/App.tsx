@@ -348,6 +348,7 @@ export default function App() {
           onClose={() => setIsInventoryModalOpen(false)}
           syncData={inventoryData}
           onSaveSyncData={handleSaveInventory}
+          activeRecipe={selectedRecipe}
         />
 
         {/* Macro Presets Modal */}

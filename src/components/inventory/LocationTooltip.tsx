@@ -85,19 +85,28 @@ export const LocationTooltip: React.FC<LocationTooltipProps> = ({
             <div className="space-y-1.5 max-h-48 overflow-y-auto">
               {breakdown.map((loc, idx) => (
                 <div
-                  key={`${loc.location}_${idx}`}
+                  key={`${loc.location}_${loc.source || ''}_${idx}`}
                   className="flex items-center justify-between text-xs bg-slate-950/60 px-2 py-1 rounded border border-slate-800/80"
                 >
-                  <div className="flex items-center gap-1.5 text-slate-300">
+                  <div className="flex items-center gap-1.5 text-slate-300 min-w-0 pr-2">
                     {getLocationIcon(loc.locationType)}
-                    <span className="text-[11px] truncate max-w-[120px]">{loc.location}</span>
-                    {loc.isHq && (
-                      <span className="text-[9px] bg-amber-500/20 text-amber-300 font-bold px-1 rounded border border-amber-500/30">
-                        HQ
-                      </span>
-                    )}
+                    <div className="flex flex-col min-w-0">
+                      {loc.source && (
+                        <span className="text-[10px] text-amber-300/90 font-medium truncate">
+                          {loc.source}
+                        </span>
+                      )}
+                      <div className="flex items-center gap-1">
+                        <span className="text-[11px] truncate text-slate-200">{loc.location}</span>
+                        {loc.isHq && (
+                          <span className="text-[9px] bg-amber-500/20 text-amber-300 font-bold px-1 rounded border border-amber-500/30 shrink-0">
+                            HQ
+                          </span>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                  <span className="font-rajdhani font-bold text-slate-200">
+                  <span className="font-rajdhani font-bold text-slate-200 shrink-0">
                     x{loc.quantity}
                   </span>
                 </div>
