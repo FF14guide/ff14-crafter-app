@@ -56,7 +56,7 @@ export const Header: React.FC<HeaderProps> = ({
             <Sparkles className="w-3.5 h-3.5" /> Eorzean Crafter
           </span>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400">FFXIV Patch 7.1 / 7.05 黄金のレガシー対応</span>
+          <span className="text-slate-400">FFXIV Patch 7.55 / 7.4 / 7.2 黄金のレガシー完全対応</span>
         </div>
 
         <div className="flex items-center gap-4 text-xs">
@@ -143,21 +143,21 @@ export const Header: React.FC<HeaderProps> = ({
           {/* World / Data Center Selector */}
           <div className="flex items-center gap-2 bg-slate-900/80 px-3 py-1.5 rounded-lg border border-slate-700/70 text-xs">
             <Globe className="w-4 h-4 text-amber-400" />
-            <span className="text-slate-400 font-medium">DC:</span>
+            <span className="text-slate-400 font-medium">鯖/DC:</span>
             <select
               aria-label="データセンター / ワールド選択"
               value={selectedWorldOrDc}
               onChange={(e) => onSelectWorldOrDc(e.target.value)}
-              className="bg-transparent text-amber-200 font-semibold font-rajdhani focus:outline-none cursor-pointer"
+              className="bg-transparent text-amber-200 font-semibold font-rajdhani focus:outline-none cursor-pointer max-w-[150px] sm:max-w-none"
             >
               {DATA_CENTERS.map((dc) => (
-                <optgroup key={dc.name} label={`${dc.name} (${dc.region})`}>
-                  <option value={dc.name} className="bg-slate-900 text-slate-100">
-                    {dc.name} (全ワールド平均)
+                <optgroup key={dc.name} label={`【${dc.regionJa}】${dc.name} DC`}>
+                  <option value={dc.name} className="bg-slate-900 text-amber-300 font-semibold">
+                    🌐 {dc.name} (DC全ワールド最安/平均)
                   </option>
                   {dc.worlds.map((w) => (
                     <option key={w} value={w} className="bg-slate-900 text-slate-100">
-                      {w}
+                      &nbsp;&nbsp;🏠 {w}
                     </option>
                   ))}
                 </optgroup>

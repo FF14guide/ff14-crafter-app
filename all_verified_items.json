@@ -1,0 +1,4510 @@
+{
+  "8": {
+    "id": 8,
+    "name": "ファイアクリスタル",
+    "icon": 20007,
+    "category": 59,
+    "ilvl": 25,
+    "description": "炎の媒質の結晶",
+    "ingredients": []
+  },
+  "9": {
+    "id": 9,
+    "name": "アイスクリスタル",
+    "icon": 20009,
+    "category": 59,
+    "ilvl": 25,
+    "description": "氷の媒質の結晶",
+    "ingredients": []
+  },
+  "10": {
+    "id": 10,
+    "name": "ウィンドクリスタル",
+    "icon": 20010,
+    "category": 59,
+    "ilvl": 25,
+    "description": "風の媒質の結晶",
+    "ingredients": []
+  },
+  "11": {
+    "id": 11,
+    "name": "アースクリスタル",
+    "icon": 20012,
+    "category": 59,
+    "ilvl": 25,
+    "description": "土の媒質の結晶",
+    "ingredients": []
+  },
+  "12": {
+    "id": 12,
+    "name": "ライトニングクリスタル",
+    "icon": 20011,
+    "category": 59,
+    "ilvl": 25,
+    "description": "雷の媒質の結晶",
+    "ingredients": []
+  },
+  "13": {
+    "id": 13,
+    "name": "ウォータークリスタル",
+    "icon": 20008,
+    "category": 59,
+    "ilvl": 25,
+    "description": "水の媒質の結晶",
+    "ingredients": []
+  },
+  "14": {
+    "id": 14,
+    "name": "ファイアクラスター",
+    "icon": 20013,
+    "category": 59,
+    "ilvl": 50,
+    "description": "炎の媒質の樹状結晶",
+    "ingredients": []
+  },
+  "15": {
+    "id": 15,
+    "name": "アイスクラスター",
+    "icon": 20015,
+    "category": 59,
+    "ilvl": 50,
+    "description": "氷の媒質の樹状結晶",
+    "ingredients": []
+  },
+  "16": {
+    "id": 16,
+    "name": "ウィンドクラスター",
+    "icon": 20016,
+    "category": 59,
+    "ilvl": 50,
+    "description": "風の媒質の樹状結晶",
+    "ingredients": []
+  },
+  "17": {
+    "id": 17,
+    "name": "アースクラスター",
+    "icon": 20018,
+    "category": 59,
+    "ilvl": 50,
+    "description": "土の媒質の樹状結晶",
+    "ingredients": []
+  },
+  "18": {
+    "id": 18,
+    "name": "ライトニングクラスター",
+    "icon": 20017,
+    "category": 59,
+    "ilvl": 50,
+    "description": "雷の媒質の樹状結晶",
+    "ingredients": []
+  },
+  "19": {
+    "id": 19,
+    "name": "ウォータークラスター",
+    "icon": 20014,
+    "category": 59,
+    "ilvl": 50,
+    "description": "水の媒質の樹状結晶",
+    "ingredients": []
+  },
+  "4833": {
+    "id": 4833,
+    "name": "バニラビーンズ",
+    "icon": 25014,
+    "category": 45,
+    "ilvl": 160,
+    "description": "種子から成るスパイス。薬品や香料に用いられる",
+    "ingredients": []
+  },
+  "19882": {
+    "id": 19882,
+    "name": "名匠の薬茶",
+    "icon": 24413,
+    "category": 44,
+    "ilvl": 273,
+    "description": "製作の効率を高める、獣角を煎じた薬茶<br>効果時間 15:00",
+    "craft": [
+      {
+        "id": 3587,
+        "job": 14,
+        "rlvl": 273,
+        "durability": 80,
+        "quality": 3060,
+        "progress": 780,
+        "lvl": 64,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 19872,
+            "amount": 1
+          },
+          {
+            "id": 19921,
+            "amount": 1
+          },
+          {
+            "id": 19853,
+            "amount": 2
+          },
+          {
+            "id": 19864,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 4
+          },
+          {
+            "id": 12,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 94,
+          "hq": 114
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 19872,
+        "name": "岩清水",
+        "icon": 22614
+      },
+      {
+        "id": 19921,
+        "name": "ケナガウシの角",
+        "icon": 22211
+      },
+      {
+        "id": 19853,
+        "name": "葛根",
+        "icon": 25005
+      },
+      {
+        "id": 19864,
+        "name": "馬芹",
+        "icon": 25354
+      }
+    ]
+  },
+  "19883": {
+    "id": 19883,
+    "name": "巨匠の薬茶",
+    "icon": 24412,
+    "category": 44,
+    "ilvl": 276,
+    "description": "製作の効率を高める、獣角を煎じた薬茶<br>効果時間 15:00",
+    "craft": [
+      {
+        "id": 3588,
+        "job": 14,
+        "rlvl": 276,
+        "durability": 80,
+        "quality": 3150,
+        "progress": 830,
+        "lvl": 65,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 19872,
+            "amount": 1
+          },
+          {
+            "id": 19921,
+            "amount": 1
+          },
+          {
+            "id": 19870,
+            "amount": 2
+          },
+          {
+            "id": 19864,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 4
+          },
+          {
+            "id": 12,
+            "amount": 4
+          }
+        ],
+        "complexity": {
+          "nq": 100,
+          "hq": 120
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 19872,
+        "name": "岩清水",
+        "icon": 22614
+      },
+      {
+        "id": 19921,
+        "name": "ケナガウシの角",
+        "icon": 22211
+      },
+      {
+        "id": 19870,
+        "name": "パーシモンリーフ",
+        "icon": 25010
+      },
+      {
+        "id": 19864,
+        "name": "馬芹",
+        "icon": 25354
+      }
+    ]
+  },
+  "19884": {
+    "id": 19884,
+    "name": "魔匠の薬茶",
+    "icon": 24411,
+    "category": 44,
+    "ilvl": 282,
+    "description": "製作の効率を高める、獣角を煎じた薬茶<br>効果時間 15:00",
+    "craft": [
+      {
+        "id": 3589,
+        "job": 14,
+        "rlvl": 282,
+        "durability": 80,
+        "quality": 3330,
+        "progress": 930,
+        "lvl": 67,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 19872,
+            "amount": 1
+          },
+          {
+            "id": 19920,
+            "amount": 1
+          },
+          {
+            "id": 19916,
+            "amount": 2
+          },
+          {
+            "id": 19867,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 5
+          },
+          {
+            "id": 12,
+            "amount": 4
+          }
+        ],
+        "complexity": {
+          "nq": 154,
+          "hq": 174
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 19872,
+        "name": "岩清水",
+        "icon": 22614
+      },
+      {
+        "id": 19920,
+        "name": "ガゼルの角",
+        "icon": 22206
+      },
+      {
+        "id": 19916,
+        "name": "風茶葉",
+        "icon": 25022
+      },
+      {
+        "id": 19867,
+        "name": "フェンネル",
+        "icon": 25034
+      }
+    ]
+  },
+  "27835": {
+    "id": 27835,
+    "name": "リトルレモン",
+    "icon": 25305,
+    "category": 45,
+    "ilvl": 420,
+    "description": "小粒ながら果汁の詰まったレモン",
+    "ingredients": []
+  },
+  "27838": {
+    "id": 27838,
+    "name": "フラントーヨオイル",
+    "icon": 25451,
+    "category": 45,
+    "ilvl": 390,
+    "description": "フラントーヨの実から抽出した食用、薬用油",
+    "craft": [
+      {
+        "id": 3877,
+        "job": 15,
+        "rlvl": 390,
+        "durability": 40,
+        "quality": 3010,
+        "progress": 597,
+        "lvl": 71,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 27820,
+            "amount": 5
+          },
+          {
+            "id": 8,
+            "amount": 6
+          }
+        ],
+        "complexity": {
+          "nq": 76,
+          "hq": 96
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 27820,
+        "name": "フラントーヨ",
+        "icon": 25307
+      }
+    ]
+  },
+  "43975": {
+    "id": 43975,
+    "name": "ホイップクリーム",
+    "icon": 25056,
+    "category": 45,
+    "ilvl": 665,
+    "description": "ラプシードの油から作った、甘くふんわりとした植物性クリーム",
+    "craft": [
+      {
+        "id": 5591,
+        "job": 15,
+        "rlvl": 665,
+        "durability": 40,
+        "quality": 9800,
+        "progress": 2550,
+        "lvl": 95,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43980,
+            "amount": 6
+          },
+          {
+            "id": 8,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 94,
+          "hq": 114
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43980,
+        "name": "シャーローニ・オイルシード",
+        "icon": 25007
+      }
+    ]
+  },
+  "43976": {
+    "id": 43976,
+    "name": "トラルコーンオイル",
+    "icon": 25451,
+    "category": 45,
+    "ilvl": 660,
+    "description": "トラルコーンから抽出した油。加熱調理にも適している",
+    "craft": [
+      {
+        "id": 5590,
+        "job": 15,
+        "rlvl": 660,
+        "durability": 40,
+        "quality": 9400,
+        "progress": 2400,
+        "lvl": 94,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43981,
+            "amount": 6
+          },
+          {
+            "id": 8,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 94,
+          "hq": 114
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43981,
+        "name": "トラルコーン",
+        "icon": 25352
+      }
+    ]
+  },
+  "43977": {
+    "id": 43977,
+    "name": "高山食塩",
+    "icon": 25104,
+    "category": 45,
+    "ilvl": 653,
+    "description": "オルコ・パチャの恵みである、高山岩塩から削り出した食塩",
+    "craft": [
+      {
+        "id": 5588,
+        "job": 15,
+        "rlvl": 653,
+        "durability": 40,
+        "quality": 8600,
+        "progress": 2125,
+        "lvl": 92,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43982,
+            "amount": 6
+          },
+          {
+            "id": 8,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 94,
+          "hq": 114
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43982,
+        "name": "高山岩塩",
+        "icon": 22617
+      }
+    ]
+  },
+  "43981": {
+    "id": 43981,
+    "name": "トラルコーン",
+    "icon": 25352,
+    "category": 45,
+    "ilvl": 660,
+    "description": "トラル大陸原産の粒ぞろいの穀類",
+    "ingredients": []
+  },
+  "43985": {
+    "id": 43985,
+    "name": "ヤースラニガーリック",
+    "icon": 25006,
+    "category": 45,
+    "ilvl": 680,
+    "description": "球根からなるスパイス。他品種に比べ小振りだが、濃厚な臭みと豊富な栄養素を持つ",
+    "ingredients": []
+  },
+  "43993": {
+    "id": 43993,
+    "name": "ルテニウム鉱",
+    "icon": 21213,
+    "category": 48,
+    "ilvl": 653,
+    "description": "ルテニウムを含有する鉱石",
+    "ingredients": []
+  },
+  "43996": {
+    "id": 43996,
+    "name": "黒鉄鉱",
+    "icon": 21231,
+    "category": 48,
+    "ilvl": 680,
+    "description": "黒鉄を含有する鉱石",
+    "ingredients": []
+  },
+  "44006": {
+    "id": 44006,
+    "name": "ブラックスター原石",
+    "icon": 21476,
+    "category": 48,
+    "ilvl": 680,
+    "description": "ブラックスターを含んでいると思しき原石",
+    "ingredients": []
+  },
+  "44012": {
+    "id": 44012,
+    "name": "ブラックスター",
+    "icon": 21338,
+    "category": 48,
+    "ilvl": 680,
+    "description": "星のような光を放つ黒い宝石",
+    "craft": [
+      {
+        "id": 5642,
+        "job": 11,
+        "rlvl": 680,
+        "durability": 40,
+        "quality": 11000,
+        "progress": 3000,
+        "lvl": 98,
+        "materialQualityFactor": 50,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44006,
+            "amount": 3
+          },
+          {
+            "id": 44013,
+            "amount": 1,
+            "quality": 1352.1257
+          },
+          {
+            "id": 10,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 156,
+          "hq": 176
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44006,
+        "name": "ブラックスター原石",
+        "icon": 21476
+      },
+      {
+        "id": 44013,
+        "name": "マグネシア砥石",
+        "icon": 20974
+      },
+      {
+        "id": 44007,
+        "name": "マグネシア粉",
+        "icon": 21204
+      }
+    ]
+  },
+  "44023": {
+    "id": 44023,
+    "name": "クラロウォルナット材",
+    "icon": 22464,
+    "category": 50,
+    "ilvl": 680,
+    "description": "削り出されたクラロウォルナットの材木",
+    "craft": [
+      {
+        "id": 5627,
+        "job": 8,
+        "rlvl": 680,
+        "durability": 40,
+        "quality": 11000,
+        "progress": 3000,
+        "lvl": 98,
+        "materialQualityFactor": 0,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44018,
+            "amount": 5
+          },
+          {
+            "id": 10,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 88,
+          "hq": 108
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44018,
+        "name": "クラロウォルナット原木",
+        "icon": 22425
+      }
+    ]
+  },
+  "44032": {
+    "id": 44032,
+    "name": "ロネークサージ",
+    "icon": 21601,
+    "category": 51,
+    "ilvl": 670,
+    "description": "ロネークの毛で織られた耐久性に優れた毛織物",
+    "craft": [
+      {
+        "id": 5651,
+        "job": 13,
+        "rlvl": 670,
+        "durability": 40,
+        "quality": 10200,
+        "progress": 2700,
+        "lvl": 96,
+        "materialQualityFactor": 0,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44027,
+            "amount": 4
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 130,
+          "hq": 150
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44027,
+        "name": "ロネークの獣毛",
+        "icon": 21827
+      }
+    ]
+  },
+  "44033": {
+    "id": 44033,
+    "name": "サンダーヤードシルク",
+    "icon": 21622,
+    "category": 51,
+    "ilvl": 680,
+    "description": "ヤースラニ荒野で採れる特殊なマユから織られたシルク",
+    "craft": [
+      {
+        "id": 5652,
+        "job": 13,
+        "rlvl": 680,
+        "durability": 40,
+        "quality": 11000,
+        "progress": 3000,
+        "lvl": 98,
+        "materialQualityFactor": 0,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44028,
+            "amount": 5
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 88,
+          "hq": 108
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44028,
+        "name": "帯雷繭",
+        "icon": 21687
+      }
+    ]
+  },
+  "44035": {
+    "id": 44035,
+    "name": "黄金の霊砂",
+    "icon": 21246,
+    "category": 54,
+    "ilvl": 690,
+    "description": "精選によって得られた、大粒のクリスタルの粉末",
+    "ingredients": []
+  },
+  "44040": {
+    "id": 44040,
+    "name": "コザマル・カモミール",
+    "icon": 25008,
+    "category": 54,
+    "ilvl": 660,
+    "description": "コザマル・カに自生する薬草。高温多湿な環境も厭わずに生える",
+    "ingredients": []
+  },
+  "44041": {
+    "id": 44041,
+    "name": "ウィンドローレル",
+    "icon": 25009,
+    "category": 54,
+    "ilvl": 685,
+    "description": "生薬として使用される、香り高い香草",
+    "ingredients": []
+  },
+  "44057": {
+    "id": 44057,
+    "name": "ガルガンチュアの粗皮",
+    "icon": 21814,
+    "category": 52,
+    "ilvl": 680,
+    "description": "ガルガンチュアのふさふさとした粗皮",
+    "ingredients": []
+  },
+  "44062": {
+    "id": 44062,
+    "name": "ガルガンチュアレザー",
+    "icon": 22007,
+    "category": 52,
+    "ilvl": 680,
+    "description": "なめされたガルガンチュアの皮",
+    "craft": [
+      {
+        "id": 5647,
+        "job": 12,
+        "rlvl": 680,
+        "durability": 40,
+        "quality": 11000,
+        "progress": 3000,
+        "lvl": 98,
+        "materialQualityFactor": 0,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44057,
+            "amount": 4
+          },
+          {
+            "id": 44052,
+            "amount": 1
+          },
+          {
+            "id": 11,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 136,
+          "hq": 156
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44057,
+        "name": "ガルガンチュアの粗皮",
+        "icon": 21814
+      },
+      {
+        "id": 44052,
+        "name": "アカシア樹皮",
+        "icon": 22418
+      }
+    ]
+  },
+  "44081": {
+    "id": 44081,
+    "name": "オムライス",
+    "icon": 24253,
+    "category": 46,
+    "ilvl": 650,
+    "description": "ライスにトマトソースを混ぜ合わせて炒め、溶いた卵をふんわりと焼き上げて乗せた料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 5593,
+        "job": 15,
+        "rlvl": 650,
+        "durability": 80,
+        "quality": 8200,
+        "progress": 4000,
+        "lvl": 91,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43973,
+            "amount": 1,
+            "quality": 952.46606
+          },
+          {
+            "id": 27830,
+            "amount": 1
+          },
+          {
+            "id": 36256,
+            "amount": 2
+          },
+          {
+            "id": 36255,
+            "amount": 1
+          },
+          {
+            "id": 12895,
+            "amount": 1,
+            "quality": 190.49321
+          },
+          {
+            "id": 8,
+            "amount": 8
+          },
+          {
+            "id": 13,
+            "amount": 7
+          }
+        ],
+        "complexity": {
+          "nq": 331,
+          "hq": 351
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43973,
+        "name": "ウトォームチリソース",
+        "icon": 25101
+      },
+      {
+        "id": 43978,
+        "name": "ウトォームトマト",
+        "icon": 25209
+      },
+      {
+        "id": 4838,
+        "name": "ドラゴンペッパー",
+        "icon": 25013
+      },
+      {
+        "id": 27830,
+        "name": "ボンバライス",
+        "icon": 25358
+      },
+      {
+        "id": 36256,
+        "name": "エッグ・オブ・エルピス",
+        "icon": 25251
+      },
+      {
+        "id": 36255,
+        "name": "オウヴィボスの乳",
+        "icon": 24453
+      },
+      {
+        "id": 12895,
+        "name": "発酵バター",
+        "icon": 25052
+      },
+      {
+        "id": 12888,
+        "name": "ヤクの乳",
+        "icon": 24453
+      }
+    ]
+  },
+  "44091": {
+    "id": 44091,
+    "name": "ロネークステーキ",
+    "icon": 24360,
+    "category": 46,
+    "ilvl": 684,
+    "description": "大きなロネークの肉を贅沢に使い、シンプルな味付けで焼いたステーキ<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 5616,
+        "job": 15,
+        "rlvl": 685,
+        "durability": 80,
+        "quality": 11400,
+        "progress": 6300,
+        "lvl": 99,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43976,
+            "amount": 1,
+            "quality": 995.50146
+          },
+          {
+            "id": 43977,
+            "amount": 1,
+            "quality": 984.9431
+          },
+          {
+            "id": 44106,
+            "amount": 1
+          },
+          {
+            "id": 4838,
+            "amount": 1
+          },
+          {
+            "id": 43985,
+            "amount": 2
+          },
+          {
+            "id": 27843,
+            "amount": 1,
+            "quality": 612.3842
+          },
+          {
+            "id": 8,
+            "amount": 8
+          },
+          {
+            "id": 13,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 412,
+          "hq": 432
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43976,
+        "name": "トラルコーンオイル",
+        "icon": 25451
+      },
+      {
+        "id": 43981,
+        "name": "トラルコーン",
+        "icon": 25352
+      },
+      {
+        "id": 43977,
+        "name": "高山食塩",
+        "icon": 25104
+      },
+      {
+        "id": 43982,
+        "name": "高山岩塩",
+        "icon": 22617
+      },
+      {
+        "id": 44106,
+        "name": "ロネークの肩肉",
+        "icon": 25159
+      },
+      {
+        "id": 4838,
+        "name": "ドラゴンペッパー",
+        "icon": 25013
+      },
+      {
+        "id": 43985,
+        "name": "ヤースラニガーリック",
+        "icon": 25006
+      },
+      {
+        "id": 27843,
+        "name": "ダークビネガー",
+        "icon": 25107
+      },
+      {
+        "id": 27826,
+        "name": "ロイヤルグレープ",
+        "icon": 24058
+      }
+    ]
+  },
+  "44092": {
+    "id": 44092,
+    "name": "ローストロネーク",
+    "icon": 24366,
+    "category": 46,
+    "ilvl": 680,
+    "description": "ロネークの肉を蒸し焼きにし、薄くスライスした料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 5611,
+        "job": 15,
+        "rlvl": 680,
+        "durability": 80,
+        "quality": 11000,
+        "progress": 6000,
+        "lvl": 98,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43976,
+            "amount": 1,
+            "quality": 819.22815
+          },
+          {
+            "id": 44106,
+            "amount": 1
+          },
+          {
+            "id": 43985,
+            "amount": 2
+          },
+          {
+            "id": 43986,
+            "amount": 2
+          },
+          {
+            "id": 27843,
+            "amount": 1,
+            "quality": 503.94943
+          },
+          {
+            "id": 8,
+            "amount": 8
+          },
+          {
+            "id": 13,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 324,
+          "hq": 344
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43976,
+        "name": "トラルコーンオイル",
+        "icon": 25451
+      },
+      {
+        "id": 43981,
+        "name": "トラルコーン",
+        "icon": 25352
+      },
+      {
+        "id": 44106,
+        "name": "ロネークの肩肉",
+        "icon": 25159
+      },
+      {
+        "id": 43985,
+        "name": "ヤースラニガーリック",
+        "icon": 25006
+      },
+      {
+        "id": 43986,
+        "name": "ホワイトペッパー",
+        "icon": 25045
+      },
+      {
+        "id": 27843,
+        "name": "ダークビネガー",
+        "icon": 25107
+      },
+      {
+        "id": 27826,
+        "name": "ロイヤルグレープ",
+        "icon": 24058
+      }
+    ]
+  },
+  "44104": {
+    "id": 44104,
+    "name": "タコス・カルネ・アサーダ",
+    "icon": 24046,
+    "category": 46,
+    "ilvl": 690,
+    "description": "ロネークの肉のマリネを焼いて、タコス生地に包んで食べる料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 5618,
+        "job": 15,
+        "rlvl": 690,
+        "durability": 80,
+        "quality": 12000,
+        "progress": 6600,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44106,
+            "amount": 1
+          },
+          {
+            "id": 36077,
+            "amount": 1,
+            "quality": 728.12134
+          },
+          {
+            "id": 43986,
+            "amount": 1
+          },
+          {
+            "id": 43985,
+            "amount": 2
+          },
+          {
+            "id": 36097,
+            "amount": 1
+          },
+          {
+            "id": 36098,
+            "amount": 1
+          },
+          {
+            "id": 8,
+            "amount": 8
+          },
+          {
+            "id": 13,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 248,
+          "hq": 268
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44106,
+        "name": "ロネークの肩肉",
+        "icon": 25159
+      },
+      {
+        "id": 36077,
+        "name": "黒麦粉",
+        "icon": 25356
+      },
+      {
+        "id": 36083,
+        "name": "黒麦",
+        "icon": 25359
+      },
+      {
+        "id": 43986,
+        "name": "ホワイトペッパー",
+        "icon": 25045
+      },
+      {
+        "id": 43985,
+        "name": "ヤースラニガーリック",
+        "icon": 25006
+      },
+      {
+        "id": 36097,
+        "name": "エイリアンオニオン",
+        "icon": 25203
+      },
+      {
+        "id": 36098,
+        "name": "サベネアンパプリカ",
+        "icon": 25018
+      }
+    ]
+  },
+  "44105": {
+    "id": 44105,
+    "name": "タコス・アル・パストール",
+    "icon": 24045,
+    "category": 46,
+    "ilvl": 670,
+    "description": "炒めたアルパカの肉を、パイナップルなどと一緒にタコス生地に包んで食べる料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 5604,
+        "job": 15,
+        "rlvl": 670,
+        "durability": 80,
+        "quality": 10200,
+        "progress": 5400,
+        "lvl": 96,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 43988,
+            "amount": 1
+          },
+          {
+            "id": 43973,
+            "amount": 1,
+            "quality": 829.78723
+          },
+          {
+            "id": 36077,
+            "amount": 1,
+            "quality": 663.8298
+          },
+          {
+            "id": 36097,
+            "amount": 2
+          },
+          {
+            "id": 44063,
+            "amount": 1
+          },
+          {
+            "id": 27835,
+            "amount": 1
+          },
+          {
+            "id": 8,
+            "amount": 8
+          },
+          {
+            "id": 13,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 354,
+          "hq": 374
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 43988,
+        "name": "トラルパイナップル",
+        "icon": 25303
+      },
+      {
+        "id": 43973,
+        "name": "ウトォームチリソース",
+        "icon": 25101
+      },
+      {
+        "id": 43978,
+        "name": "ウトォームトマト",
+        "icon": 25209
+      },
+      {
+        "id": 4838,
+        "name": "ドラゴンペッパー",
+        "icon": 25013
+      },
+      {
+        "id": 36077,
+        "name": "黒麦粉",
+        "icon": 25356
+      },
+      {
+        "id": 36083,
+        "name": "黒麦",
+        "icon": 25359
+      },
+      {
+        "id": 36097,
+        "name": "エイリアンオニオン",
+        "icon": 25203
+      },
+      {
+        "id": 44063,
+        "name": "アルパカのフィレ肉",
+        "icon": 25153
+      },
+      {
+        "id": 27835,
+        "name": "リトルレモン",
+        "icon": 25305
+      }
+    ]
+  },
+  "44106": {
+    "id": 44106,
+    "name": "ロネークの肩肉",
+    "icon": 25159,
+    "category": 45,
+    "ilvl": 665,
+    "description": "歯ごたえのある、臭みの少ないロネークの赤身肉",
+    "ingredients": []
+  },
+  "44135": {
+    "id": 44135,
+    "name": "混鉄鉱",
+    "icon": 21221,
+    "category": 48,
+    "ilvl": 710,
+    "description": "主となる鉄の他、ニッケルやコバルトなど複数の金属を含有する鉱石",
+    "ingredients": []
+  },
+  "44136": {
+    "id": 44136,
+    "name": "真銀鉱",
+    "icon": 21223,
+    "category": 48,
+    "ilvl": 710,
+    "description": "銀を多量に含有する鉱石",
+    "ingredients": []
+  },
+  "44137": {
+    "id": 44137,
+    "name": "イペー原木",
+    "icon": 22415,
+    "category": 50,
+    "ilvl": 710,
+    "description": "切り出されたイペーの丸材",
+    "ingredients": []
+  },
+  "44138": {
+    "id": 44138,
+    "name": "海島綿",
+    "icon": 25032,
+    "category": 51,
+    "ilvl": 710,
+    "description": "失われた麗しの海域を原産地とする、細く長い繊維を持つ綿花",
+    "ingredients": []
+  },
+  "44145": {
+    "id": 44145,
+    "name": "プルスサウルスの粗皮",
+    "icon": 21825,
+    "category": 52,
+    "ilvl": 710,
+    "description": "過酷な古代環境を生き延びた巨大鰐の粗皮",
+    "ingredients": []
+  },
+  "44147": {
+    "id": 44147,
+    "name": "マルエージングインゴット",
+    "icon": 20833,
+    "category": 49,
+    "ilvl": 710,
+    "description": "製錬、鋳造されたマルエージング鋼の塊",
+    "craft": [
+      {
+        "id": 35908,
+        "job": 9,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44124,
+        "ingredients": [
+          {
+            "id": 44135,
+            "amount": 4
+          },
+          {
+            "id": 44142,
+            "amount": 2
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 17,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 516,
+          "hq": 536
+        }
+      },
+      {
+        "id": 35909,
+        "job": 10,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44125,
+        "ingredients": [
+          {
+            "id": 44135,
+            "amount": 4
+          },
+          {
+            "id": 44142,
+            "amount": 2
+          },
+          {
+            "id": 15,
+            "amount": 3
+          },
+          {
+            "id": 17,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 516,
+          "hq": 536
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44135,
+        "name": "混鉄鉱",
+        "icon": 21221
+      },
+      {
+        "id": 44142,
+        "name": "冷却触媒",
+        "icon": 22636
+      }
+    ]
+  },
+  "44148": {
+    "id": 44148,
+    "name": "スターリングシルバーインゴット",
+    "icon": 20826,
+    "category": 49,
+    "ilvl": 710,
+    "description": "製錬、鋳造されたスターリングシルバーの塊",
+    "craft": [
+      {
+        "id": 35910,
+        "job": 11,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44126,
+        "ingredients": [
+          {
+            "id": 44136,
+            "amount": 4
+          },
+          {
+            "id": 44143,
+            "amount": 2
+          },
+          {
+            "id": 16,
+            "amount": 3
+          },
+          {
+            "id": 14,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 516,
+          "hq": 536
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44136,
+        "name": "真銀鉱",
+        "icon": 21223
+      },
+      {
+        "id": 44143,
+        "name": "壺匠の研磨剤",
+        "icon": 21485
+      }
+    ]
+  },
+  "44149": {
+    "id": 44149,
+    "name": "イペー材",
+    "icon": 22467,
+    "category": 50,
+    "ilvl": 710,
+    "description": "削り出したイペーの材木",
+    "craft": [
+      {
+        "id": 35907,
+        "job": 8,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44123,
+        "ingredients": [
+          {
+            "id": 44137,
+            "amount": 4
+          },
+          {
+            "id": 44141,
+            "amount": 2
+          },
+          {
+            "id": 16,
+            "amount": 3
+          },
+          {
+            "id": 15,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 516,
+          "hq": 536
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44137,
+        "name": "イペー原木",
+        "icon": 22415
+      },
+      {
+        "id": 44141,
+        "name": "シュバラールのワニス",
+        "icon": 22802
+      }
+    ]
+  },
+  "44150": {
+    "id": 44150,
+    "name": "海島綿布",
+    "icon": 23252,
+    "category": 51,
+    "ilvl": 710,
+    "description": "繊維の強度が高く、大変滑らかな肌触りの高級布",
+    "craft": [
+      {
+        "id": 35911,
+        "job": 13,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44128,
+        "ingredients": [
+          {
+            "id": 44138,
+            "amount": 4
+          },
+          {
+            "id": 44144,
+            "amount": 2
+          },
+          {
+            "id": 18,
+            "amount": 3
+          },
+          {
+            "id": 16,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 516,
+          "hq": 536
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44138,
+        "name": "海島綿",
+        "icon": 25032
+      },
+      {
+        "id": 44144,
+        "name": "ペルペル綿糸",
+        "icon": 21668
+      }
+    ]
+  },
+  "44151": {
+    "id": 44151,
+    "name": "プルスサウルスレザー",
+    "icon": 21836,
+    "category": 52,
+    "ilvl": 710,
+    "description": "なめされたプルスサウルスの皮",
+    "craft": [
+      {
+        "id": 35912,
+        "job": 12,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44127,
+        "ingredients": [
+          {
+            "id": 44139,
+            "amount": 4
+          },
+          {
+            "id": 44145,
+            "amount": 2
+          },
+          {
+            "id": 17,
+            "amount": 3
+          },
+          {
+            "id": 16,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 516,
+          "hq": 536
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44139,
+        "name": "トラルアルメン",
+        "icon": 22673
+      },
+      {
+        "id": 44145,
+        "name": "プルスサウルスの粗皮",
+        "icon": 21825
+      }
+    ]
+  },
+  "44152": {
+    "id": 44152,
+    "name": "剛力の宝水G2",
+    "icon": 22683,
+    "category": 54,
+    "ilvl": 710,
+    "description": "装備品の仕上げに用いることで、力を高める効果のある宝水",
+    "craft": [
+      {
+        "id": 35913,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44140,
+            "amount": 1
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 44039,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 341,
+          "hq": 361
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44140,
+        "name": "ノパルフラワー",
+        "icon": 22697
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44039,
+        "name": "ウィンドパセリ",
+        "icon": 25211
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44153": {
+    "id": 44153,
+    "name": "眼力の宝水G2",
+    "icon": 22682,
+    "category": 54,
+    "ilvl": 710,
+    "description": "装備品の仕上げに用いることで、器用さを高める効果のある宝水",
+    "craft": [
+      {
+        "id": 35914,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44140,
+            "amount": 1
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 44040,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 341,
+          "hq": 361
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44140,
+        "name": "ノパルフラワー",
+        "icon": 22697
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44040,
+        "name": "コザマル・カモミール",
+        "icon": 25008
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44154": {
+    "id": 44154,
+    "name": "活力の宝水G2",
+    "icon": 22680,
+    "category": 54,
+    "ilvl": 710,
+    "description": "装備品の仕上げに用いることで、活力を高める効果のある宝水",
+    "craft": [
+      {
+        "id": 35915,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44140,
+            "amount": 1
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 44041,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 341,
+          "hq": 361
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44140,
+        "name": "ノパルフラワー",
+        "icon": 22697
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44041,
+        "name": "ウィンドローレル",
+        "icon": 25009
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44155": {
+    "id": 44155,
+    "name": "知力の宝水G2",
+    "icon": 22679,
+    "category": 54,
+    "ilvl": 710,
+    "description": "装備品の仕上げに用いることで、知力を高める効果のある宝水",
+    "craft": [
+      {
+        "id": 35916,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44140,
+            "amount": 1
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 44042,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 341,
+          "hq": 361
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44140,
+        "name": "ノパルフラワー",
+        "icon": 22697
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44042,
+        "name": "ユーカリ",
+        "icon": 25010
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44156": {
+    "id": 44156,
+    "name": "心力の宝水G2",
+    "icon": 22681,
+    "category": 54,
+    "ilvl": 710,
+    "description": "装備品の仕上げに用いることで、理性を高める効果のある宝水",
+    "craft": [
+      {
+        "id": 35917,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 35,
+        "quality": 12000,
+        "progress": 4125,
+        "lvl": 100,
+        "materialQualityFactor": 0,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44140,
+            "amount": 1
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 44043,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 341,
+          "hq": 361
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44140,
+        "name": "ノパルフラワー",
+        "icon": 22697
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44043,
+        "name": "パールグラス",
+        "icon": 25015
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44157": {
+    "id": 44157,
+    "name": "剛力の宝薬",
+    "icon": 20710,
+    "category": 44,
+    "ilvl": 690,
+    "description": "力を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 5662,
+        "job": 14,
+        "rlvl": 690,
+        "durability": 80,
+        "quality": 12000,
+        "progress": 6600,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44051,
+            "amount": 2,
+            "quality": 850.84033
+          },
+          {
+            "id": 44072,
+            "amount": 2
+          },
+          {
+            "id": 44039,
+            "amount": 2
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 429,
+          "hq": 449
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44072,
+        "name": "アックスビークの翼膜",
+        "icon": 21957
+      },
+      {
+        "id": 44039,
+        "name": "ウィンドパセリ",
+        "icon": 25211
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44158": {
+    "id": 44158,
+    "name": "眼力の宝薬",
+    "icon": 20709,
+    "category": 44,
+    "ilvl": 690,
+    "description": "器用さを高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 5663,
+        "job": 14,
+        "rlvl": 690,
+        "durability": 80,
+        "quality": 12000,
+        "progress": 6600,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44051,
+            "amount": 2,
+            "quality": 859.8726
+          },
+          {
+            "id": 44072,
+            "amount": 2
+          },
+          {
+            "id": 44040,
+            "amount": 2
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 429,
+          "hq": 449
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44072,
+        "name": "アックスビークの翼膜",
+        "icon": 21957
+      },
+      {
+        "id": 44040,
+        "name": "コザマル・カモミール",
+        "icon": 25008
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44159": {
+    "id": 44159,
+    "name": "活力の宝薬",
+    "icon": 20707,
+    "category": 44,
+    "ilvl": 690,
+    "description": "活力を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 5664,
+        "job": 14,
+        "rlvl": 685,
+        "durability": 80,
+        "quality": 11400,
+        "progress": 6300,
+        "lvl": 99,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44051,
+            "amount": 2,
+            "quality": 808.29834
+          },
+          {
+            "id": 44072,
+            "amount": 2
+          },
+          {
+            "id": 44041,
+            "amount": 2
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 429,
+          "hq": 449
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44072,
+        "name": "アックスビークの翼膜",
+        "icon": 21957
+      },
+      {
+        "id": 44041,
+        "name": "ウィンドローレル",
+        "icon": 25009
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44160": {
+    "id": 44160,
+    "name": "知力の宝薬",
+    "icon": 20706,
+    "category": 44,
+    "ilvl": 690,
+    "description": "知力を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 5665,
+        "job": 14,
+        "rlvl": 690,
+        "durability": 80,
+        "quality": 12000,
+        "progress": 6600,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44051,
+            "amount": 2,
+            "quality": 863.5394
+          },
+          {
+            "id": 44072,
+            "amount": 2
+          },
+          {
+            "id": 44042,
+            "amount": 2
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 429,
+          "hq": 449
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44072,
+        "name": "アックスビークの翼膜",
+        "icon": 21957
+      },
+      {
+        "id": 44042,
+        "name": "ユーカリ",
+        "icon": 25010
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44161": {
+    "id": 44161,
+    "name": "心力の宝薬",
+    "icon": 20708,
+    "category": 44,
+    "ilvl": 690,
+    "description": "理性を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 5666,
+        "job": 14,
+        "rlvl": 685,
+        "durability": 80,
+        "quality": 11400,
+        "progress": 6300,
+        "lvl": 99,
+        "materialQualityFactor": 50,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44051,
+            "amount": 2,
+            "quality": 813.4249
+          },
+          {
+            "id": 44072,
+            "amount": 2
+          },
+          {
+            "id": 44043,
+            "amount": 2
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 429,
+          "hq": 449
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44072,
+        "name": "アックスビークの翼膜",
+        "icon": 21957
+      },
+      {
+        "id": 44043,
+        "name": "パールグラス",
+        "icon": 25015
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44162": {
+    "id": 44162,
+    "name": "剛力の宝薬G2",
+    "icon": 20710,
+    "category": 44,
+    "ilvl": 710,
+    "description": "力を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 35918,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44146,
+            "amount": 1
+          },
+          {
+            "id": 44051,
+            "amount": 1,
+            "quality": 2017.6631
+          },
+          {
+            "id": 44039,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 506,
+          "hq": 526
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44146,
+        "name": "ドライグロッシーエーテル",
+        "icon": 22210
+      },
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44039,
+        "name": "ウィンドパセリ",
+        "icon": 25211
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44163": {
+    "id": 44163,
+    "name": "眼力の宝薬G2",
+    "icon": 20709,
+    "category": 44,
+    "ilvl": 710,
+    "description": "器用さを高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 35919,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44146,
+            "amount": 1
+          },
+          {
+            "id": 44051,
+            "amount": 1,
+            "quality": 2036.1061
+          },
+          {
+            "id": 44040,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 506,
+          "hq": 526
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44146,
+        "name": "ドライグロッシーエーテル",
+        "icon": 22210
+      },
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44040,
+        "name": "コザマル・カモミール",
+        "icon": 25008
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44164": {
+    "id": 44164,
+    "name": "活力の宝薬G2",
+    "icon": 20707,
+    "category": 44,
+    "ilvl": 710,
+    "description": "活力を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 35920,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44146,
+            "amount": 1
+          },
+          {
+            "id": 44051,
+            "amount": 1,
+            "quality": 2017.6631
+          },
+          {
+            "id": 44041,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 506,
+          "hq": 526
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44146,
+        "name": "ドライグロッシーエーテル",
+        "icon": 22210
+      },
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44041,
+        "name": "ウィンドローレル",
+        "icon": 25009
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44165": {
+    "id": 44165,
+    "name": "知力の宝薬G2",
+    "icon": 20706,
+    "category": 44,
+    "ilvl": 710,
+    "description": "知力を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 35921,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44146,
+            "amount": 1
+          },
+          {
+            "id": 44051,
+            "amount": 1,
+            "quality": 2043.578
+          },
+          {
+            "id": 44042,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 506,
+          "hq": 526
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44146,
+        "name": "ドライグロッシーエーテル",
+        "icon": 22210
+      },
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44042,
+        "name": "ユーカリ",
+        "icon": 25010
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44166": {
+    "id": 44166,
+    "name": "心力の宝薬G2",
+    "icon": 20708,
+    "category": 44,
+    "ilvl": 710,
+    "description": "理性を高める薬。持続時間に優れる<br>効果時間 0:30",
+    "craft": [
+      {
+        "id": 35922,
+        "job": 14,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44129,
+        "ingredients": [
+          {
+            "id": 44146,
+            "amount": 1
+          },
+          {
+            "id": 44051,
+            "amount": 1,
+            "quality": 2028.6885
+          },
+          {
+            "id": 44043,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 19,
+            "amount": 3
+          },
+          {
+            "id": 18,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 506,
+          "hq": 526
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44146,
+        "name": "ドライグロッシーエーテル",
+        "icon": 22210
+      },
+      {
+        "id": 44051,
+        "name": "大聖水",
+        "icon": 22653
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44043,
+        "name": "パールグラス",
+        "icon": 25015
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44167": {
+    "id": 44167,
+    "name": "名匠の薬液",
+    "icon": 20716,
+    "category": 44,
+    "ilvl": 665,
+    "description": "製作の効率を高める、生薬を溶かした薬液<br>効果時間 15:00",
+    "craft": [
+      {
+        "id": 5667,
+        "job": 14,
+        "rlvl": 665,
+        "durability": 80,
+        "quality": 9800,
+        "progress": 5100,
+        "lvl": 95,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 36263,
+            "amount": 2
+          },
+          {
+            "id": 44069,
+            "amount": 2
+          },
+          {
+            "id": 44039,
+            "amount": 2
+          },
+          {
+            "id": 27836,
+            "amount": 2
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 7
+          }
+        ],
+        "complexity": {
+          "nq": 208,
+          "hq": 228
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 36263,
+        "name": "天水",
+        "icon": 22693
+      },
+      {
+        "id": 44069,
+        "name": "レッサーアポリオンの甲殻",
+        "icon": 22257
+      },
+      {
+        "id": 44039,
+        "name": "ウィンドパセリ",
+        "icon": 25211
+      },
+      {
+        "id": 27836,
+        "name": "ペパーミント",
+        "icon": 25016
+      }
+    ]
+  },
+  "44168": {
+    "id": 44168,
+    "name": "巨匠の薬液",
+    "icon": 20713,
+    "category": 44,
+    "ilvl": 670,
+    "description": "製作の効率を高める、生薬を溶かした薬液<br>効果時間 15:00",
+    "craft": [
+      {
+        "id": 5668,
+        "job": 14,
+        "rlvl": 670,
+        "durability": 80,
+        "quality": 10200,
+        "progress": 5400,
+        "lvl": 96,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 36263,
+            "amount": 2
+          },
+          {
+            "id": 44070,
+            "amount": 2
+          },
+          {
+            "id": 44041,
+            "amount": 2
+          },
+          {
+            "id": 27836,
+            "amount": 2
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 214,
+          "hq": 234
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 36263,
+        "name": "天水",
+        "icon": 22693
+      },
+      {
+        "id": 44070,
+        "name": "チャイチャの刃爪",
+        "icon": 22306
+      },
+      {
+        "id": 44041,
+        "name": "ウィンドローレル",
+        "icon": 25009
+      },
+      {
+        "id": 27836,
+        "name": "ペパーミント",
+        "icon": 25016
+      }
+    ]
+  },
+  "44169": {
+    "id": 44169,
+    "name": "魔匠の薬液",
+    "icon": 20712,
+    "category": 44,
+    "ilvl": 675,
+    "description": "製作の効率を高める、生薬を溶かした薬液<br>効果時間 15:00",
+    "craft": [
+      {
+        "id": 5669,
+        "job": 14,
+        "rlvl": 675,
+        "durability": 80,
+        "quality": 10600,
+        "progress": 5700,
+        "lvl": 97,
+        "materialQualityFactor": 0,
+        "yield": 3,
+        "hq": 1,
+        "quickSynth": 1,
+        "ingredients": [
+          {
+            "id": 44034,
+            "amount": 2
+          },
+          {
+            "id": 44071,
+            "amount": 2
+          },
+          {
+            "id": 44043,
+            "amount": 2
+          },
+          {
+            "id": 27836,
+            "amount": 2
+          },
+          {
+            "id": 13,
+            "amount": 8
+          },
+          {
+            "id": 12,
+            "amount": 8
+          }
+        ],
+        "complexity": {
+          "nq": 214,
+          "hq": 234
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44071,
+        "name": "タンブルクラブの枯草",
+        "icon": 21689
+      },
+      {
+        "id": 44043,
+        "name": "パールグラス",
+        "icon": 25015
+      },
+      {
+        "id": 27836,
+        "name": "ペパーミント",
+        "icon": 25016
+      }
+    ]
+  },
+  "44170": {
+    "id": 44170,
+    "name": "ラムプレスチキン",
+    "icon": 25158,
+    "category": 45,
+    "ilvl": 710,
+    "description": "ある部族が育てていた尾のない鶏の肉。野性味のある味が特徴",
+    "ingredients": []
+  },
+  "44171": {
+    "id": 44171,
+    "name": "ブラウンカルダモン",
+    "icon": 25021,
+    "category": 45,
+    "ilvl": 710,
+    "description": "大粒に育った、上品な香りを持つ希少な香辛料",
+    "ingredients": []
+  },
+  "44172": {
+    "id": 44172,
+    "name": "ワイルドコーヒービーン",
+    "icon": 25919,
+    "category": 45,
+    "ilvl": 710,
+    "description": "高地の過酷な環境で育った、香味のあるコーヒーの生豆",
+    "ingredients": []
+  },
+  "44173": {
+    "id": 44173,
+    "name": "ネーブルオレンジ",
+    "icon": 25312,
+    "category": 45,
+    "ilvl": 710,
+    "description": "果頂部に独特の窪みがあるオレンジ",
+    "ingredients": []
+  },
+  "44174": {
+    "id": 44174,
+    "name": "ロイヤルロブスター",
+    "icon": 29013,
+    "category": 47,
+    "ilvl": 710,
+    "description": "王族の食卓にも饗されてきたという高級ロブスター",
+    "ingredients": []
+  },
+  "44175": {
+    "id": 44175,
+    "name": "ローストチキン",
+    "icon": 24359,
+    "category": 46,
+    "ilvl": 710,
+    "description": "レモンやガーリックで味付けし、こんがり焼き上げたラムプレスチキン<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35923,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44170,
+            "amount": 1
+          },
+          {
+            "id": 43977,
+            "amount": 2,
+            "quality": 1283.9014
+          },
+          {
+            "id": 27838,
+            "amount": 1,
+            "quality": 766.8017
+          },
+          {
+            "id": 43985,
+            "amount": 1
+          },
+          {
+            "id": 27835,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 714,
+          "hq": 734
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44170,
+        "name": "ラムプレスチキン",
+        "icon": 25158
+      },
+      {
+        "id": 43977,
+        "name": "高山食塩",
+        "icon": 25104
+      },
+      {
+        "id": 43982,
+        "name": "高山岩塩",
+        "icon": 22617
+      },
+      {
+        "id": 27838,
+        "name": "フラントーヨオイル",
+        "icon": 25451
+      },
+      {
+        "id": 27820,
+        "name": "フラントーヨ",
+        "icon": 25307
+      },
+      {
+        "id": 43985,
+        "name": "ヤースラニガーリック",
+        "icon": 25006
+      },
+      {
+        "id": 27835,
+        "name": "リトルレモン",
+        "icon": 25305
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44176": {
+    "id": 44176,
+    "name": "チキンパスタ",
+    "icon": 24019,
+    "category": 46,
+    "ilvl": 710,
+    "description": "細かく刻んだラムプレスチキンを、チーズと混ぜ合わせた濃厚なパスタ<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35924,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44170,
+            "amount": 1
+          },
+          {
+            "id": 43972,
+            "amount": 2,
+            "quality": 1324.4011
+          },
+          {
+            "id": 36081,
+            "amount": 1,
+            "quality": 1086.0089
+          },
+          {
+            "id": 43985,
+            "amount": 1
+          },
+          {
+            "id": 12908,
+            "amount": 1,
+            "quality": 277.10547
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 1185,
+          "hq": 1205
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44170,
+        "name": "ラムプレスチキン",
+        "icon": 25158
+      },
+      {
+        "id": 43972,
+        "name": "メスカル料理酒",
+        "icon": 25057
+      },
+      {
+        "id": 44067,
+        "name": "メガマゲイの球茎",
+        "icon": 25332
+      },
+      {
+        "id": 36081,
+        "name": "ガレアンチーズ",
+        "icon": 24458
+      },
+      {
+        "id": 36255,
+        "name": "オウヴィボスの乳",
+        "icon": 24453
+      },
+      {
+        "id": 43985,
+        "name": "ヤースラニガーリック",
+        "icon": 25006
+      },
+      {
+        "id": 12908,
+        "name": "ヴァーミセリ",
+        "icon": 25058
+      },
+      {
+        "id": 12881,
+        "name": "ハイランド小麦粉",
+        "icon": 25351
+      },
+      {
+        "id": 12880,
+        "name": "ハイランド小麦",
+        "icon": 25357
+      },
+      {
+        "id": 12631,
+        "name": "ドラヴァニア天然水",
+        "icon": 22614
+      },
+      {
+        "id": 12901,
+        "name": "アバラシア岩塩",
+        "icon": 22617
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44177": {
+    "id": 44177,
+    "name": "シュラスコ",
+    "icon": 24371,
+    "category": 46,
+    "ilvl": 710,
+    "description": "ロネークの肩肉を、長い串でじっくりと焼き上げた料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35925,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44171,
+            "amount": 1
+          },
+          {
+            "id": 43972,
+            "amount": 2,
+            "quality": 1216.5381
+          },
+          {
+            "id": 27838,
+            "amount": 1,
+            "quality": 729.92285
+          },
+          {
+            "id": 44106,
+            "amount": 1
+          },
+          {
+            "id": 43982,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 816,
+          "hq": 836
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44171,
+        "name": "ブラウンカルダモン",
+        "icon": 25021
+      },
+      {
+        "id": 43972,
+        "name": "メスカル料理酒",
+        "icon": 25057
+      },
+      {
+        "id": 44067,
+        "name": "メガマゲイの球茎",
+        "icon": 25332
+      },
+      {
+        "id": 27838,
+        "name": "フラントーヨオイル",
+        "icon": 25451
+      },
+      {
+        "id": 27820,
+        "name": "フラントーヨ",
+        "icon": 25307
+      },
+      {
+        "id": 44106,
+        "name": "ロネークの肩肉",
+        "icon": 25159
+      },
+      {
+        "id": 43982,
+        "name": "高山岩塩",
+        "icon": 22617
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44178": {
+    "id": 44178,
+    "name": "ムケッカ",
+    "icon": 24105,
+    "category": 46,
+    "ilvl": 710,
+    "description": "トライヨラで広く親しまれているクリーミーかつスパイシーなシチュー。食材の出汁が人気の秘訣<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35926,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44171,
+            "amount": 1
+          },
+          {
+            "id": 43976,
+            "amount": 2,
+            "quality": 1186.533
+          },
+          {
+            "id": 36082,
+            "amount": 1,
+            "quality": 963.60864
+          },
+          {
+            "id": 44064,
+            "amount": 1
+          },
+          {
+            "id": 43985,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 726,
+          "hq": 746
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44171,
+        "name": "ブラウンカルダモン",
+        "icon": 25021
+      },
+      {
+        "id": 43976,
+        "name": "トラルコーンオイル",
+        "icon": 25451
+      },
+      {
+        "id": 43981,
+        "name": "トラルコーン",
+        "icon": 25352
+      },
+      {
+        "id": 36082,
+        "name": "ココナッツミルク",
+        "icon": 25947
+      },
+      {
+        "id": 36087,
+        "name": "ココナッツ",
+        "icon": 25323
+      },
+      {
+        "id": 44064,
+        "name": "スワンプモンクのモモ肉",
+        "icon": 25160
+      },
+      {
+        "id": 43985,
+        "name": "ヤースラニガーリック",
+        "icon": 25006
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44179": {
+    "id": 44179,
+    "name": "シナモンホイップコーヒー",
+    "icon": 24407,
+    "category": 46,
+    "ilvl": 710,
+    "description": "よく立てたホイップクリームを乗せシナモンで香り付けした、甘味と苦味が調和したコーヒー<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35927,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44172,
+            "amount": 1
+          },
+          {
+            "id": 43975,
+            "amount": 2,
+            "quality": 1394.573
+          },
+          {
+            "id": 36080,
+            "amount": 1,
+            "quality": 1111.4641
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 4828,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 713,
+          "hq": 733
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44172,
+        "name": "ワイルドコーヒービーン",
+        "icon": 25919
+      },
+      {
+        "id": 43975,
+        "name": "ホイップクリーム",
+        "icon": 25056
+      },
+      {
+        "id": 43980,
+        "name": "シャーローニ・オイルシード",
+        "icon": 25007
+      },
+      {
+        "id": 36080,
+        "name": "パームシュガー",
+        "icon": 25103
+      },
+      {
+        "id": 36086,
+        "name": "パームシロップ",
+        "icon": 22642
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 4828,
+        "name": "シナモン",
+        "icon": 25019
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44180": {
+    "id": 44180,
+    "name": "コーヒーククルラスク",
+    "icon": 24090,
+    "category": 46,
+    "ilvl": 710,
+    "description": "チョコレートの練り込まれたパン生地にコーヒーを染み込ませ、砂糖で表面をこんがりと焼いた菓子<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35928,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44172,
+            "amount": 1
+          },
+          {
+            "id": 43977,
+            "amount": 2,
+            "quality": 1219.9388
+          },
+          {
+            "id": 36083,
+            "amount": 1
+          },
+          {
+            "id": 43991,
+            "amount": 1
+          },
+          {
+            "id": 36255,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 638,
+          "hq": 658
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44172,
+        "name": "ワイルドコーヒービーン",
+        "icon": 25919
+      },
+      {
+        "id": 43977,
+        "name": "高山食塩",
+        "icon": 25104
+      },
+      {
+        "id": 43982,
+        "name": "高山岩塩",
+        "icon": 22617
+      },
+      {
+        "id": 36083,
+        "name": "黒麦",
+        "icon": 25359
+      },
+      {
+        "id": 43991,
+        "name": "スイートククルビーン",
+        "icon": 25314
+      },
+      {
+        "id": 36255,
+        "name": "オウヴィボスの乳",
+        "icon": 24453
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44181": {
+    "id": 44181,
+    "name": "ネーブルオレンジクッキー",
+    "icon": 24308,
+    "category": 46,
+    "ilvl": 710,
+    "description": "乾燥させたネーブルオレンジを生地に混ぜて焼き上げたクッキー<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35929,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44173,
+            "amount": 1
+          },
+          {
+            "id": 43974,
+            "amount": 2,
+            "quality": 1380.6123
+          },
+          {
+            "id": 27841,
+            "amount": 1,
+            "quality": 848.1505
+          },
+          {
+            "id": 43987,
+            "amount": 1
+          },
+          {
+            "id": 12895,
+            "amount": 1,
+            "quality": 273.59692
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 773,
+          "hq": 793
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44173,
+        "name": "ネーブルオレンジ",
+        "icon": 25312
+      },
+      {
+        "id": 43974,
+        "name": "ロイヤルメープルシロップ",
+        "icon": 25105
+      },
+      {
+        "id": 43979,
+        "name": "ロイヤルメープル樹液",
+        "icon": 22642
+      },
+      {
+        "id": 27841,
+        "name": "アップランド小麦粉",
+        "icon": 25351
+      },
+      {
+        "id": 27832,
+        "name": "アップランド小麦",
+        "icon": 25357
+      },
+      {
+        "id": 43987,
+        "name": "メスキート豆",
+        "icon": 25360
+      },
+      {
+        "id": 12895,
+        "name": "発酵バター",
+        "icon": 25052
+      },
+      {
+        "id": 12888,
+        "name": "ヤクの乳",
+        "icon": 24453
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44182": {
+    "id": 44182,
+    "name": "パインオレンジゼリー",
+    "icon": 24082,
+    "category": 46,
+    "ilvl": 710,
+    "description": "トラルパイナップルとネーブルオレンジを使った、爽やかな南国風味のゼリー<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35930,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44173,
+            "amount": 1
+          },
+          {
+            "id": 43974,
+            "amount": 2,
+            "quality": 1332.6766
+          },
+          {
+            "id": 4863,
+            "amount": 1,
+            "quality": 28.44127
+          },
+          {
+            "id": 43988,
+            "amount": 1
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 625,
+          "hq": 645
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44173,
+        "name": "ネーブルオレンジ",
+        "icon": 25312
+      },
+      {
+        "id": 43974,
+        "name": "ロイヤルメープルシロップ",
+        "icon": 25105
+      },
+      {
+        "id": 43979,
+        "name": "ロイヤルメープル樹液",
+        "icon": 22642
+      },
+      {
+        "id": 4863,
+        "name": "ゼラチン",
+        "icon": 29001
+      },
+      {
+        "id": 5551,
+        "name": "バットの翼",
+        "icon": 21955
+      },
+      {
+        "id": 4935,
+        "name": "ブラスローチ",
+        "icon": 29215
+      },
+      {
+        "id": 43988,
+        "name": "トラルパイナップル",
+        "icon": 25303
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44183": {
+    "id": 44183,
+    "name": "ロブスタービスク",
+    "icon": 24103,
+    "category": 46,
+    "ilvl": 710,
+    "description": "ロブスターをベースにした、滑らかな味わいのスープ<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35931,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44174,
+            "amount": 1
+          },
+          {
+            "id": 43972,
+            "amount": 2,
+            "quality": 1336.2821
+          },
+          {
+            "id": 12895,
+            "amount": 1,
+            "quality": 267.2564
+          },
+          {
+            "id": 43978,
+            "amount": 1
+          },
+          {
+            "id": 36090,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 805,
+          "hq": 825
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44174,
+        "name": "ロイヤルロブスター",
+        "icon": 29013
+      },
+      {
+        "id": 43972,
+        "name": "メスカル料理酒",
+        "icon": 25057
+      },
+      {
+        "id": 44067,
+        "name": "メガマゲイの球茎",
+        "icon": 25332
+      },
+      {
+        "id": 12895,
+        "name": "発酵バター",
+        "icon": 25052
+      },
+      {
+        "id": 12888,
+        "name": "ヤクの乳",
+        "icon": 24453
+      },
+      {
+        "id": 43978,
+        "name": "ウトォームトマト",
+        "icon": 25209
+      },
+      {
+        "id": 36090,
+        "name": "ハピネスキャロット",
+        "icon": 25207
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44184": {
+    "id": 44184,
+    "name": "ボイルドロブスター",
+    "icon": 24306,
+    "category": 46,
+    "ilvl": 710,
+    "description": "茹でたロブスターに塩とレモンで味付けをした、シンプルで素材の味が引き立つ料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35932,
+        "job": 15,
+        "rlvl": 710,
+        "durability": 70,
+        "quality": 16500,
+        "progress": 7500,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4400,
+        "craftsmanshipReq": 4740,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44174,
+            "amount": 1
+          },
+          {
+            "id": 43977,
+            "amount": 2,
+            "quality": 1248.2043
+          },
+          {
+            "id": 36078,
+            "amount": 1,
+            "quality": 993.9759
+          },
+          {
+            "id": 44034,
+            "amount": 1
+          },
+          {
+            "id": 27835,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 732,
+          "hq": 752
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44174,
+        "name": "ロイヤルロブスター",
+        "icon": 29013
+      },
+      {
+        "id": 43977,
+        "name": "高山食塩",
+        "icon": 25104
+      },
+      {
+        "id": 43982,
+        "name": "高山岩塩",
+        "icon": 22617
+      },
+      {
+        "id": 36078,
+        "name": "北洋食塩",
+        "icon": 25104
+      },
+      {
+        "id": 36084,
+        "name": "北洋岩塩",
+        "icon": 22688
+      },
+      {
+        "id": 44034,
+        "name": "ヤクテル天然水",
+        "icon": 22614
+      },
+      {
+        "id": 27835,
+        "name": "リトルレモン",
+        "icon": 25305
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "44842": {
+    "id": 44842,
+    "name": "セビーチェ",
+    "icon": 24337,
+    "category": 46,
+    "ilvl": 720,
+    "description": "セイルフィッシュにレモンと塩で味を付けた、トライヨラで親しまれる海鮮料理<br>敵討伐・製作・採集時の経験値獲得量が上昇する<br>経験値獲得量 +3%<br>効果時間 30:00 [最大2倍まで効果時間の継ぎ足し可能]",
+    "craft": [
+      {
+        "id": 35990,
+        "job": 15,
+        "rlvl": 720,
+        "durability": 70,
+        "quality": 17600,
+        "progress": 8050,
+        "lvl": 100,
+        "materialQualityFactor": 50,
+        "stars": 2,
+        "yield": 3,
+        "hq": 1,
+        "controlReq": 4450,
+        "craftsmanshipReq": 4780,
+        "unlockId": 44130,
+        "ingredients": [
+          {
+            "id": 44347,
+            "amount": 1
+          },
+          {
+            "id": 43976,
+            "amount": 2,
+            "quality": 1391.1377
+          },
+          {
+            "id": 36078,
+            "amount": 1,
+            "quality": 1096.0479
+          },
+          {
+            "id": 36098,
+            "amount": 1
+          },
+          {
+            "id": 27835,
+            "amount": 1
+          },
+          {
+            "id": 44035,
+            "amount": 1
+          },
+          {
+            "id": 14,
+            "amount": 3
+          },
+          {
+            "id": 19,
+            "amount": 3
+          }
+        ],
+        "complexity": {
+          "nq": 647,
+          "hq": 667
+        }
+      }
+    ],
+    "ingredients": [
+      {
+        "id": 44347,
+        "name": "クラウドセイルフィッシュ",
+        "icon": 29654
+      },
+      {
+        "id": 43976,
+        "name": "トラルコーンオイル",
+        "icon": 25451
+      },
+      {
+        "id": 43981,
+        "name": "トラルコーン",
+        "icon": 25352
+      },
+      {
+        "id": 36078,
+        "name": "北洋食塩",
+        "icon": 25104
+      },
+      {
+        "id": 36084,
+        "name": "北洋岩塩",
+        "icon": 22688
+      },
+      {
+        "id": 36098,
+        "name": "サベネアンパプリカ",
+        "icon": 25018
+      },
+      {
+        "id": 27835,
+        "name": "リトルレモン",
+        "icon": 25305
+      },
+      {
+        "id": 44035,
+        "name": "黄金の霊砂",
+        "icon": 21246
+      }
+    ]
+  },
+  "46246": {
+    "id": 46246,
+    "name": "紫電の霊砂",
+    "icon": 21248,
+    "category": 54,
+    "ilvl": 730,
+    "description": "精選によって得られた、大粒のクリスタルの粉末",
+    "ingredients": []
+  }
+}

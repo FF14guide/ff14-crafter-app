@@ -312,6 +312,7 @@ export default function App() {
           {activeTab === 'batchPlanner' && (
             <CraftingBatchPlanner
               batchItems={batchItems}
+              selectedWorldOrDc={selectedWorldOrDc}
               onUpdateQuantity={handleUpdateBatchQuantity}
               onRemoveItem={handleRemoveBatchItem}
               onClearAll={handleClearBatchAll}

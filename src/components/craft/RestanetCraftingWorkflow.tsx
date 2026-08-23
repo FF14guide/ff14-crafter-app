@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Recipe, CrafterStats, InventorySyncData } from '../../types/ff14';
 import {
   buildRecipeTree,
@@ -15,6 +15,7 @@ import { LocationTooltip } from '../inventory/LocationTooltip';
 import { ItemIcon } from '../common/ItemIcon';
 import { generateGameMacro } from '../../utils/macroGenerator';
 import { calculateEorzeaTime, EorzeaTimeState } from '../../utils/eorzeaTime';
+import { fetchUniversalisMultiPrices } from '../../services/universalisApi';
 import {
   Check,
   Copy,
@@ -65,6 +66,9 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
   const [copiedMacroInterId, setCopiedMacroInterId] = useState<string | null>(null);
   const [copiedFinalMacro, setCopiedFinalMacro] = useState<number | null>(null);
   const [etState, setEtState] = useState<EorzeaTimeState>(calculateEorzeaTime());
+  const [livePrices, setLivePrices] = useState<Record<number, number>>({});
+  const [liveSellingPrice, setLiveSellingPrice] = useState<number>(recipe.defaultSellingPrice || 120000);
+  const [loadingMarket, setLoadingMarket] = useState<boolean>(false);
 
   // Update ET time every second
   useEffect(() => {
@@ -79,10 +83,48 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
   const intermediateCrafts = getIntermediateCraftsNeeded(recipe, targetQuantity, inventoryData);
   const rawShortages = getRawShortages(recipe, targetQuantity, inventoryData);
 
-  // Economic calculations
-  const unitSellingPrice = recipe.defaultSellingPrice || 120000;
+  // Fetch live prices for product and shortage raw materials
+  const fetchWorkflowPrices = useCallback(async () => {
+    setLoadingMarket(true);
+    try {
+      const allItemIds = [recipe.itemId, ...rawShortages.map((s) => s.itemId)];
+      const fallbackMap: Record<number, number> = {
+        [recipe.itemId]: recipe.defaultSellingPrice || 120000,
+      };
+      for (const s of rawShortages) {
+        fallbackMap[s.itemId] = s.marketPriceNQ || 1000;
+      }
+      const dataMap = await fetchUniversalisMultiPrices(allItemIds, selectedWorldOrDc, fallbackMap);
+      
+      const newLivePrices: Record<number, number> = {};
+      for (const s of rawShortages) {
+        const itemMarket = dataMap[s.itemId];
+        newLivePrices[s.itemId] = itemMarket?.minPriceNQ || itemMarket?.minPriceHQ || s.marketPriceNQ || 1000;
+      }
+      setLivePrices(newLivePrices);
+
+      const productMarket = dataMap[recipe.itemId];
+      if (productMarket) {
+        setLiveSellingPrice(productMarket.minPriceHQ || productMarket.minPriceNQ || recipe.defaultSellingPrice || 120000);
+      }
+    } catch (e) {
+      console.warn('Failed to load market prices for workflow:', e);
+    } finally {
+      setLoadingMarket(false);
+    }
+  }, [recipe, rawShortages.length, selectedWorldOrDc]);
+
+  useEffect(() => {
+    fetchWorkflowPrices();
+  }, [fetchWorkflowPrices]);
+
+  // Economic calculations using live market prices
+  const unitSellingPrice = liveSellingPrice || recipe.defaultSellingPrice || 120000;
   const totalEstimatedRevenue = unitSellingPrice * targetQuantity;
-  const marketBuyoutCost = rawShortages.reduce((sum, item) => sum + item.totalMarketCost, 0);
+  const marketBuyoutCost = rawShortages.reduce(
+    (sum, item) => sum + (livePrices[item.itemId] || item.marketPriceNQ) * item.shortage,
+    0
+  );
   const tax = Math.round(totalEstimatedRevenue * 0.05);
   const netProfit = totalEstimatedRevenue - tax - marketBuyoutCost;
   const profitMargin =
@@ -337,9 +379,20 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                   ① 製作数（欲しい数）の決定 & 利益予測
                 </h3>
               </div>
-              <span className="text-xs text-slate-400 font-rajdhani">
-                DC: <b className="text-amber-300">{selectedWorldOrDc}</b>
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="text-xs text-slate-400 font-rajdhani bg-slate-950/60 px-2 py-1 rounded border border-slate-700">
+                  マケボ: <b className="text-amber-300">{selectedWorldOrDc}</b>
+                </span>
+                <button
+                  onClick={fetchWorkflowPrices}
+                  disabled={loadingMarket}
+                  className="flex items-center gap-1 text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-1 rounded border border-slate-700 transition-colors"
+                  title="Universalisから最新価格を再取得"
+                >
+                  <RefreshCw className={`w-3 h-3 ${loadingMarket ? 'animate-spin text-amber-400' : ''}`} />
+                  <span>更新</span>
+                </button>
+              </div>
             </div>
 
             {/* Item Card with Stepper */}

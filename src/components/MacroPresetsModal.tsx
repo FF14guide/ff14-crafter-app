@@ -15,14 +15,14 @@ export interface MacroPreset {
 
 export const MACRO_PRESETS: MacroPreset[] = [
   {
-    id: 'preset_71_gear_2macro',
-    name: '【7.1新式装備 70耐久】安定HQ 2マクロ (飯薬推奨)',
+    id: 'preset_74_gear_2macro',
+    name: '【7.4/7.55新式装備 70耐久】確信スタート安定HQ 2マクロ (IL770 コートリーラヴァー対応)',
     category: '7.1新式',
     durability: 70,
-    minCraftsmanship: 4900,
-    minControl: 4500,
-    minCp: 680,
-    description: '確信スタート、マニピュレーションと下地加工でインナー10スタックを安全に積み、ビエルゴ下地作業で100%HQ完成。',
+    minCraftsmanship: 5620,
+    minControl: 5080,
+    minCp: 690,
+    description: 'パッチ7.4/7.55対応。確信スタート、マニピュレーションと下地加工でインナー10スタックを安全に積み、ビエルゴ下地作業で100%HQ完成。',
     skills: [
       'muscle_memory',
       'manipulation',
@@ -42,11 +42,11 @@ export const MACRO_PRESETS: MacroPreset[] = [
   },
   {
     id: 'preset_food_potion_80',
-    name: '【7.1レイド飯・薬 80耐久】低CP 2マクロ',
+    name: '【7.4/7.55レイド飯・薬G3 70/80耐久】低CP 2マクロ',
     category: '飯薬',
     durability: 80,
-    minCraftsmanship: 4800,
-    minControl: 4400,
+    minCraftsmanship: 5380,
+    minControl: 4650,
     minCp: 640,
     description: '真価スタートでインナースタックを素早く稼ぎ、高品質を逃さずビエルゴフィニッシュ。',
     skills: [

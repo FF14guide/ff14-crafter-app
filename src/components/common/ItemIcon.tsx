@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { getItemIconUrl, getFallbackEmoji } from '../../utils/itemIcons';
 
 interface ItemIconProps {
@@ -36,10 +36,15 @@ export const ItemIcon: React.FC<ItemIconProps> = ({
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  // Resolves official XIVAPI / Garland Tools / Lodestone icon URL using Name and/or ID
+  // Resolves official Garland Tools / Lodestone icon URL using Name and/or ID
   const iconUrl = getItemIconUrl(itemId, name, icon);
 
-  const fallback = icon && !icon.startsWith('http') && !icon.startsWith('/')
+  // Reset imgError if the icon url changes
+  useEffect(() => {
+    setImgError(false);
+  }, [iconUrl]);
+
+  const fallback = icon && !icon.startsWith('http') && !icon.startsWith('/') && !/^\d+$/.test(icon)
     ? icon
     : getFallbackEmoji(name);
 
@@ -50,6 +55,7 @@ export const ItemIcon: React.FC<ItemIconProps> = ({
     >
       {!imgError && iconUrl ? (
         <img
+          key={iconUrl}
           src={iconUrl}
           alt={name || 'FF14 Item'}
           loading="lazy"

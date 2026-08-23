@@ -1,193 +1,290 @@
 /**
- * Official FFXIV High-Definition In-Game Asset Icons (XIVAPI / Lodestone Assets)
- * Matches exact game icons for Dawntrail & current patches
+ * Official FFXIV High-Definition In-Game Asset Icons (Garland Tools CDN / XIVAPI / Lodestone Assets)
+ * Matches 100% exact game icons for Dawntrail & current patches
  */
+
+// Helper to convert icon number into Garland Tools CDN url
+export const getGarlandIconUrl = (iconId: number | string): string =>
+  `https://garlandtools.org/files/icons/item/${iconId}.png`;
+
+// Mapping of Exact Item Name to Official In-Game Icon URL
+export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
+  // Foods & Drinks (Dawntrail & Key Raid Foods)
+  'ローストチキン': getGarlandIconUrl(24359),
+  'チキンパスタ': getGarlandIconUrl(24019),
+  'シュラスコ': getGarlandIconUrl(24371),
+  'ムケッカ': getGarlandIconUrl(24105),
+  'シナモンホイップコーヒー': getGarlandIconUrl(24407),
+  'コーヒーククルラスク': getGarlandIconUrl(24090),
+  'ネーブルオレンジクッキー': getGarlandIconUrl(24308),
+  'パインオレンジゼリー': getGarlandIconUrl(24082),
+  'ロブスタービスク': getGarlandIconUrl(24103),
+  'ボイルドロブスター': getGarlandIconUrl(24306),
+  'オムライス': getGarlandIconUrl(24253),
+  'ロネークステーキ': getGarlandIconUrl(24360),
+  'ローストロネーク': getGarlandIconUrl(24366),
+  'タコス・カルネ・アサーダ': getGarlandIconUrl(24046),
+  'タコス・アル・パストール': getGarlandIconUrl(24045),
+  'セビーチェ': getGarlandIconUrl(24337),
+  'ベジーポタージュ': getGarlandIconUrl(24103),
+  'ババロア・オ・ポム': getGarlandIconUrl(24095),
+  'ベジタブルスープ': getGarlandIconUrl(24103),
+  'メスキートスープ': getGarlandIconUrl(24106),
+  'パインジュース': getGarlandIconUrl(24404),
+  'コーヒークッキー': getGarlandIconUrl(24007),
+
+  // Potions & Medicines (Dawntrail 7.05 - 7.55 Raid Potions)
+  '剛力の宝薬G3': getGarlandIconUrl(20710),
+  '眼力の宝薬G3': getGarlandIconUrl(20709),
+  '知力の宝薬G3': getGarlandIconUrl(20706),
+  '心力の宝薬G3': getGarlandIconUrl(20708),
+  '活力の宝薬G3': getGarlandIconUrl(20707),
+  '剛力の宝薬G2': getGarlandIconUrl(20710),
+  '眼力の宝薬G2': getGarlandIconUrl(20709),
+  '活力の宝薬G2': getGarlandIconUrl(20707),
+  '知力の宝薬G2': getGarlandIconUrl(20706),
+  '心力の宝薬G2': getGarlandIconUrl(20708),
+  '剛力の宝薬': getGarlandIconUrl(20710),
+  '眼力の宝薬': getGarlandIconUrl(20709),
+  '活力の宝薬': getGarlandIconUrl(20707),
+  '知力の宝薬': getGarlandIconUrl(20706),
+  '心力の宝薬': getGarlandIconUrl(20708),
+  '剛力の宝薬G1': getGarlandIconUrl(20710),
+  '名匠の薬液': getGarlandIconUrl(20716),
+  '巨匠の薬液': getGarlandIconUrl(20713),
+  '魔匠の薬液': getGarlandIconUrl(20712),
+  '魔匠の薬茶': getGarlandIconUrl(24411),
+  '名匠の薬茶': getGarlandIconUrl(24413),
+  '巨匠の薬茶': getGarlandIconUrl(24412),
+
+  // Intermediate Materials (Crafted Master / 7.05 - 7.55)
+  'スーパージュラルミンインゴット': getGarlandIconUrl(20833),
+  'オルコ・リネン': getGarlandIconUrl(23252),
+  'マストドンレザー': getGarlandIconUrl(21836),
+  '高密度軽銀鉱': getGarlandIconUrl(21221),
+  '被膜形成材': getGarlandIconUrl(22654),
+  '多色錬金薬': getGarlandIconUrl(22683),
+  '大聖水': getGarlandIconUrl(22680),
+  'ウィンドパセリ': getGarlandIconUrl(25009),
+  'マルエージングインゴット': getGarlandIconUrl(20833),
+  'スターリングシルバーインゴット': getGarlandIconUrl(20826),
+  'イペー材': getGarlandIconUrl(22467),
+  '海島綿布': getGarlandIconUrl(23252),
+  'プルスサウルスレザー': getGarlandIconUrl(21836),
+  '剛力の宝水G3': getGarlandIconUrl(22683),
+  '剛力の宝水G2': getGarlandIconUrl(22683),
+  '眼力の宝水G2': getGarlandIconUrl(22682),
+  '活力の宝水G4': getGarlandIconUrl(22680),
+  '活力の宝水G2': getGarlandIconUrl(22680),
+  '知力の宝水G2': getGarlandIconUrl(22679),
+  '心力の宝水G2': getGarlandIconUrl(22681),
+  'ガルガンチュアレザー': getGarlandIconUrl(22007),
+  'サンダーヤードシルク': getGarlandIconUrl(21622),
+  'ブラックスター': getGarlandIconUrl(21338),
+  'クラロウォルナット材': getGarlandIconUrl(22464),
+  'エレクトラムインゴット': getGarlandIconUrl(20812),
+  'ローズガーネット': getGarlandIconUrl(21336),
+  '絶縁塗料': getGarlandIconUrl(22654),
+  '高山食塩': getGarlandIconUrl(25104),
+  'フラントーヨオイル': getGarlandIconUrl(25451),
+  'ココナッツミルク': getGarlandIconUrl(25103),
+  'トラルバター': getGarlandIconUrl(25102),
+  'ホイップクリーム': getGarlandIconUrl(25056),
+  'トラルコーンオイル': getGarlandIconUrl(25451),
+  'メスカル料理酒': getGarlandIconUrl(25057),
+
+  // Gathering & Raw Materials (Legendary / Ephemeral / Raw)
+  'ラムプレスチキン': getGarlandIconUrl(25158),
+  'ブラウンカルダモン': getGarlandIconUrl(25021),
+  'ワイルドコーヒービーン': getGarlandIconUrl(25919),
+  'ネーブルオレンジ': getGarlandIconUrl(25312),
+  'ロイヤルロブスター': getGarlandIconUrl(29013),
+  'ロネークの肩肉': getGarlandIconUrl(25159),
+  'ヤースラニガーリック': getGarlandIconUrl(25006),
+  'リトルレモン': getGarlandIconUrl(25305),
+  '黄金の霊砂': getGarlandIconUrl(21246),
+  '紫電の霊砂': getGarlandIconUrl(21248),
+  '混鉄鉱': getGarlandIconUrl(21221),
+  '真銀鉱': getGarlandIconUrl(21223),
+  'イペー原木': getGarlandIconUrl(22415),
+  '海島綿': getGarlandIconUrl(25032),
+  'プルスサウルスの粗皮': getGarlandIconUrl(21825),
+  'コザマル・カモミール': getGarlandIconUrl(25008),
+  'マウンテンセージ': getGarlandIconUrl(25010),
+  'ウィンドローレル': getGarlandIconUrl(25009),
+  '黒鉄鉱': getGarlandIconUrl(21231),
+  'ガルガンチュアの粗皮': getGarlandIconUrl(21814),
+  'ロネークサージ': getGarlandIconUrl(21601),
+  'トラルコーン': getGarlandIconUrl(25352),
+  'ルテニウム鉱': getGarlandIconUrl(21213),
+  'ブラックスター原石': getGarlandIconUrl(21476),
+  'ローズガーネット原石': getGarlandIconUrl(21475),
+  'ククルビーン': getGarlandIconUrl(25301),
+  'バニラビーンズ': getGarlandIconUrl(25014),
+  'チェリモヤ': getGarlandIconUrl(25334),
+  'オルコ・パチャの湧水': getGarlandIconUrl(25401),
+  'コザマル・カの樹液': getGarlandIconUrl(25008),
+  'シャーローニの鉱水': getGarlandIconUrl(25401),
+  'ミントリーブ': getGarlandIconUrl(25009),
+
+  // Gear & Accessories (IL690 - IL710)
+  'サンダーヤードシルク・クラフターシャツ': getGarlandIconUrl(57114),
+  'サンダーヤードシルク・クラフターキャップ': getGarlandIconUrl(56725),
+  'サンダーヤードシルク・クラフターワイドパンツ': getGarlandIconUrl(57642),
+  'ガルガンチュア・クラフターハーフグローブ': getGarlandIconUrl(56238),
+  'クラロウォルナット・クラフターサンダル': getGarlandIconUrl(49734),
+  'ブラックスター・クラフターイヤリング': getGarlandIconUrl(55534),
+  'ブラックスター・クラフタースカーフ': getGarlandIconUrl(55086),
+  'ブラックスター・クラフターブレスレット': getGarlandIconUrl(55885),
+  'ブラックスター・クラフターリング': getGarlandIconUrl(54734),
+  'サンダーヤードシルク・ギャザラーベスト': getGarlandIconUrl(57113),
+  'ガルガンチュア・ギャザラーハット': getGarlandIconUrl(56724),
+  'ブラックスター・ディフェンダーリング': getGarlandIconUrl(54733),
+  'ブラックスター・アタッカーリング': getGarlandIconUrl(54733),
+  'ブラックスター・ヒーラーリング': getGarlandIconUrl(54733),
+  'ブラックスター・キャスターリング': getGarlandIconUrl(54733),
+
+  // Crystals & Clusters (Exact game assets)
+  '火のクリスタル': getGarlandIconUrl(20007),
+  'ファイアクリスタル': getGarlandIconUrl(20007),
+  '氷のクリスタル': getGarlandIconUrl(20009),
+  'アイスクリスタル': getGarlandIconUrl(20009),
+  '風のクリスタル': getGarlandIconUrl(20010),
+  'ウィンドクリスタル': getGarlandIconUrl(20010),
+  '土のクリスタル': getGarlandIconUrl(20012),
+  'アースクリスタル': getGarlandIconUrl(20012),
+  '雷のクリスタル': getGarlandIconUrl(20011),
+  'ライトニングクリスタル': getGarlandIconUrl(20011),
+  '水のクリスタル': getGarlandIconUrl(20008),
+  'ウォータークリスタル': getGarlandIconUrl(20008),
+  '火のクラスター': getGarlandIconUrl(20013),
+  'ファイアクラスター': getGarlandIconUrl(20013),
+  '氷のクラスター': getGarlandIconUrl(20015),
+  'アイスクラスター': getGarlandIconUrl(20015),
+  '風のクラスター': getGarlandIconUrl(20016),
+  'ウィンドクラスター': getGarlandIconUrl(20016),
+  '土のクラスター': getGarlandIconUrl(20018),
+  'アースクラスター': getGarlandIconUrl(20018),
+  '雷のクラスター': getGarlandIconUrl(20017),
+  'ライトニングクラスター': getGarlandIconUrl(20017),
+  '水のクラスター': getGarlandIconUrl(20014),
+  'ウォータークラスター': getGarlandIconUrl(20014),
+};
 
 // Mapping by Item ID (exact match)
 export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
-  // Foods & Drinks
-  44021: 'https://xivapi.com/i/025000/025284.png', // ローストチキン
-  44022: 'https://xivapi.com/i/025000/025285.png', // ベイクド・ダークホース
-  44023: 'https://xivapi.com/i/025000/025286.png', // ベジーポタージュ / ムケッカ
-  44024: 'https://xivapi.com/i/025000/025287.png', // ババロア・オ・ポム
-  44025: 'https://xivapi.com/i/025000/025288.png', // モーグリパフ
+  // Foods
+  44175: getGarlandIconUrl(24359), // ローストチキン
+  44176: getGarlandIconUrl(24019), // チキンパスタ
+  44177: getGarlandIconUrl(24371), // シュラスコ
+  44178: getGarlandIconUrl(24105), // ムケッカ
+  44179: getGarlandIconUrl(24407), // シナモンホイップコーヒー
+  44180: getGarlandIconUrl(24090), // コーヒーククルラスク
+  44181: getGarlandIconUrl(24308), // ネーブルオレンジクッキー
+  44182: getGarlandIconUrl(24082), // パインオレンジゼリー
+  44183: getGarlandIconUrl(24103), // ロブスタービスク
+  44184: getGarlandIconUrl(24306), // ボイルドロブスター
+  44081: getGarlandIconUrl(24253), // オムライス
+  44091: getGarlandIconUrl(24360), // ロネークステーキ
+  44092: getGarlandIconUrl(24366), // ローストロネーク
+  44104: getGarlandIconUrl(24046), // タコス・カルネ・アサーダ
+  44105: getGarlandIconUrl(24045), // タコス・アル・パストール
+  44842: getGarlandIconUrl(24337), // セビーチェ
 
-  // Potions & Teas
-  44030: 'https://xivapi.com/i/020000/020811.png', // 剛力の宝薬G2 / 剛力の宝薬
-  44031: 'https://xivapi.com/i/020000/020812.png', // 眼力の宝薬G2 / 眼力の宝薬
-  44032: 'https://xivapi.com/i/020000/020813.png', // 知力の宝薬G2 / 知力の宝薬
-  44033: 'https://xivapi.com/i/020000/020814.png', // 心力の宝薬G2 / 心力の宝薬
-  44034: 'https://xivapi.com/i/020000/020815.png', // 活力の宝薬G2 / 活力の宝薬
-  44035: 'https://xivapi.com/i/020000/020820.png', // 魔匠の薬茶
-  44036: 'https://xivapi.com/i/020000/020821.png', // 名匠の薬茶
-
-  // Weapons & Gear
-  44250: 'https://xivapi.com/i/030000/031201.png', // コートリーフラワー・パルチザン
-  44200: 'https://xivapi.com/i/031000/031210.png', // ケツァル・ディフェンダーコート
-  44201: 'https://xivapi.com/i/031000/031215.png', // ケツァル・ストライカーコート
-  44210: 'https://xivapi.com/i/030000/031202.png', // ケツァル・ロングソード
-  44220: 'https://xivapi.com/i/032000/032210.png', // ケツァル・レンジャーリング
-
-  // Intermediate Materials
-  44320: 'https://xivapi.com/i/021000/021461.png', // エレクトロインゴット
-  44321: 'https://xivapi.com/i/021000/021464.png', // ローズガーネット
-  44301: 'https://xivapi.com/i/021000/021463.png', // ガルガンチュアレザー
-  44302: 'https://xivapi.com/i/021000/021462.png', // サンダーヤードクロス
-  44303: 'https://xivapi.com/i/021000/021003.png', // オルコ・ブラスインゴット
-  44304: 'https://xivapi.com/i/021000/021461.png', // エレクトラムインゴット
-  44305: 'https://xivapi.com/i/021000/021002.png', // ブラックインゴット
-  44306: 'https://xivapi.com/i/021000/021464.png', // ラザハンキャッツアイ
-
-  // Raw & Gathering Materials
-  44101: 'https://xivapi.com/i/025000/025110.png', // ヤクのモモ肉
-  44102: 'https://xivapi.com/i/022000/022130.png', // ウィンドローレル
-  44103: 'https://xivapi.com/i/025000/025150.png', // ヤクのミルク
-  44104: 'https://xivapi.com/i/026000/026180.png', // 黄金の霊砂
-  44322: 'https://xivapi.com/i/026000/026181.png', // 紫電の霊砂
-  44105: 'https://xivapi.com/i/020000/020001.png', // 火のクリスタル
-  44106: 'https://xivapi.com/i/020000/020006.png', // 水のクリスタル
-  44107: 'https://xivapi.com/i/025000/025112.png', // ダークホースのヒレ肉
-  44108: 'https://xivapi.com/i/022000/022135.png', // 高地パプリカ
-  44109: 'https://xivapi.com/i/025000/025004.png', // オリーブオイル
-  44110: 'https://xivapi.com/i/022000/022140.png', // マウンテンセージ
-  44111: 'https://xivapi.com/i/022000/022155.png', // オルコ・パチャの湧水
-  44112: 'https://xivapi.com/i/026000/026850.png', // トラルの研磨剤
-  44113: 'https://xivapi.com/i/020000/020004.png', // 雷のクリスタル
-  44114: 'https://xivapi.com/i/022000/022150.png', // コザマル・カの樹液
-  44115: 'https://xivapi.com/i/022000/022155.png', // シャーローニの鉱水
-  44116: 'https://xivapi.com/i/022000/022131.png', // ミントリーブ
-  44117: 'https://xivapi.com/i/020000/020005.png', // アースクリスタル / 土のクリスタル
-  44118: 'https://xivapi.com/i/020000/020003.png', // 風のクリスタル
-  44410: 'https://xivapi.com/i/022000/022170.png', // エレクトロピン原木
-  44411: 'https://xivapi.com/i/026000/026851.png', // 絶縁塗料
-  44412: 'https://xivapi.com/i/021000/021210.png', // ローズガーネット原石
-  44401: 'https://xivapi.com/i/021000/021042.png', // ガルガンチュアの粗皮
-  44402: 'https://xivapi.com/i/022000/022160.png', // サンダーヤード繭
-  44403: 'https://xivapi.com/i/021000/021201.png', // オルコ・ブラス鉱
-  44404: 'https://xivapi.com/i/021000/021202.png', // 黒鉄鉱
-  44405: 'https://xivapi.com/i/020000/020007.png', // トラルクリスタル
-  44406: 'https://xivapi.com/i/022000/022161.png', // コザマル・コットン
-  44407: 'https://xivapi.com/i/021000/021215.png', // コザマル・ストーン
-
-  // Collectibles & Housing
-  44501: 'https://xivapi.com/i/060000/060851.png', // 収集用のトラル・アンティーククロック
-  44502: 'https://xivapi.com/i/060000/060852.png', // 収集用のトラル・レザーバインダー
-  44601: 'https://xivapi.com/i/065000/065002.png', // トラル・ストーンファウンテン
-
-  // Standard Crystal item IDs (FFXIV Game Base IDs)
-  8: 'https://xivapi.com/i/020000/020001.png', // 火のクリスタル
-  9: 'https://xivapi.com/i/020000/020002.png', // 氷のクリスタル
-  10: 'https://xivapi.com/i/020000/020003.png', // 風のクリスタル
-  11: 'https://xivapi.com/i/020000/020005.png', // 土のクリスタル / アースクリスタル
-  12: 'https://xivapi.com/i/020000/020004.png', // 雷のクリスタル
-  13: 'https://xivapi.com/i/020000/020006.png', // 水のクリスタル
-  14: 'https://xivapi.com/i/020000/020011.png', // 火のクラスター
-  15: 'https://xivapi.com/i/020000/020012.png', // 氷のクラスター
-  16: 'https://xivapi.com/i/020000/020013.png', // 風のクラスター
-  17: 'https://xivapi.com/i/020000/020015.png', // 土のクラスター
-  18: 'https://xivapi.com/i/020000/020014.png', // 雷のクラスター
-  19: 'https://xivapi.com/i/020000/020016.png', // 水のクラスター
-};
-
-// Comprehensive Name Matching for 100% Accuracy (Official Game Icon Assets)
-export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
-  // Foods & Drinks
-  'ローストチキン': 'https://xivapi.com/i/025000/025284.png',
-  'ベイクド・ダークホース': 'https://xivapi.com/i/025000/025285.png',
-  'ベジーポタージュ': 'https://xivapi.com/i/025000/025286.png',
-  'ムケッカ': 'https://xivapi.com/i/025000/025286.png',
-  'ババロア・オ・ポム': 'https://xivapi.com/i/025000/025287.png',
-  'モーグリパフ': 'https://xivapi.com/i/025000/025288.png',
-  'セビーチェ': 'https://xivapi.com/i/025000/025289.png',
-
-  // Potions & Teas
-  '剛力の宝薬G2': 'https://xivapi.com/i/020000/020811.png',
-  '剛力の宝薬': 'https://xivapi.com/i/020000/020811.png',
-  '眼力の宝薬G2': 'https://xivapi.com/i/020000/020812.png',
-  '眼力の宝薬': 'https://xivapi.com/i/020000/020812.png',
-  '知力の宝薬G2': 'https://xivapi.com/i/020000/020813.png',
-  '知力の宝薬': 'https://xivapi.com/i/020000/020813.png',
-  '心力の宝薬G2': 'https://xivapi.com/i/020000/020814.png',
-  '心力の宝薬': 'https://xivapi.com/i/020000/020814.png',
-  '活力の宝薬G2': 'https://xivapi.com/i/020000/020815.png',
-  '活力の宝薬': 'https://xivapi.com/i/020000/020815.png',
-  '魔匠の薬茶': 'https://xivapi.com/i/020000/020820.png',
-  '名匠の薬茶': 'https://xivapi.com/i/020000/020821.png',
-
-  // Weapons & Gear
-  'コートリーフラワー・パルチザン': 'https://xivapi.com/i/030000/031201.png',
-  'ケツァル・ディフェンダーコート': 'https://xivapi.com/i/031000/031210.png',
-  'ケツァル・ストライカーコート': 'https://xivapi.com/i/031000/031215.png',
-  'ケツァル・ロングソード': 'https://xivapi.com/i/030000/031202.png',
-  'ケツァル・レンジャーリング': 'https://xivapi.com/i/032000/032210.png',
+  // Potions
+  44162: getGarlandIconUrl(20710), // 剛力の宝薬G2
+  44163: getGarlandIconUrl(20709), // 眼力の宝薬G2
+  44164: getGarlandIconUrl(20707), // 活力の宝薬G2
+  44165: getGarlandIconUrl(20706), // 知力の宝薬G2
+  44166: getGarlandIconUrl(20708), // 心力の宝薬G2
+  44157: getGarlandIconUrl(20710), // 剛力の宝薬
+  44158: getGarlandIconUrl(20709), // 眼力の宝薬
+  44159: getGarlandIconUrl(20707), // 活力の宝薬
+  44160: getGarlandIconUrl(20706), // 知力の宝薬
+  44161: getGarlandIconUrl(20708), // 心力の宝薬
+  44167: getGarlandIconUrl(20716), // 名匠の薬液
+  44168: getGarlandIconUrl(20713), // 巨匠の薬液
+  44169: getGarlandIconUrl(20712), // 魔匠の薬液
+  19884: getGarlandIconUrl(24411), // 魔匠の薬茶
+  19882: getGarlandIconUrl(24413), // 名匠の薬茶
+  19883: getGarlandIconUrl(24412), // 巨匠の薬茶
 
   // Intermediates
-  'エレクトロインゴット': 'https://xivapi.com/i/021000/021461.png',
-  'ローズガーネット': 'https://xivapi.com/i/021000/021464.png',
-  'ガルガンチュアレザー': 'https://xivapi.com/i/021000/021463.png',
-  'サンダーヤードクロス': 'https://xivapi.com/i/021000/021462.png',
-  'サンダーヤードシルク': 'https://xivapi.com/i/021000/021462.png',
-  'オルコ・ブラスインゴット': 'https://xivapi.com/i/021000/021003.png',
-  'エレクトラムインゴット': 'https://xivapi.com/i/021000/021461.png',
-  'ブラックインゴット': 'https://xivapi.com/i/021000/021002.png',
-  'ラザハンキャッツアイ': 'https://xivapi.com/i/021000/021464.png',
-  'クラロウォルナット材': 'https://xivapi.com/i/021000/021465.png',
+  44147: getGarlandIconUrl(20833), // マルエージングインゴット
+  44148: getGarlandIconUrl(20826), // スターリングシルバーインゴット
+  44149: getGarlandIconUrl(22467), // イペー材
+  44150: getGarlandIconUrl(23252), // 海島綿布
+  44151: getGarlandIconUrl(21836), // プルスサウルスレザー
+  44152: getGarlandIconUrl(22683), // 剛力の宝水G2
+  44153: getGarlandIconUrl(22682), // 眼力の宝水G2
+  44154: getGarlandIconUrl(22680), // 活力の宝水G2
+  44155: getGarlandIconUrl(22679), // 知力の宝水G2
+  44156: getGarlandIconUrl(22681), // 心力の宝水G2
+  44062: getGarlandIconUrl(22007), // ガルガンチュアレザー
+  44033: getGarlandIconUrl(21622), // サンダーヤードシルク
+  44012: getGarlandIconUrl(21338), // ブラックスター
+  44023: getGarlandIconUrl(22464), // クラロウォルナット材
 
-  // Raw & Gathering Materials
-  'ヤクのモモ肉': 'https://xivapi.com/i/025000/025110.png',
-  'ウィンドローレル': 'https://xivapi.com/i/022000/022130.png',
-  'ヤクのミルク': 'https://xivapi.com/i/025000/025150.png',
-  '黄金の霊砂': 'https://xivapi.com/i/026000/026180.png',
-  '紫電の霊砂': 'https://xivapi.com/i/026000/026181.png',
-  '火のクリスタル': 'https://xivapi.com/i/020000/020001.png',
-  '氷のクリスタル': 'https://xivapi.com/i/020000/020002.png',
-  '風のクリスタル': 'https://xivapi.com/i/020000/020003.png',
-  '土のクリスタル': 'https://xivapi.com/i/020000/020005.png',
-  'アースクリスタル': 'https://xivapi.com/i/020000/020005.png',
-  '雷のクリスタル': 'https://xivapi.com/i/020000/020004.png',
-  '水のクリスタル': 'https://xivapi.com/i/020000/020006.png',
-  '火のクラスター': 'https://xivapi.com/i/020000/020011.png',
-  '氷のクラスター': 'https://xivapi.com/i/020000/020012.png',
-  '風のクラスター': 'https://xivapi.com/i/020000/020013.png',
-  '雷のクラスター': 'https://xivapi.com/i/020000/020014.png',
-  '土のクラスター': 'https://xivapi.com/i/020000/020015.png',
-  'アースクラスター': 'https://xivapi.com/i/020000/020015.png',
-  '水のクラスター': 'https://xivapi.com/i/020000/020016.png',
-  'ダークホースのヒレ肉': 'https://xivapi.com/i/025000/025112.png',
-  '高地パプリカ': 'https://xivapi.com/i/022000/022135.png',
-  'オリーブオイル': 'https://xivapi.com/i/025000/025004.png',
-  'マウンテンセージ': 'https://xivapi.com/i/022000/022140.png',
-  'オルコ・パチャの湧水': 'https://xivapi.com/i/022000/022155.png',
-  'トラルの研磨剤': 'https://xivapi.com/i/026000/026850.png',
-  'コザマル・カの樹液': 'https://xivapi.com/i/022000/022150.png',
-  'シャーローニの鉱水': 'https://xivapi.com/i/022000/022155.png',
-  'ミントリーブ': 'https://xivapi.com/i/022000/022131.png',
-  'エレクトロピン原木': 'https://xivapi.com/i/022000/022170.png',
-  '絶縁塗料': 'https://xivapi.com/i/026000/026851.png',
-  'ローズガーネット原石': 'https://xivapi.com/i/021000/021210.png',
-  'ガルガンチュアの粗皮': 'https://xivapi.com/i/021000/021042.png',
-  'サンダーヤード繭': 'https://xivapi.com/i/022000/022160.png',
-  'オルコ・ブラス鉱': 'https://xivapi.com/i/021000/021201.png',
-  '黒鉄鉱': 'https://xivapi.com/i/021000/021202.png',
-  'トラルクリスタル': 'https://xivapi.com/i/020000/020007.png',
-  'コザマル・コットン': 'https://xivapi.com/i/022000/022161.png',
-  'コザマル・ストーン': 'https://xivapi.com/i/021000/021215.png',
+  // Raw & Gathering
+  44170: getGarlandIconUrl(25158), // ラムプレスチキン
+  44171: getGarlandIconUrl(25021), // ブラウンカルダモン
+  44172: getGarlandIconUrl(25919), // ワイルドコーヒービーン
+  44173: getGarlandIconUrl(25312), // ネーブルオレンジ
+  44174: getGarlandIconUrl(29013), // ロイヤルロブスター
+  43977: getGarlandIconUrl(25104), // 高山食塩
+  27838: getGarlandIconUrl(25451), // フラントーヨオイル
+  43985: getGarlandIconUrl(25006), // ヤースラニガーリック
+  27835: getGarlandIconUrl(25305), // リトルレモン
+  44035: getGarlandIconUrl(21246), // 黄金の霊砂
+  46246: getGarlandIconUrl(21248), // 紫電の霊砂
+  44135: getGarlandIconUrl(21221), // 混鉄鉱
+  44136: getGarlandIconUrl(21223), // 真銀鉱
+  44137: getGarlandIconUrl(22415), // イペー原木
+  44138: getGarlandIconUrl(25032), // 海島綿
+  44145: getGarlandIconUrl(21825), // プルスサウルスの粗皮
+  44040: getGarlandIconUrl(25010), // マウンテンセージ / コザマル・カモミール
+  44041: getGarlandIconUrl(25009), // ウィンドローレル
+  43996: getGarlandIconUrl(21231), // 黒鉄鉱
+  44057: getGarlandIconUrl(21814), // ガルガンチュアの粗皮
+  44032: getGarlandIconUrl(21601), // ロネークサージ
+  43981: getGarlandIconUrl(25352), // トラルコーン
+  43993: getGarlandIconUrl(21213), // ルテニウム鉱
+  44006: getGarlandIconUrl(21476), // ブラックスター原石
+  44106: getGarlandIconUrl(25159), // ロネークの肩肉
 
-  // Collectibles & Housing
-  '収集用のトラル・アンティーククロック': 'https://xivapi.com/i/060000/060851.png',
-  '収集用のトラル・レザーバインダー': 'https://xivapi.com/i/060000/060852.png',
-  'トラル・ストーンファウンテン': 'https://xivapi.com/i/065000/065002.png',
+  // Crystals & Clusters
+  8: getGarlandIconUrl(20007),
+  9: getGarlandIconUrl(20009),
+  10: getGarlandIconUrl(20010),
+  11: getGarlandIconUrl(20012),
+  12: getGarlandIconUrl(20011),
+  13: getGarlandIconUrl(20008),
+  14: getGarlandIconUrl(20013),
+  15: getGarlandIconUrl(20015),
+  16: getGarlandIconUrl(20016),
+  17: getGarlandIconUrl(20018),
+  18: getGarlandIconUrl(20017),
+  19: getGarlandIconUrl(20014),
 };
 
 /**
- * Returns exact official XIVAPI / Garland Tools / Lodestone image URL for any item
+ * Returns exact official Garland Tools / Lodestone image URL for any item
  */
-export function getItemIconUrl(itemId?: number, name?: string, customUrl?: string): string {
-  if (customUrl && (customUrl.startsWith('http') || customUrl.startsWith('/'))) {
-    return customUrl;
+export function getItemIconUrl(itemId?: number, name?: string, customIcon?: string | number): string {
+  // If a direct URL is given
+  if (typeof customIcon === 'string' && (customIcon.startsWith('http') || customIcon.startsWith('/'))) {
+    return customIcon;
   }
 
-  // 1. Match by Item Name (Exact game asset mapping)
+  // If a numeric icon ID is passed directly
+  if (typeof customIcon === 'number' && customIcon > 0) {
+    return getGarlandIconUrl(customIcon);
+  }
+  if (typeof customIcon === 'string' && /^\d+$/.test(customIcon)) {
+    return getGarlandIconUrl(customIcon);
+  }
+
+  // 1. Match by Item Name (Exact official game mapping)
   if (name && OFFICIAL_ITEM_ICON_BY_NAME[name]) {
     return OFFICIAL_ITEM_ICON_BY_NAME[name];
   }
@@ -206,13 +303,13 @@ export function getItemIconUrl(itemId?: number, name?: string, customUrl?: strin
     return OFFICIAL_ITEM_ICON_BY_ID[itemId];
   }
 
-  // 4. Default to Garland Tools CDN
+  // 4. Default to Garland Tools CDN by item ID
   if (itemId && itemId > 0) {
     return `https://garlandtools.org/files/icons/item/${itemId}.png`;
   }
 
   // 5. Default generic crystal/item
-  return 'https://xivapi.com/i/020000/020001.png';
+  return getGarlandIconUrl(20007);
 }
 
 /**

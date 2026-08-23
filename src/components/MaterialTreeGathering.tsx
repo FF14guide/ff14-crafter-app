@@ -227,9 +227,13 @@ export const MaterialTreeGathering: React.FC<MaterialTreeGatheringProps> = ({
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-slate-800 border border-slate-700 flex items-center justify-center text-xl shrink-0">
-                    {node.itemIcon}
-                  </div>
+                  <ItemIcon
+                    itemId={node.itemId}
+                    icon={node.itemIcon}
+                    name={node.itemName}
+                    size="lg"
+                    className="shrink-0 rounded-xl border-slate-700"
+                  />
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-slate-100">{node.itemName}</span>
