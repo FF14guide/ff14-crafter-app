@@ -60,6 +60,25 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className="flex items-center gap-4 text-xs">
+          <div className="flex items-center gap-2">
+            <a
+              href="/dist.zip"
+              download="cloudflare-dist.zip"
+              className="inline-flex items-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 transition-colors font-medium text-[11px]"
+              title="Cloudflare Pagesの直接アップロード用ZIP"
+            >
+              <span>📦 Cloudflare用ZIP (dist)</span>
+            </a>
+            <a
+              href="/project-source.zip"
+              download="eorzean-crafter-source.zip"
+              className="inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600 transition-colors font-medium text-[11px]"
+              title="GitHub手動アップロード用全ソースコードZIP"
+            >
+              <span>📂 ソース全ZIP</span>
+            </a>
+          </div>
+          <span className="text-slate-600">|</span>
           <a
             href="https://eorzeanfishing.com"
             target="_blank"
