@@ -99,6 +99,20 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     return Array.from(set);
   }, [editingInventories, syncData]);
 
+  // Check preview characters when JSON text changes
+  const previewData = React.useMemo(() => {
+    if (!jsonInput.trim() || jsonInput.length < 5) return null;
+    try {
+      const res = parseInventoryJson(jsonInput);
+      if (res.success && res.data) {
+        return res.data;
+      }
+    } catch {
+      return null;
+    }
+    return null;
+  }, [jsonInput]);
+
   // Toast auto-hide
   useEffect(() => {
     if (toastMessage) {
@@ -106,8 +120,6 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
       return () => clearTimeout(timer);
     }
   }, [toastMessage]);
-
-  if (!isOpen) return null;
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -157,20 +169,6 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
       setParseError(result.error || 'データの解析に失敗しました。');
     }
   };
-
-  // Check preview characters when JSON text changes
-  const previewData = React.useMemo(() => {
-    if (!jsonInput.trim() || jsonInput.length < 5) return null;
-    try {
-      const res = parseInventoryJson(jsonInput);
-      if (res.success && res.data) {
-        return res.data;
-      }
-    } catch {
-      return null;
-    }
-    return null;
-  }, [jsonInput]);
 
   // Clipboard Paste Action
   const handlePasteFromClipboard = async () => {
@@ -335,6 +333,8 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
 
   const mockApiToken = 'eorzea_sync_tok_719a84b2c89f';
   const mockWebhookUrl = 'https://clafter.eorzeanfishing.com/api/sync-inventory';
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200">
