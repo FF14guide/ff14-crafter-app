@@ -128,32 +128,40 @@ export function resolveItemInfo(identifier: number | string): KnownItemMeta | un
 // Preset 1: Patch 7.2 最新戦闘新式 & 宝薬G3 (リアルな実用ストック)
 export const PRESET_PATCH_72: InventorySyncData = {
   timestamp: Date.now(),
-  character: 'Hikari Light@Bahamut (Patch 7.2)',
+  character: '複数キャラ (Hikari & Moja)',
+  selectedCharacter: 'ALL',
+  selectedCharacters: ['ALL'],
+  characters: ['Hikari Light', 'Moja Kun'],
   inventories: [
-    // プレイヤー手持ち (中間素材・霊砂・クリスタル)
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 2, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'オルコ・リネン', quantity: 3, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '紫電の霊砂', quantity: 6, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 44051, name: '大聖水', quantity: 4, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 45989, name: '多色錬金薬', quantity: 3, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 18, name: 'ライトニングクラスター', quantity: 120, isHq: false },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 16, name: 'ウィンドクラスター', quantity: 95, isHq: false },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 15, name: 'アイスクラスター', quantity: 80, isHq: false },
+    // Hikari Light 手持ち (中間素材・霊砂・クリスタル)
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 2, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'オルコ・リネン', quantity: 3, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '紫電の霊砂', quantity: 6, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 44051, name: '大聖水', quantity: 4, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 45989, name: '多色錬金薬', quantity: 3, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 18, name: 'ライトニングクラスター', quantity: 120, isHq: false },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 16, name: 'ウィンドクラスター', quantity: 95, isHq: false },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 15, name: 'アイスクラスター', quantity: 80, isHq: false },
 
-    // リテイナー Nana (7.2 採集素材・末端素材)
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 18, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'オルコ亜麻', quantity: 24, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44145, name: 'プルスサウルスの粗皮', quantity: 12, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44039, name: 'ウィンドパセリ', quantity: 15, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44034, name: 'ヤクテル天然水', quantity: 30, isHq: false },
-    { itemId: 44071, name: 'タンブルクラブの枯草', location: 'Retainer: Nana', locationType: 'Retainer', quantity: 20, isHq: false },
+    // Hikari Light のリテイナー Nana (7.2 採集素材・末端素材)
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 18, isHq: false },
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'オルコ亜麻', quantity: 24, isHq: false },
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44145, name: 'プルスサウルスの粗皮', quantity: 12, isHq: false },
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44039, name: 'ウィンドパセリ', quantity: 15, isHq: false },
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44034, name: 'ヤクテル天然水', quantity: 30, isHq: false },
+    { source: 'Hikari Light', itemId: 44071, name: 'タンブルクラブの枯草', location: 'Retainer: Nana', locationType: 'Retainer', quantity: 20, isHq: false },
 
-    // リテイナー Bob (7.2 特殊中間素材・錬金薬)
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49215, name: 'ゴールデンチタンインゴット', quantity: 2, isHq: true },
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49216, name: 'ペルペルレザー', quantity: 2, isHq: true },
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49218, name: '剛力の宝水G4', quantity: 3, isHq: true },
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49221, name: '知力の宝水G4', quantity: 2, isHq: true },
-    { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44033, name: 'サンダーヤードシルク', quantity: 4, isHq: true },
+    // Hikari Light のリテイナー Bob (7.2 特殊中間素材・錬金薬)
+    { source: 'Hikari Light', location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49215, name: 'ゴールデンチタンインゴット', quantity: 2, isHq: true },
+    { source: 'Hikari Light', location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49216, name: 'ペルペルレザー', quantity: 2, isHq: true },
+    { source: 'Hikari Light', location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49218, name: '剛力の宝水G4', quantity: 3, isHq: true },
+    { source: 'Hikari Light', location: 'Retainer: Bob', locationType: 'Retainer', itemId: 49221, name: '知力の宝水G4', quantity: 2, isHq: true },
+    { source: 'Hikari Light', location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44033, name: 'サンダーヤードシルク', quantity: 4, isHq: true },
+
+    // サブキャラ Moja Kun の手持ち & リテイナー (分散所持の例)
+    { source: 'Moja Kun', location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 3, isHq: true },
+    { source: 'Moja Kun', location: 'Retainer: Choco', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 25, isHq: false },
+    { source: 'Moja Kun', location: 'Retainer: Choco', locationType: 'Retainer', itemId: 46246, name: '紫電の霊砂', quantity: 10, isHq: true },
 
     // FCチェスト (共有交換素材・クリスタル)
     { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: '被膜形成材', quantity: 20, isHq: false },
@@ -162,11 +170,11 @@ export const PRESET_PATCH_72: InventorySyncData = {
     { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 46246, name: '紫電の霊砂', quantity: 4, isHq: false },
 
     // チョコボかばん (クリスタル・霊砂)
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: '雷のクリスタル', quantity: 450, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 380, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 500, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: '風のクリスタル', quantity: 420, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 44035, name: '黄金の霊砂', quantity: 8, isHq: true },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: '雷のクリスタル', quantity: 450, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 380, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 500, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: '風のクリスタル', quantity: 420, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 44035, name: '黄金の霊砂', quantity: 8, isHq: true },
   ],
 };
 
@@ -315,6 +323,7 @@ function buildSyncResult(
     timestamp: Date.now(),
     character: characterName,
     selectedCharacter: 'ALL',
+    selectedCharacters: ['ALL'],
     characters,
     inventories: items,
   };
@@ -684,18 +693,82 @@ export function parseInventoryJson(input: string): { success: boolean; data?: In
 }
 
 /**
- * Helper to filter items based on selected character / source
+ * Helper to filter items based on selected character / source (supports multi-character filtering)
  */
 export function getFilteredInventoryItems(
   syncData: InventorySyncData | null,
-  characterFilter?: string
+  characterFilter?: string | string[]
 ): InventoryItemLocation[] {
   if (!syncData || !syncData.inventories) return [];
-  const targetChar = characterFilter !== undefined ? characterFilter : (syncData.selectedCharacter || 'ALL');
-  if (!targetChar || targetChar === 'ALL') {
+
+  let activeFilters: string[] = [];
+
+  if (characterFilter !== undefined) {
+    if (Array.isArray(characterFilter)) {
+      activeFilters = characterFilter.filter((c) => c && c !== 'ALL');
+    } else if (characterFilter === 'ALL' || !characterFilter) {
+      activeFilters = [];
+    } else {
+      activeFilters = [characterFilter];
+    }
+  } else if (syncData.selectedCharacters && syncData.selectedCharacters.length > 0) {
+    if (syncData.selectedCharacters.includes('ALL')) {
+      activeFilters = [];
+    } else {
+      activeFilters = syncData.selectedCharacters.filter((c) => c && c !== 'ALL');
+    }
+  } else if (syncData.selectedCharacter && syncData.selectedCharacter !== 'ALL') {
+    activeFilters = [syncData.selectedCharacter];
+  }
+
+  // If no filters (or 'ALL' is selected), return all items
+  if (activeFilters.length === 0) {
     return syncData.inventories;
   }
-  return syncData.inventories.filter((inv) => !inv.source || inv.source === targetChar);
+
+  return syncData.inventories.filter((inv) => {
+    if (!inv.source) return true;
+    return activeFilters.includes(inv.source);
+  });
+}
+
+/**
+ * Character stock breakdown item
+ */
+export interface CharacterStockDetail {
+  characterName: string;
+  totalQuantity: number;
+  locations: InventoryItemLocation[];
+}
+
+/**
+ * Group stock by character / owner to see who owns how many
+ */
+export function getItemStockByCharacter(
+  itemId: number,
+  syncData: InventorySyncData | null,
+  characterFilter?: string | string[]
+): CharacterStockDetail[] {
+  const items = getFilteredInventoryItems(syncData, characterFilter).filter((inv) => inv.itemId === itemId);
+  if (items.length === 0) return [];
+
+  const charMap = new Map<string, { total: number; locations: InventoryItemLocation[] }>();
+
+  for (const item of items) {
+    const char = item.source?.trim() || '共通 / 所持元未指定';
+    if (!charMap.has(char)) {
+      charMap.set(char, { total: 0, locations: [] });
+    }
+    const entry = charMap.get(char)!;
+    entry.total += item.quantity;
+    entry.locations.push(item);
+  }
+
+  return Array.from(charMap.entries()).map(([characterName, data]) => ({
+    characterName,
+    totalQuantity: data.total,
+    locations: data.locations,
+  }));
 }
 
 /**
@@ -704,7 +777,7 @@ export function getFilteredInventoryItems(
 export function getItemStockTotal(
   itemId: number,
   syncData: InventorySyncData | null,
-  characterFilter?: string
+  characterFilter?: string | string[]
 ): number {
   const items = getFilteredInventoryItems(syncData, characterFilter);
   return items
@@ -718,7 +791,7 @@ export function getItemStockTotal(
 export function getItemStockBreakdown(
   itemId: number,
   syncData: InventorySyncData | null,
-  characterFilter?: string
+  characterFilter?: string | string[]
 ): InventoryItemLocation[] {
   const items = getFilteredInventoryItems(syncData, characterFilter);
   return items.filter((inv) => inv.itemId === itemId);

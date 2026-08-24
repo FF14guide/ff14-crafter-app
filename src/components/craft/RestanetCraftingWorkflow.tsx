@@ -331,7 +331,11 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
                 <span>
                   📥 所持数反映中:{' '}
-                  {inventoryData.selectedCharacter && inventoryData.selectedCharacter !== 'ALL'
+                  {inventoryData.selectedCharacters && inventoryData.selectedCharacters.length > 0 && !inventoryData.selectedCharacters.includes('ALL')
+                    ? inventoryData.selectedCharacters.length === 1
+                      ? `👤 ${inventoryData.selectedCharacters[0]}`
+                      : `👥 ${inventoryData.selectedCharacters.length}名選択中 (${inventoryData.selectedCharacters.join(', ')})`
+                    : inventoryData.selectedCharacter && inventoryData.selectedCharacter !== 'ALL'
                     ? `👤 ${inventoryData.selectedCharacter}`
                     : inventoryData.characters && inventoryData.characters.length > 1
                     ? '🌐 全キャラ合算'

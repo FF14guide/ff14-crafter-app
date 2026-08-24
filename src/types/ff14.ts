@@ -175,7 +175,8 @@ export interface InventoryItemLocation {
 export interface InventorySyncData {
   timestamp: number;
   character?: string;
-  selectedCharacter?: string; // 'ALL' or specific character/source name (e.g. "Moja Kun")
+  selectedCharacter?: string; // 'ALL' or specific character/source name (legacy single select)
+  selectedCharacters?: string[]; // Array of selected character names (multi-select support)
   characters?: string[]; // Unique list of all detected character/source names
   inventories: InventoryItemLocation[];
 }

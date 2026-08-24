@@ -65,7 +65,7 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
   const [locationFilter, setLocationFilter] = useState<string>('ALL');
   const [characterFilter, setCharacterFilter] = useState<string>('ALL');
   const [editingInventories, setEditingInventories] = useState<InventoryItemLocation[]>([]);
-  const [selectedCharOnImport, setSelectedCharOnImport] = useState<string>('ALL');
+  const [selectedCharsOnImport, setSelectedCharsOnImport] = useState<string[]>(['ALL']);
   const [newItemName, setNewItemName] = useState('');
   const [newItemQty, setNewItemQty] = useState(1);
   const [newItemLoc, setNewItemLoc] = useState('Player (手持ち)');
@@ -99,6 +99,17 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     return Array.from(set);
   }, [editingInventories, syncData]);
 
+  // Active selected characters list (multi-select)
+  const activeSelectedCharacters = React.useMemo(() => {
+    if (syncData?.selectedCharacters && syncData.selectedCharacters.length > 0) {
+      return syncData.selectedCharacters;
+    }
+    if (syncData?.selectedCharacter && syncData.selectedCharacter !== 'ALL') {
+      return [syncData.selectedCharacter];
+    }
+    return ['ALL'];
+  }, [syncData]);
+
   // Check preview characters when JSON text changes
   const previewData = React.useMemo(() => {
     if (!jsonInput.trim() || jsonInput.length < 5) return null;
@@ -125,19 +136,37 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     setToastMessage(msg);
   };
 
-  // Switch Active Character globally
-  const handleSelectActiveCharacter = (charName: string) => {
+  // Toggle active character in multi-select
+  const handleToggleActiveCharacter = (charName: string) => {
     if (!syncData) return;
+
+    let nextSelected: string[];
+    if (charName === 'ALL') {
+      nextSelected = ['ALL'];
+    } else {
+      const withoutAll = activeSelectedCharacters.filter((c) => c !== 'ALL');
+      if (withoutAll.includes(charName)) {
+        nextSelected = withoutAll.filter((c) => c !== charName);
+        if (nextSelected.length === 0) {
+          nextSelected = ['ALL'];
+        }
+      } else {
+        nextSelected = [...withoutAll, charName];
+      }
+    }
+
     const updated: InventorySyncData = {
       ...syncData,
-      selectedCharacter: charName,
+      selectedCharacters: nextSelected,
+      selectedCharacter: nextSelected.includes('ALL') || nextSelected.length === 0 ? 'ALL' : nextSelected[0],
     };
     onSaveSyncData(updated);
-    showToast(
-      charName === 'ALL'
-        ? '🌐 全キャラクターの所持品を合算計算します'
-        : `👤 対象キャラクターを「${charName}」に切り替えました`
-    );
+
+    if (nextSelected.includes('ALL')) {
+      showToast('🌐 全キャラクターの所持品を合算計算します');
+    } else {
+      showToast(`👥 計算対象: ${nextSelected.join(', ')} (${nextSelected.length}名)`);
+    }
   };
 
   // Import Action
@@ -152,8 +181,12 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
 
     const result = parseInventoryJson(jsonInput);
     if (result.success && result.data) {
-      if (selectedCharOnImport && selectedCharOnImport !== 'ALL') {
-        result.data.selectedCharacter = selectedCharOnImport;
+      if (selectedCharsOnImport.length > 0 && !selectedCharsOnImport.includes('ALL')) {
+        result.data.selectedCharacters = selectedCharsOnImport;
+        result.data.selectedCharacter = selectedCharsOnImport[0];
+      } else {
+        result.data.selectedCharacters = ['ALL'];
+        result.data.selectedCharacter = 'ALL';
       }
       onSaveSyncData(result.data);
       setEditingInventories(result.data.inventories);
@@ -391,27 +424,55 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
               )}
             </div>
 
-            {/* Character Selector dropdown if characters are available */}
+            {/* Character Selector multi-select buttons if characters are available */}
             {availableCharacters.length > 0 && (
-              <div className="flex items-center gap-1.5 bg-slate-900 border border-amber-500/40 rounded-lg px-2 py-1">
-                <span className="text-[11px] font-bold text-amber-300 flex items-center gap-1">
-                  👤 計算対象キャラ:
+              <div className="flex flex-wrap items-center gap-1.5 bg-slate-900/90 border border-amber-500/40 rounded-xl px-2.5 py-1">
+                <span className="text-[11px] font-bold text-amber-300 flex items-center gap-1 shrink-0">
+                  <Boxes className="w-3.5 h-3.5" />
+                  <span>所持キャラクター選択 (複数選択可):</span>
                 </span>
-                <select
-                  value={syncData?.selectedCharacter || 'ALL'}
-                  onChange={(e) => handleSelectActiveCharacter(e.target.value)}
-                  className="bg-slate-950 text-amber-200 border border-slate-700 rounded px-2 py-0.5 text-xs font-bold focus:outline-none focus:border-amber-400 cursor-pointer"
+                
+                {/* ALL Button */}
+                <button
+                  type="button"
+                  onClick={() => handleToggleActiveCharacter('ALL')}
+                  className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all cursor-pointer flex items-center gap-1 ${
+                    activeSelectedCharacters.includes('ALL')
+                      ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow'
+                      : 'bg-slate-950 text-slate-300 border-slate-700 hover:bg-slate-800'
+                  }`}
+                  title="全キャラクターの所持数を合算して計算"
                 >
-                  <option value="ALL">🌐 全キャラ合算 ({syncData?.inventories.length || 0}品)</option>
-                  {availableCharacters.map((char) => {
-                    const count = syncData?.inventories.filter((i) => i.source === char).length || 0;
-                    return (
-                      <option key={char} value={char}>
-                        👤 {char} ({count}品)
-                      </option>
-                    );
-                  })}
-                </select>
+                  <span>🌐 全キャラ合算</span>
+                  <span className="font-rajdhani font-bold opacity-80">({syncData?.inventories.length || 0})</span>
+                </button>
+
+                {/* Individual Character Buttons */}
+                {availableCharacters.map((char) => {
+                  const count = syncData?.inventories.filter((i) => i.source === char).length || 0;
+                  const isSelected = activeSelectedCharacters.includes('ALL') || activeSelectedCharacters.includes(char);
+                  const isDirectlySelected = activeSelectedCharacters.includes(char) && !activeSelectedCharacters.includes('ALL');
+
+                  return (
+                    <button
+                      key={char}
+                      type="button"
+                      onClick={() => handleToggleActiveCharacter(char)}
+                      className={`px-2 py-0.5 rounded-lg text-[11px] font-medium border transition-all cursor-pointer flex items-center gap-1 ${
+                        isDirectlySelected
+                          ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow'
+                          : activeSelectedCharacters.includes('ALL')
+                          ? 'bg-slate-950/80 text-amber-200/90 border-amber-500/30 hover:border-amber-400'
+                          : 'bg-slate-950 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
+                      }`}
+                      title={`クリックで「${char}」を計算対象に含める / 除外する`}
+                    >
+                      <span>👤 {char}</span>
+                      <span className="font-rajdhani font-bold opacity-80">({count}品)</span>
+                      {isDirectlySelected && <Check className="w-3 h-3 text-slate-950 ml-0.5" />}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
@@ -581,14 +642,14 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                       <Boxes className="w-3.5 h-3.5" />
                       検出されたキャラクター ({previewData.characters.length}名 / 計 {previewData.inventories.length}品):
                     </span>
-                    <span className="text-[10px] text-slate-400">反映後の対象キャラを選択可能</span>
+                    <span className="text-[10px] text-slate-400">反映対象のキャラを複数選択可能</span>
                   </div>
                   <div className="flex flex-wrap items-center gap-1.5">
                     <button
                       type="button"
-                      onClick={() => setSelectedCharOnImport('ALL')}
+                      onClick={() => setSelectedCharsOnImport(['ALL'])}
                       className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
-                        selectedCharOnImport === 'ALL'
+                        selectedCharsOnImport.includes('ALL')
                           ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow'
                           : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'
                       }`}
@@ -597,18 +658,31 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                     </button>
                     {previewData.characters.map((char) => {
                       const count = previewData.inventories.filter((i) => i.source === char).length;
+                      const isSelected = selectedCharsOnImport.includes(char) && !selectedCharsOnImport.includes('ALL');
+
                       return (
                         <button
                           key={char}
                           type="button"
-                          onClick={() => setSelectedCharOnImport(char)}
-                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
-                            selectedCharOnImport === char
-                              ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold shadow'
+                          onClick={() => {
+                            if (selectedCharsOnImport.includes('ALL')) {
+                              setSelectedCharsOnImport([char]);
+                            } else if (selectedCharsOnImport.includes(char)) {
+                              const next = selectedCharsOnImport.filter((c) => c !== char);
+                              setSelectedCharsOnImport(next.length === 0 ? ['ALL'] : next);
+                            } else {
+                              setSelectedCharsOnImport([...selectedCharsOnImport, char]);
+                            }
+                          }}
+                          className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all flex items-center gap-1 ${
+                            isSelected
+                              ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow'
                               : 'bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800'
                           }`}
                         >
-                          👤 {char} ({count}品)
+                          <span>👤 {char}</span>
+                          <span className="font-rajdhani opacity-80 font-bold">({count}品)</span>
+                          {isSelected && <Check className="w-3 h-3 text-slate-950 ml-0.5" />}
                         </button>
                       );
                     })}
@@ -941,9 +1015,16 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                             </td>
                           )}
                           <td className="p-2.5">
-                            <span className="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded">
-                              {item.location}
-                            </span>
+                            <div className="flex flex-col gap-0.5">
+                              <span className="text-[11px] bg-slate-800 text-slate-300 px-2 py-0.5 rounded inline-block w-fit">
+                                {item.location}
+                              </span>
+                              {item.locationType === 'Retainer' && item.source && (
+                                <span className="text-[10px] text-amber-300/80 font-medium">
+                                  👤 {item.source} のリテイナー
+                                </span>
+                              )}
+                            </div>
                           </td>
                           <td className="p-2.5 text-center">
                             <div className="inline-flex items-center gap-1">
