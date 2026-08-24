@@ -58,12 +58,16 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   '巨匠の薬茶': getGarlandIconUrl(24412),
 
   // Intermediate Materials (Crafted Master / 7.05 - 7.55)
+  'タングステンインゴット': getGarlandIconUrl(20828),
   'スーパージュラルミンインゴット': getGarlandIconUrl(20828),
+  'コチニールクロス': getGarlandIconUrl(21621),
   'オルコ・リネン': getGarlandIconUrl(21621),
   'ゴールデンチタンインゴット': getGarlandIconUrl(20829),
   'ペルペルレザー': getGarlandIconUrl(22008),
   'マストドンレザー': getGarlandIconUrl(21836),
+  'フルグライト': getGarlandIconUrl(21206),
   '高密度軽銀鉱': getGarlandIconUrl(21206),
+  'タングステン鉱': getGarlandIconUrl(22663),
   '被膜形成材': getGarlandIconUrl(22663),
   '多色錬金薬': getGarlandIconUrl(22670),
   '大聖水': getGarlandIconUrl(22653),
@@ -94,7 +98,9 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'ガーデン・ソフトウォーター': getGarlandIconUrl(22678),
   'ヤクテル天然水': getGarlandIconUrl(22614),
   'タンブルクラブの枯草': getGarlandIconUrl(21689),
+  'コーディア原木': getGarlandIconUrl(25033),
   'オルコ亜麻': getGarlandIconUrl(25033),
+  'コチニール染料': getGarlandIconUrl(22648),
   'トライヨラの染料': getGarlandIconUrl(22648),
   '絶縁塗料': getGarlandIconUrl(22654),
   '高山食塩': getGarlandIconUrl(25104),
@@ -116,6 +122,7 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'ヤースラニガーリック': getGarlandIconUrl(25006),
   'リトルレモン': getGarlandIconUrl(25305),
   '黄金の霊砂': getGarlandIconUrl(21246),
+  '幻晃の霊砂': getGarlandIconUrl(21248),
   '紫電の霊砂': getGarlandIconUrl(21248),
   '混鉄鉱': getGarlandIconUrl(21221),
   '真銀鉱': getGarlandIconUrl(21223),
@@ -231,8 +238,8 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   44051: getGarlandIconUrl(22653), // 大聖水 (実機アイコン)
   44039: getGarlandIconUrl(25211), // ウィンドパセリ
   45989: getGarlandIconUrl(22670), // 多色錬金薬
-  49214: getGarlandIconUrl(20828), // スーパージュラルミンインゴット
-  49217: getGarlandIconUrl(21621), // オルコ・リネン
+  49214: getGarlandIconUrl(20828), // タングステンインゴット
+  49217: getGarlandIconUrl(21621), // コチニールクロス
   49215: getGarlandIconUrl(20829), // ゴールデンチタンインゴット
   49216: getGarlandIconUrl(22008), // ペルペルレザー
   49218: getGarlandIconUrl(22680), // 剛力の宝水G4
@@ -240,10 +247,10 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   49220: getGarlandIconUrl(22680), // 活力の宝水G4
   49221: getGarlandIconUrl(22679), // 知力の宝水G4
   49222: getGarlandIconUrl(22678), // 心力の宝水G4
-  49208: getGarlandIconUrl(21206), // 高密度軽銀鉱
-  49224: getGarlandIconUrl(22663), // 被膜形成材
-  49211: getGarlandIconUrl(25033), // オルコ亜麻
-  49227: getGarlandIconUrl(22648), // トライヨラの染料
+  49208: getGarlandIconUrl(21206), // フルグライト
+  49224: getGarlandIconUrl(22663), // タングステン鉱
+  49211: getGarlandIconUrl(25033), // コーディア原木
+  49227: getGarlandIconUrl(22648), // コチニール染料
   49212: getGarlandIconUrl(22678), // ガーデン・ソフトウォーター
   44034: getGarlandIconUrl(22614), // ヤクテル天然水
   44071: getGarlandIconUrl(21689), // タンブルクラブの枯草
@@ -285,7 +292,7 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   43985: getGarlandIconUrl(25006), // ヤースラニガーリック
   27835: getGarlandIconUrl(25305), // リトルレモン
   44035: getGarlandIconUrl(21246), // 黄金の霊砂
-  46246: getGarlandIconUrl(21248), // 紫電の霊砂
+  46246: getGarlandIconUrl(21248), // 幻晃の霊砂
   44135: getGarlandIconUrl(21221), // 混鉄鉱
   44136: getGarlandIconUrl(21223), // 真銀鉱
   44137: getGarlandIconUrl(22415), // イペー原木

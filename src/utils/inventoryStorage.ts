@@ -14,12 +14,12 @@ export interface KnownItemMeta {
 
 export const KNOWN_FF14_ITEMS: KnownItemMeta[] = [
   // Crystals & Clusters
-  { itemId: 8, name: '火のクリスタル', enName: 'Fire Crystal', icon: '20001' },
-  { itemId: 9, name: '氷のクリスタル', enName: 'Ice Crystal', icon: '20002' },
-  { itemId: 10, name: '風のクリスタル', enName: 'Wind Crystal', icon: '20003' },
-  { itemId: 11, name: '土のクリスタル', enName: 'Earth Crystal', icon: '20004' },
-  { itemId: 12, name: '雷のクリスタル', enName: 'Lightning Crystal', icon: '20005' },
-  { itemId: 13, name: '水のクリスタル', enName: 'Water Crystal', icon: '20006' },
+  { itemId: 8, name: 'ファイアクリスタル', enName: 'Fire Crystal', icon: '20001' },
+  { itemId: 9, name: 'アイスクリスタル', enName: 'Ice Crystal', icon: '20002' },
+  { itemId: 10, name: 'ウィンドクリスタル', enName: 'Wind Crystal', icon: '20003' },
+  { itemId: 11, name: 'アースクリスタル', enName: 'Earth Crystal', icon: '20004' },
+  { itemId: 12, name: 'ライトニングクリスタル', enName: 'Lightning Crystal', icon: '20005' },
+  { itemId: 13, name: 'ウォータークリスタル', enName: 'Water Crystal', icon: '20006' },
   { itemId: 14, name: 'ファイアクラスター', enName: 'Fire Cluster', icon: '20007' },
   { itemId: 15, name: 'アイスクラスター', enName: 'Ice Cluster', icon: '20008' },
   { itemId: 16, name: 'ウィンドクラスター', enName: 'Wind Cluster', icon: '20009' },
@@ -28,13 +28,13 @@ export const KNOWN_FF14_ITEMS: KnownItemMeta[] = [
   { itemId: 19, name: 'ウォータークラスター', enName: 'Water Cluster', icon: '20012' },
 
   // Patch 7.2 霊砂・素材
-  { itemId: 46246, name: '紫電の霊砂', enName: 'Thundervale Aethersand', icon: '22682' },
+  { itemId: 46246, name: '幻晃の霊砂', enName: 'Thundervale Aethersand', icon: '22682' },
   { itemId: 44035, name: '黄金の霊砂', enName: 'Mythbrine Aethersand', icon: '22681' },
-  { itemId: 49208, name: '高密度軽銀鉱', enName: 'High-density Silver Ore', icon: '21340' },
-  { itemId: 49211, name: 'オルコ亜麻', enName: 'Orqo Flax', icon: '21623' },
+  { itemId: 49208, name: 'フルグライト', enName: 'Fulgurite', icon: '21340' },
+  { itemId: 49211, name: 'コーディア原木', enName: 'Cordia Log', icon: '21623' },
   { itemId: 44145, name: 'プルスサウルスの粗皮', enName: 'Purussaurus Skin', icon: '22009' },
-  { itemId: 49224, name: '被膜形成材', enName: 'Coating Agent', icon: '22675' },
-  { itemId: 49227, name: 'トライヨラの染料', enName: 'Tuliyollal Pigment', icon: '22676' },
+  { itemId: 49224, name: 'タングステン鉱', enName: 'Tungsten Ore', icon: '22675' },
+  { itemId: 49227, name: 'コチニール染料', enName: 'Cochineal Pigment', icon: '22676' },
   { itemId: 49212, name: 'ガーデン・ソフトウォーター', enName: 'Garden Softwater', icon: '22654' },
   { itemId: 44034, name: 'ヤクテル天然水', enName: 'Yak T\'el Spring Water', icon: '22650' },
   { itemId: 44071, name: 'タンブルクラブの枯草', enName: 'Tumble Crab Grass', icon: '25210' },
@@ -46,9 +46,9 @@ export const KNOWN_FF14_ITEMS: KnownItemMeta[] = [
   { itemId: 44006, name: 'ブラックスター原石', enName: 'Raw Black Star', icon: '21337' },
 
   // Patch 7.2 中間素材
-  { itemId: 49214, name: 'スーパージュラルミンインゴット', enName: 'Super Duralumin Ingot', icon: '20828' },
+  { itemId: 49214, name: 'タングステンインゴット', enName: 'Tungsten Ingot', icon: '20828' },
   { itemId: 49215, name: 'ゴールデンチタンインゴット', enName: 'Golden Titanium Ingot', icon: '20829' },
-  { itemId: 49217, name: 'オルコ・リネン', enName: 'Orqo Linen', icon: '21621' },
+  { itemId: 49217, name: 'コチニールクロス', enName: 'Cochineal Cloth', icon: '21621' },
   { itemId: 49216, name: 'ペルペルレザー', enName: 'Pelupelu Leather', icon: '22008' },
   { itemId: 44033, name: 'サンダーヤードシルク', enName: 'Thunderyard Silk', icon: '21622' },
   { itemId: 44012, name: 'ブラックスター', enName: 'Black Star', icon: '21338' },
@@ -134,9 +134,9 @@ export const PRESET_PATCH_72: InventorySyncData = {
   characters: ['Hikari Light', 'Moja Kun'],
   inventories: [
     // Hikari Light 手持ち (中間素材・霊砂・クリスタル)
-    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 2, isHq: true },
-    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'オルコ・リネン', quantity: 3, isHq: true },
-    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '紫電の霊砂', quantity: 6, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'タングステンインゴット', quantity: 2, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'コチニールクロス', quantity: 3, isHq: true },
+    { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '幻晃の霊砂', quantity: 6, isHq: true },
     { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 44051, name: '大聖水', quantity: 4, isHq: true },
     { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 45989, name: '多色錬金薬', quantity: 3, isHq: true },
     { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 18, name: 'ライトニングクラスター', quantity: 120, isHq: false },
@@ -144,8 +144,8 @@ export const PRESET_PATCH_72: InventorySyncData = {
     { source: 'Hikari Light', location: 'Player (手持ち)', locationType: 'Player', itemId: 15, name: 'アイスクラスター', quantity: 80, isHq: false },
 
     // Hikari Light のリテイナー Nana (7.2 採集素材・末端素材)
-    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 18, isHq: false },
-    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'オルコ亜麻', quantity: 24, isHq: false },
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: 'フルグライト', quantity: 18, isHq: false },
+    { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'コーディア原木', quantity: 24, isHq: false },
     { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44145, name: 'プルスサウルスの粗皮', quantity: 12, isHq: false },
     { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44039, name: 'ウィンドパセリ', quantity: 15, isHq: false },
     { source: 'Hikari Light', location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44034, name: 'ヤクテル天然水', quantity: 30, isHq: false },
@@ -159,21 +159,21 @@ export const PRESET_PATCH_72: InventorySyncData = {
     { source: 'Hikari Light', location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44033, name: 'サンダーヤードシルク', quantity: 4, isHq: true },
 
     // サブキャラ Moja Kun の手持ち & リテイナー (分散所持の例)
-    { source: 'Moja Kun', location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 3, isHq: true },
-    { source: 'Moja Kun', location: 'Retainer: Choco', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 25, isHq: false },
-    { source: 'Moja Kun', location: 'Retainer: Choco', locationType: 'Retainer', itemId: 46246, name: '紫電の霊砂', quantity: 10, isHq: true },
+    { source: 'Moja Kun', location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'タングステンインゴット', quantity: 3, isHq: true },
+    { source: 'Moja Kun', location: 'Retainer: Choco', locationType: 'Retainer', itemId: 49208, name: 'フルグライト', quantity: 25, isHq: false },
+    { source: 'Moja Kun', location: 'Retainer: Choco', locationType: 'Retainer', itemId: 46246, name: '幻晃の霊砂', quantity: 10, isHq: true },
 
     // FCチェスト (共有交換素材・クリスタル)
-    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: '被膜形成材', quantity: 20, isHq: false },
-    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49227, name: 'トライヨラの染料', quantity: 16, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: 'タングステン鉱', quantity: 20, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49227, name: 'コチニール染料', quantity: 16, isHq: false },
     { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 49212, name: 'ガーデン・ソフトウォーター', quantity: 25, isHq: false },
-    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 46246, name: '紫電の霊砂', quantity: 4, isHq: false },
+    { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 46246, name: '幻晃の霊砂', quantity: 4, isHq: false },
 
     // チョコボかばん (クリスタル・霊砂)
-    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: '雷のクリスタル', quantity: 450, isHq: false },
-    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 380, isHq: false },
-    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 500, isHq: false },
-    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: '風のクリスタル', quantity: 420, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: 'ライトニングクリスタル', quantity: 450, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: 'ウォータークリスタル', quantity: 380, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: 'ファイアクリスタル', quantity: 500, isHq: false },
+    { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: 'ウィンドクリスタル', quantity: 420, isHq: false },
     { source: 'Hikari Light', location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 44035, name: '黄金の霊砂', quantity: 8, isHq: true },
   ],
 };
@@ -194,8 +194,8 @@ export const PRESET_PATCH_705: InventorySyncData = {
     { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 43977, name: '高山食塩', quantity: 18, isHq: false },
     { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 44170, name: 'ラムプレスチキン', quantity: 14, isHq: false },
     { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 44152, name: '剛力の宝水G2', quantity: 4, isHq: true },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 450, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 500, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: 'ファイアクリスタル', quantity: 450, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: 'ウォータークリスタル', quantity: 500, isHq: false },
   ],
 };
 
@@ -205,9 +205,9 @@ export const PRESET_FULL_STOCK: InventorySyncData = {
   character: 'Master Crafter@Bahamut (Full Stock)',
   inventories: [
     // 7.2 Intermediates
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'スーパージュラルミンインゴット', quantity: 10, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49214, name: 'タングステンインゴット', quantity: 10, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 49215, name: 'ゴールデンチタンインゴット', quantity: 10, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'オルコ・リネン', quantity: 12, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 49217, name: 'コチニールクロス', quantity: 12, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 49216, name: 'ペルペルレザー', quantity: 8, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 44033, name: 'サンダーヤードシルク', quantity: 8, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 49218, name: '剛力の宝水G4', quantity: 12, isHq: true },
@@ -216,12 +216,12 @@ export const PRESET_FULL_STOCK: InventorySyncData = {
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 49220, name: '活力の宝水G4', quantity: 12, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 44051, name: '大聖水', quantity: 20, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 45989, name: '多色錬金薬', quantity: 20, isHq: true },
-    { location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '紫電の霊砂', quantity: 30, isHq: true },
+    { location: 'Player (手持ち)', locationType: 'Player', itemId: 46246, name: '幻晃の霊砂', quantity: 30, isHq: true },
     { location: 'Player (手持ち)', locationType: 'Player', itemId: 44035, name: '黄金の霊砂', quantity: 40, isHq: true },
 
     // Retainer 1 (Raw Mats)
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: '高密度軽銀鉱', quantity: 99, isHq: false },
-    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'オルコ亜麻', quantity: 99, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49208, name: 'フルグライト', quantity: 99, isHq: false },
+    { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 49211, name: 'コーディア原木', quantity: 99, isHq: false },
     { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44145, name: 'プルスサウルスの粗皮', quantity: 60, isHq: false },
     { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44039, name: 'ウィンドパセリ', quantity: 50, isHq: false },
     { location: 'Retainer: Nana', locationType: 'Retainer', itemId: 44040, name: 'マウンテンセージ', quantity: 50, isHq: false },
@@ -235,18 +235,18 @@ export const PRESET_FULL_STOCK: InventorySyncData = {
     { location: 'Retainer: Bob', locationType: 'Retainer', itemId: 27835, name: 'リトルレモン', quantity: 40, isHq: false },
 
     // FC Chest
-    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: '被膜形成材', quantity: 60, isHq: false },
-    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49227, name: 'トライヨラの染料', quantity: 60, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49224, name: 'タングステン鉱', quantity: 60, isHq: false },
+    { location: 'FC_Chest: Tab1', locationType: 'FC_Chest', itemId: 49227, name: 'コチニール染料', quantity: 60, isHq: false },
     { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 49212, name: 'ガーデン・ソフトウォーター', quantity: 50, isHq: false },
     { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 44034, name: 'ヤクテル天然水', quantity: 60, isHq: false },
     { location: 'FC_Chest: Tab2', locationType: 'FC_Chest', itemId: 44071, name: 'タンブルクラブの枯草', quantity: 50, isHq: false },
 
     // Saddlebag (Crystals & Clusters maxed)
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: '火のクリスタル', quantity: 999, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: '風のクリスタル', quantity: 999, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 11, name: '土のクリスタル', quantity: 999, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: '雷のクリスタル', quantity: 999, isHq: false },
-    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: '水のクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 8, name: 'ファイアクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 10, name: 'ウィンドクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 11, name: 'アースクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 12, name: 'ライトニングクリスタル', quantity: 999, isHq: false },
+    { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 13, name: 'ウォータークリスタル', quantity: 999, isHq: false },
     { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 14, name: 'ファイアクラスター', quantity: 500, isHq: false },
     { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 16, name: 'ウィンドクラスター', quantity: 500, isHq: false },
     { location: 'Saddlebag (かばん)', locationType: 'Saddlebag', itemId: 18, name: 'ライトニングクラスター', quantity: 500, isHq: false },
@@ -334,11 +334,11 @@ function buildSyncResult(
  * 1. Standard sync JSON { character, inventories: [...] }
  * 2. Flat array of items [ { id, name, type, "quantity/total quantity available", source, "inventory location" } ]
  * 3. Allagan Tools nested dumps: { "Inventory": [...], "Retainers": { ... }, "FreeCompany": [...] } or { "Bags": [...] }
- * 4. Teamcraft exports / key-value dicts: { "49214": 5 } or { "スーパージュラルミンインゴット": 3 }
+ * 4. Teamcraft exports / key-value dicts: { "49214": 5 } or { "タングステンインゴット": 3 }
  * 5. Plaintext / CSV / TSV format:
- *    スーパージュラルミンインゴット, 5, Retainer: Nana, Moja Kun
+ *    タングステンインゴット, 5, Retainer: Nana, Moja Kun
  *    49214, 10
- *    オルコ・リネン x3
+ *    コチニールクロス x3
  */
 export function parseInventoryJson(input: string): { success: boolean; data?: InventorySyncData; error?: string } {
   if (!input || !input.trim()) {
@@ -528,7 +528,7 @@ export function parseInventoryJson(input: string): { success: boolean; data?: In
             // Nested subcontainers or Key-Value map
             for (const [key, val] of Object.entries(obj)) {
               if (typeof val === 'number') {
-                // Key-value pair like { "49214": 5 } or { "スーパージュラルミンインゴット": 3 }
+                // Key-value pair like { "49214": 5 } or { "タングステンインゴット": 3 }
                 let id = Number(key);
                 let name = '';
                 if (!id || isNaN(id)) {
@@ -645,7 +645,7 @@ export function parseInventoryJson(input: string): { success: boolean; data?: In
       }
     }
 
-    // Pattern like "スーパージュラルミンインゴット x5 (Moja Kun)" or "スーパージュラルミンインゴット : 5"
+    // Pattern like "タングステンインゴット x5 (Moja Kun)" or "タングステンインゴット : 5"
     const match = line.match(/^(.+?)(?:\s*[xX:：\s]\s*|\s+)(\d+)(?:\s*個|\s*HQ|\s*hq|\s*NQ)?(?:\s*\((.*?)\))?$/);
     if (match) {
       const rawName = match[1].trim();

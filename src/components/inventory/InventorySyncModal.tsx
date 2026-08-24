@@ -629,7 +629,7 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                     setParseError(null);
                     setParseSuccessInfo(null);
                   }}
-                  placeholder={`【例1: Allagan Tools JSON】\n{\n  "character": "Hikari@Bahamut",\n  "inventories": [\n    { "location": "Player", "itemId": 49214, "name": "スーパージュラルミンインゴット", "quantity": 2 },\n    { "location": "Retainer: Nana", "itemId": 46246, "name": "紫電の霊砂", "quantity": 6 }\n  ]\n}\n\n【例2: 簡易テキスト/CSV】\nスーパージュラルミンインゴット, 5, Retainer: Nana\nオルコ・リネン, 3, Player\n紫電の霊砂 x10`}
+                  placeholder={`【例1: Allagan Tools JSON】\n{\n  "character": "Hikari@Bahamut",\n  "inventories": [\n    { "location": "Player", "itemId": 49214, "name": "タングステンインゴット", "quantity": 2 },\n    { "location": "Retainer: Nana", "itemId": 46246, "name": "幻晃の霊砂", "quantity": 6 }\n  ]\n}\n\n【例2: 簡易テキスト/CSV】\nタングステンインゴット, 5, Retainer: Nana\nコチニールクロス, 3, Player\n幻晃の霊砂 x10`}
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl p-3 text-xs font-mono text-slate-200 focus:outline-none focus:border-amber-500/80 resize-none leading-relaxed"
                 />
               </div>
@@ -749,7 +749,7 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                       </span>
                     </div>
                     <p className="text-[11px] text-slate-400 leading-relaxed">
-                      スーパージュラルミンインゴット、オルコ・リネン、紫電の霊砂、高密度軽銀鉱、大聖水、多色錬金薬、各種クラスターを各保管庫にストック。
+                      タングステンインゴット、コチニールクロス、幻晃の霊砂、フルグライト、大聖水、多色錬金薬、各種クラスターを各保管庫にストック。
                     </p>
                     <div className="text-[10px] text-slate-500">
                       登録品目: 27種 / 手持ち・リテイナー2名・FC・かばん
@@ -855,7 +855,7 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                 <div className="flex-1 min-w-[180px]">
                   <input
                     type="text"
-                    placeholder="アイテム名 (例: スーパージュラルミンインゴット)"
+                    placeholder="アイテム名 (例: タングステンインゴット)"
                     value={newItemName}
                     onChange={(e) => setNewItemName(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500"

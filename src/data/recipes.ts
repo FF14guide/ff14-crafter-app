@@ -1,19 +1,19 @@
 import { Recipe } from '../types/ff14';
 
 export const RECIPES_DATABASE: Recipe[] = [
-  // ================= 7.4 最新戦闘新式 (Courtly Lover Series IL770 - 4★) =================
+  // ================= 7.2 最新戦闘新式 (Ceremonial Series IL740 - 3★/4★) =================
   {
-    id: 'gear_courtly_lover_fending_coat',
+    id: 'gear_ceremonial_fending_coat',
     itemId: 49272,
-    name: 'コートリーラヴァー・ディフェンダーサーコート',
-    enName: 'Courtly Lover Surcoat of Fending',
+    name: 'セレモニアル・ディフェンダーコート',
+    enName: 'Ceremonial Coat of Fending',
     icon: '57321',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'ARM',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -23,29 +23,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '甲冑師秘伝書:第12巻',
     defaultSellingPrice: 160000,
-    description: 'パッチ7.4最新戦闘新式 タンク胴防具 IL770 (高難易度零式・絶対応)',
+    description: 'パッチ7.2最新戦闘新式 タンク胴防具 IL740 (零式・高難易度レイド対応)',
     materials: [
-      { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
-      { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
+      { itemId: 49214, name: 'タングステンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
+      { itemId: 49217, name: 'コチニールクロス', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
-      { itemId: 49220, name: '活力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_vital_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 12, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 10, name: 'アイスクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49220, name: '活力の宝水G3', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_vital_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 15, name: 'アイスクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_maiming_coat',
+    id: 'gear_ceremonial_maiming_coat',
     itemId: 49277,
-    name: 'コートリーラヴァー・スレイヤーサーコート',
-    enName: 'Courtly Lover Surcoat of Maiming',
+    name: 'セレモニアル・スレイヤーコート',
+    enName: 'Ceremonial Coat of Maiming',
     icon: '57322',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'ARM',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -55,29 +55,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '甲冑師秘伝書:第12巻',
     defaultSellingPrice: 160000,
-    description: 'パッチ7.4最新戦闘新式 スレイヤー胴防具 (竜騎士/リーパー) IL770',
+    description: 'パッチ7.2最新戦闘新式 スレイヤー胴防具 (竜騎士/リーパー) IL740',
     materials: [
-      { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
-      { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
+      { itemId: 49214, name: 'タングステンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
+      { itemId: 49217, name: 'コチニールクロス', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
-      { itemId: 49218, name: '剛力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 12, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 10, name: 'アイスクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49218, name: '剛力の宝水G3', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 15, name: 'アイスクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_striking_cloak',
+    id: 'gear_ceremonial_striking_cloak',
     itemId: 49282,
-    name: 'コートリーラヴァー・ストライカークローク',
-    enName: 'Courtly Lover Cloak of Striking',
+    name: 'セレモニアル・ストライカーコート',
+    enName: 'Ceremonial Coat of Striking',
     icon: '57325',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'WVR',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -87,29 +87,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 170000,
-    description: 'パッチ7.4最新戦闘新式 ストライカー胴防具 (モンク/侍) IL770',
+    description: 'パッチ7.2最新戦闘新式 ストライカー胴防具 (モンク/侍) IL740',
     materials: [
-      { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
-      { itemId: 49216, name: 'ペルペルレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_pelupelu_leather', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
+      { itemId: 49217, name: 'コチニールクロス', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
+      { itemId: 44149, name: 'コーディア材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
-      { itemId: 49218, name: '剛力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 12, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 10, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49218, name: '剛力の宝水G3', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_scouting_shirt',
+    id: 'gear_ceremonial_scouting_shirt',
     itemId: 49292,
-    name: 'コートリーラヴァー・スカウトシャツ',
-    enName: 'Courtly Lover Shirt of Scouting',
+    name: 'セレモニアル・スカウトシャツ',
+    enName: 'Ceremonial Shirt of Scouting',
     icon: '57327',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'WVR',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -119,29 +119,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 170000,
-    description: 'パッチ7.4最新戦闘新式 スカウト胴防具 (忍者/ヴァイパー) IL770',
+    description: 'パッチ7.2最新戦闘新式 スカウト胴防具 (忍者/ヴァイパー) IL740',
     materials: [
-      { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
-      { itemId: 49215, name: 'ゴールデンチタンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_golden_titanium_ingot', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
+      { itemId: 49217, name: 'コチニールクロス', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
+      { itemId: 49215, name: 'ロードクロサイト', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
-      { itemId: 49219, name: '眼力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_dex_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 12, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 10, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49219, name: '眼力の宝水G3', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_dex_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_casting_dress',
+    id: 'gear_ceremonial_casting_dress',
     itemId: 49302,
-    name: 'コートリーラヴァー・キャスターバトルドレス',
-    enName: 'Courtly Lover Battledress of Casting',
+    name: 'セレモニアル・キャスターローブ',
+    enName: 'Ceremonial Robe of Casting',
     icon: '57324',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'WVR',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -151,29 +151,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 175000,
-    description: 'パッチ7.4最新戦闘新式 キャスター胴防具 (黒魔/召喚/赤魔/ピクト) IL770',
+    description: 'パッチ7.2最新戦闘新式 キャスター胴防具 (黒魔/召喚/赤魔/ピクト) IL740',
     materials: [
-      { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
-      { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
+      { itemId: 49217, name: 'コチニールクロス', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
+      { itemId: 49214, name: 'タングステンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
-      { itemId: 49221, name: '知力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_intel_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 12, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 10, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49221, name: '知力の宝水G3', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_intel_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_attacker_ring',
+    id: 'gear_ceremonial_attacker_ring',
     itemId: 49322,
-    name: 'コートリーラヴァー・アタッカーリング',
-    enName: 'Courtly Lover Ring of Slaying',
+    name: 'セレモニアル・アタッカーリング',
+    enName: 'Ceremonial Ring of Slaying',
     icon: '54761',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'GSM',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -183,29 +183,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 85000,
-    description: 'パッチ7.4最新戦闘新式 アタッカー指輪 IL770',
+    description: 'パッチ7.2最新戦闘新式 アタッカー指輪 IL740',
     materials: [
-      { itemId: 49215, name: 'ゴールデンチタンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_golden_titanium_ingot', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
-      { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
+      { itemId: 49215, name: 'ロードクロサイト', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
+      { itemId: 49214, name: 'タングステンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
       { itemId: 44012, name: 'ブラックスター', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_black_star', defaultPriceNQ: 3000, defaultPriceHQ: 5000 },
-      { itemId: 49218, name: '剛力の宝水G4', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 10, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 8, name: 'ファイアクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49218, name: '剛力の宝水G3', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 14, name: 'ファイアクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_attacker_choker',
+    id: 'gear_ceremonial_attacker_choker',
     itemId: 49312,
-    name: 'コートリーラヴァー・アタッカーチョーカー',
-    enName: 'Courtly Lover Choker of Slaying',
+    name: 'セレモニアル・アタッカーチョーカー',
+    enName: 'Ceremonial Choker of Slaying',
     icon: '55110',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'WVR',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -215,29 +215,29 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 90000,
-    description: 'パッチ7.4最新戦闘新式 アタッカー首飾り IL770',
+    description: 'パッチ7.2最新戦闘新式 アタッカー首飾り IL740',
     materials: [
-      { itemId: 49217, name: 'オルコ・リネン', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
-      { itemId: 49216, name: 'ペルペルレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_pelupelu_leather', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
+      { itemId: 49217, name: 'コチニールクロス', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
+      { itemId: 44149, name: 'コーディア材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44012, name: 'ブラックスター', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_black_star', defaultPriceNQ: 3000, defaultPriceHQ: 5000 },
-      { itemId: 49218, name: '剛力の宝水G4', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 12, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 10, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49218, name: '剛力の宝水G3', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
-    id: 'gear_courtly_lover_attacker_earring',
+    id: 'gear_ceremonial_attacker_earring',
     itemId: 49307,
-    name: 'コートリーラヴァー・アタッカーイヤリング',
-    enName: 'Courtly Lover Earrings of Slaying',
+    name: 'セレモニアル・アタッカーイヤリング',
+    enName: 'Ceremonial Earrings of Slaying',
     icon: '55565',
     category: 'gear',
-    patch: '7.4',
+    patch: '7.2',
     job: 'GSM',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 70,
     maxQuality: 21200,
     difficulty: 10040,
@@ -247,15 +247,15 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 88000,
-    description: 'パッチ7.4最新戦闘新式 アタッカー耳飾り IL770',
+    description: 'パッチ7.2最新戦闘新式 アタッカー耳飾り IL740',
     materials: [
-      { itemId: 49215, name: 'ゴールデンチタンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_golden_titanium_ingot', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
-      { itemId: 49216, name: 'ペルペルレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_pelupelu_leather', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
+      { itemId: 49215, name: 'ロードクロサイト', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
+      { itemId: 44149, name: 'コーディア材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44012, name: 'ブラックスター', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_black_star', defaultPriceNQ: 3000, defaultPriceHQ: 5000 },
-      { itemId: 49218, name: '剛力の宝水G4', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g4', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 10, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 8, name: 'ファイアクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 49218, name: '剛力の宝水G3', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 14, name: 'ファイアクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
 
@@ -442,9 +442,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 43985, name: 'ヤースラニガーリック', amount: 2, sourceType: 'gathering', defaultPriceNQ: 700, defaultPriceHQ: 1200 },
       { itemId: 27835, name: 'リトルレモン', amount: 2, sourceType: 'gathering', defaultPriceNQ: 500 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -478,8 +478,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 43985, name: 'ヤースラニガーリック', amount: 2, sourceType: 'gathering', defaultPriceNQ: 700, defaultPriceHQ: 1200 },
       { itemId: 27835, name: 'リトルレモン', amount: 1, sourceType: 'gathering', defaultPriceNQ: 500 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -510,8 +510,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 43985, name: 'ヤースラニガーリック', amount: 2, sourceType: 'gathering', defaultPriceNQ: 700, defaultPriceHQ: 1200 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600, defaultPriceHQ: 1000 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -541,8 +541,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44171, name: 'ブラウンカルダモン', amount: 2, sourceType: 'gathering', defaultPriceNQ: 900, defaultPriceHQ: 1500 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600, defaultPriceHQ: 1000 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -573,8 +573,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 43975, name: 'トラルバター', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 600 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -603,8 +603,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44152, name: '剛力の宝水G2', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 1800, defaultPriceHQ: 2800 },
       { itemId: 44040, name: 'マウンテンセージ', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1100, defaultPriceHQ: 1800 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: '雷のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -633,8 +633,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44153, name: '眼力の宝水G2', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 1800, defaultPriceHQ: 2800 },
       { itemId: 44040, name: 'マウンテンセージ', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1100, defaultPriceHQ: 1800 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: '雷のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -663,8 +663,8 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44155, name: '知力の宝水G2', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 1800, defaultPriceHQ: 2800 },
       { itemId: 44040, name: 'マウンテンセージ', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1100, defaultPriceHQ: 1800 },
       { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: '雷のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -691,8 +691,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44041, name: 'ウィンドローレル', amount: 2, sourceType: 'gathering', defaultPriceNQ: 400 },
       { itemId: 44040, name: 'マウンテンセージ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 900 },
-      { itemId: 12, name: '雷のクリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: '水のクリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -747,23 +747,23 @@ export const RECIPES_DATABASE: Recipe[] = [
     defaultSellingPrice: 100,
     description: 'パッチ7.2最新錬金薬 (宝薬G3製造用)',
     materials: [
-      { itemId: 49212, name: 'ガーデン・ソフトウォーター', amount: 1, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300 },
       { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_super_duralumin_ingot',
+    id: 'sub_tungsten_ingot',
     itemId: 49214,
-    name: 'スーパージュラルミンインゴット',
-    enName: 'Super Duralumin Ingot',
+    name: 'タングステンインゴット',
+    enName: 'Tungsten Ingot',
     icon: '20828',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'BSM',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -774,24 +774,24 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '鍛冶師秘伝書:第12巻',
     defaultSellingPrice: 22000,
     materials: [
-      { itemId: 49208, name: '高密度軽銀鉱', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2200, defaultPriceHQ: 3500 },
-      { itemId: 49224, name: '被膜形成材', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
+      { itemId: 49208, name: 'フルグライト', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2200, defaultPriceHQ: 3500 },
+      { itemId: 49224, name: 'タングステン鉱', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
       { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_golden_titanium_ingot',
+    id: 'sub_rhodochrosite',
     itemId: 49215,
-    name: 'ゴールデンチタンインゴット',
-    enName: 'Golden Titanium Ingot',
+    name: 'ロードクロサイト',
+    enName: 'Rhodochrosite',
     icon: '20829',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'GSM',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -802,24 +802,24 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 20000,
     materials: [
-      { itemId: 49208, name: '高密度軽銀鉱', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2200, defaultPriceHQ: 3500 },
-      { itemId: 49224, name: '被膜形成材', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
+      { itemId: 49208, name: 'フルグライト', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2200, defaultPriceHQ: 3500 },
+      { itemId: 49224, name: 'タングステン鉱', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
       { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_orqo_linen',
+    id: 'sub_cochineal_cloth',
     itemId: 49217,
-    name: 'オルコ・リネン',
-    enName: 'Orqo Linen',
+    name: 'コチニールクロス',
+    enName: 'Cochineal Cloth',
     icon: '21621',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'WVR',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -830,24 +830,24 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 18000,
     materials: [
-      { itemId: 49211, name: 'オルコ亜麻', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2000, defaultPriceHQ: 3200 },
-      { itemId: 49227, name: 'トライヨラの染料', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
+      { itemId: 49211, name: 'コーディア原木', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2000, defaultPriceHQ: 3200 },
+      { itemId: 49227, name: 'コチニール染料', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
       { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
       { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_pelupelu_leather',
-    itemId: 49216,
-    name: 'ペルペルレザー',
-    enName: 'Pelupelu Leather',
-    icon: '22008',
+    id: 'sub_cordia_lumber',
+    itemId: 44149,
+    name: 'コーディア材',
+    enName: 'Cordia Lumber',
+    icon: '22467',
     category: 'intermediate',
-    patch: '7.4',
-    job: 'LTW',
+    patch: '7.2',
+    job: 'CRP',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -855,27 +855,27 @@ export const RECIPES_DATABASE: Recipe[] = [
     suggestedControl: 4650,
     yields: 1,
     canHq: true,
-    masterBook: '革細工師秘伝書:第12巻',
+    masterBook: '木工師秘伝書:第12巻',
     defaultSellingPrice: 20000,
     materials: [
-      { itemId: 44145, name: 'プルスサウルスの粗皮', amount: 4, sourceType: 'monster', defaultPriceNQ: 2400, defaultPriceHQ: 3600 },
-      { itemId: 49227, name: 'トライヨラの染料', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
-      { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 49211, name: 'コーディア原木', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2000, defaultPriceHQ: 3200 },
+      { itemId: 49227, name: 'コチニール染料', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
+      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 9, name: 'アイスクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_strength_water_g4',
+    id: 'sub_strength_water_g3',
     itemId: 49218,
-    name: '剛力の宝水G4',
-    enName: 'Grade 4 Infusion of Strength',
+    name: '剛力の宝水G3',
+    enName: 'Grade 3 Infusion of Strength',
     icon: '22680',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'ALC',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -886,26 +886,25 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '錬金術師秘伝書:第12巻',
     defaultSellingPrice: 14000,
     materials: [
-      { itemId: 49212, name: 'ガーデン・ソフトウォーター', amount: 1, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
+      { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44041, name: 'ウィンドローレル', amount: 1, sourceType: 'gathering', defaultPriceNQ: 400 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
       { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
       { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_intel_water_g4',
+    id: 'sub_intel_water_g3',
     itemId: 49221,
-    name: '知力の宝水G4',
-    enName: 'Grade 4 Infusion of Intelligence',
+    name: '知力の宝水G3',
+    enName: 'Grade 3 Infusion of Intelligence',
     icon: '22679',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'ALC',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -916,26 +915,25 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '錬金術師秘伝書:第12巻',
     defaultSellingPrice: 14000,
     materials: [
-      { itemId: 49212, name: 'ガーデン・ソフトウォーター', amount: 1, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
+      { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44042, name: 'ユーカリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 400 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
       { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
       { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_dex_water_g4',
+    id: 'sub_dex_water_g3',
     itemId: 49219,
-    name: '眼力の宝水G4',
-    enName: 'Grade 4 Infusion of Dexterity',
+    name: '眼力の宝水G3',
+    enName: 'Grade 3 Infusion of Dexterity',
     icon: '22681',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'ALC',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -946,26 +944,25 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '錬金術師秘伝書:第12巻',
     defaultSellingPrice: 14000,
     materials: [
-      { itemId: 49212, name: 'ガーデン・ソフトウォーター', amount: 1, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
+      { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44040, name: 'マウンテンセージ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 900 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
       { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
       { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
-    id: 'sub_vital_water_g4',
+    id: 'sub_vital_water_g3',
     itemId: 49220,
-    name: '活力の宝水G4',
-    enName: 'Grade 4 Infusion of Vitality',
+    name: '活力の宝水G3',
+    enName: 'Grade 3 Infusion of Vitality',
     icon: '22680',
     category: 'intermediate',
-    patch: '7.4',
+    patch: '7.2',
     job: 'ALC',
     level: 100,
     stars: 4,
-    ilvl: 770,
+    ilvl: 740,
     durability: 40,
     maxQuality: 9200,
     difficulty: 4300,
@@ -976,10 +973,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     masterBook: '錬金術師秘伝書:第12巻',
     defaultSellingPrice: 14000,
     materials: [
-      { itemId: 49212, name: 'ガーデン・ソフトウォーター', amount: 1, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
+      { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44040, name: 'マウンテンセージ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 900 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 46246, name: '幻晃の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
       { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
       { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
@@ -1077,7 +1073,7 @@ export const RECIPES_DATABASE: Recipe[] = [
       },
       { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
       { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1121,7 +1117,7 @@ export const RECIPES_DATABASE: Recipe[] = [
       },
       { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
       { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1330,7 +1326,7 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44006, name: 'ブラックスター原石', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1500, defaultPriceHQ: 2500 },
       { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
       { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: '火のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -1388,7 +1384,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 43996, name: '黒鉄鉱', amount: 4, sourceType: 'gathering', defaultPriceNQ: 1200 },
       { itemId: 44147, name: 'マルエージングインゴット', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 19500 },
-      { itemId: 13, name: '水のクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   }
 ];

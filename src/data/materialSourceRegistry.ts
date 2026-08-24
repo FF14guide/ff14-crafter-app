@@ -28,7 +28,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   // ================= 7.2 最新伝説・刻限・交換素材 =================
   49208: {
     itemId: 49208,
-    name: '高密度軽銀鉱',
+    name: 'フルグライト',
     patch: '7.2',
     sourceType: 'legendary',
     categoryLabel: '伝説の採集場',
@@ -46,7 +46,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   },
   49211: {
     itemId: 49211,
-    name: 'オルコ亜麻',
+    name: 'コーディア原木',
     patch: '7.2',
     sourceType: 'legendary',
     categoryLabel: '伝説の採集場',
@@ -64,7 +64,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   },
   49224: {
     itemId: 49224,
-    name: '被膜形成材',
+    name: 'タングステン鉱',
     patch: '7.2',
     sourceType: 'tomestone',
     categoryLabel: 'トームストーン交換',
@@ -76,7 +76,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   },
   49227: {
     itemId: 49227,
-    name: 'トライヨラの染料',
+    name: 'コチニール染料',
     patch: '7.2',
     sourceType: 'bicolor',
     categoryLabel: 'バイカラージェム交換',
@@ -88,7 +88,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   },
   46246: {
     itemId: 46246,
-    name: '紫電の霊砂',
+    name: '幻晃の霊砂',
     patch: '7.2',
     sourceType: 'ephemeral',
     categoryLabel: '刻限の採集場 (精選)',
@@ -99,7 +99,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
     level: 100,
     spawnHours: [0, 16],
     durationHours: 4,
-    reductionYield: '紫電の霊砂 (最高品質精選)',
+    reductionYield: '幻晃の霊砂 (最高品質精選)',
     exchangeRate: 'ギャザラースクリップ紫貨 100 または オレンジ貨',
   },
 
@@ -437,18 +437,18 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   },
 
   // クリスタル & クラスター
-  8: { itemId: 8, name: '火のクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
-  9: { itemId: 9, name: '氷のクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
-  10: { itemId: 10, name: '風のクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
-  11: { itemId: 11, name: '土のクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
-  12: { itemId: 12, name: '雷のクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
-  13: { itemId: 13, name: '水のクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
-  14: { itemId: 14, name: '火のクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
-  15: { itemId: 15, name: '氷のクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
-  16: { itemId: 16, name: '風のクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
-  17: { itemId: 17, name: '土のクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
-  18: { itemId: 18, name: '雷のクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
-  19: { itemId: 19, name: '水のクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
+  8: { itemId: 8, name: 'ファイアクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
+  9: { itemId: 9, name: 'アイスクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
+  10: { itemId: 10, name: 'ウィンドクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
+  11: { itemId: 11, name: 'アースクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
+  12: { itemId: 12, name: 'ライトニングクリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
+  13: { itemId: 13, name: 'ウォータークリスタル', patch: '2.0', sourceType: 'gathering', categoryLabel: '採集 / 精選', details: '採掘師・園芸師 各地採集 または 刻限精選' },
+  14: { itemId: 14, name: 'ファイアクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
+  15: { itemId: 15, name: 'アイスクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
+  16: { itemId: 16, name: 'ウィンドクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
+  17: { itemId: 17, name: 'アースクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
+  18: { itemId: 18, name: 'ライトニングクラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
+  19: { itemId: 19, name: 'ウォータークラスター', patch: '2.0', sourceType: 'gathering', categoryLabel: '刻限精選 / 採集', details: '刻限精選 または 各地クラスター採集' },
 };
 
 /**

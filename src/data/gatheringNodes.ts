@@ -1,11 +1,11 @@
 import { TimedGatheringNode } from '../types/ff14';
 
 export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
-  // ================= 7.2 最新伝説・刻限素材 (4★ / IL770新式素材) =================
+  // ================= 7.2 最新伝説・刻限素材 (4★ / IL740新式素材) =================
   {
-    id: 'node_high_density_silver_ore',
+    id: 'node_fulgurite',
     itemId: 49208,
-    itemName: '高密度軽銀鉱',
+    itemName: 'フルグライト',
     job: 'MIN',
     level: 100,
     stars: 4,
@@ -23,9 +23,9 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
     folkloreBook: '伝承録: トラル編【採掘】',
   },
   {
-    id: 'node_orqo_flax',
+    id: 'node_cordia_log',
     itemId: 49211,
-    itemName: 'オルコ亜麻',
+    itemName: 'コーディア原木',
     job: 'BTN',
     level: 100,
     stars: 4,
@@ -43,9 +43,9 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
     folkloreBook: '伝承録: トラル編【園芸】',
   },
   {
-    id: 'node_purple_sand_ephemeral',
+    id: 'node_phantom_sand_ephemeral',
     itemId: 46246,
-    itemName: '紫電の霊砂 (刻限精選 / スクリップ紫貨)',
+    itemName: '幻晃の霊砂 (刻限精選 / スクリップ紫貨)',
     job: 'BTN',
     level: 100,
     stars: 3,
@@ -60,7 +60,7 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
     perceptionReq: 4700,
     itemIcon: '21248',
     isEphemeral: true,
-    reductionYield: '紫電の霊砂 (最高品質精選)',
+    reductionYield: '幻晃の霊砂 (最高品質精選)',
   },
 
   // ================= 7.05 伝説素材 (2★ / IL710新式素材) =================
