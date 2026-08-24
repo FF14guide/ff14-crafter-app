@@ -4,6 +4,7 @@ import { TIMED_GATHERING_NODES } from '../data/gatheringNodes';
 import { getMaterialSource } from '../data/materialSourceRegistry';
 import { calculateEorzeaTime, getRealSecondsUntilETHour, formatRealTimeRemaining } from '../utils/eorzeaTime';
 import { ItemIcon } from './common/ItemIcon';
+import { JobIcon } from './common/JobIcon';
 import { Clock, MapPin, CheckSquare, Square, Copy, Check, Sparkles, Compass, AlertCircle, ArrowRight } from 'lucide-react';
 
 interface MaterialTreeGatheringProps {
@@ -250,8 +251,9 @@ export const MaterialTreeGathering: React.FC<MaterialTreeGatheringProps> = ({
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-slate-100">{node.itemName}</span>
-                      <span className="text-[10px] bg-slate-800 text-slate-300 font-rajdhani font-bold px-1.5 py-0.2 rounded border border-slate-700">
-                        {node.job} Lv{node.level}
+                      <span className="text-[10px] bg-slate-800 text-slate-300 font-rajdhani font-bold px-1.5 py-0.2 rounded border border-slate-700 flex items-center gap-1">
+                        <JobIcon job={node.job} size="xs" />
+                        <span>{node.job} Lv{node.level}</span>
                       </span>
                       {node.slot && (
                         <span className="text-[10px] bg-amber-500/10 text-amber-300 px-1.5 py-0.2 rounded border border-amber-500/20">

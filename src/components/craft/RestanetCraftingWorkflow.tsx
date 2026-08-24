@@ -13,6 +13,7 @@ import {
 } from '../../utils/inventoryStorage';
 import { LocationTooltip } from '../inventory/LocationTooltip';
 import { ItemIcon } from '../common/ItemIcon';
+import { JobIcon } from '../common/JobIcon';
 import { generateGameMacro } from '../../utils/macroGenerator';
 import { calculateEorzeaTime, EorzeaTimeState } from '../../utils/eorzeaTime';
 import { fetchUniversalisMultiPrices } from '../../services/universalisApi';
@@ -433,8 +434,9 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-sm font-bold text-slate-100">{recipe.name}</span>
-                    <span className="text-[10px] bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded border border-slate-700 font-semibold">
-                      {recipe.job} Lv{recipe.level}
+                    <span className="text-[10px] bg-slate-800 text-amber-300 px-1.5 py-0.5 rounded border border-slate-700 font-semibold flex items-center gap-1">
+                      <JobIcon job={recipe.job} size="xs" />
+                      <span>{recipe.job} Lv{recipe.level}</span>
                     </span>
                     <span className="text-[10px] bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded border border-slate-700">
                       IL{recipe.ilvl}
@@ -855,9 +857,11 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                               {inter.craftsNeeded} 回製作
                             </span>
                           </div>
-                          <p className="text-[11px] text-slate-400 mt-0.5">
-                            {inter.recipe.job} | 40耐久 | 35秒高速ワンポチマクロ推奨
-                          </p>
+                          <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mt-0.5">
+                            <JobIcon job={inter.recipe.job} size="xs" />
+                            <span>{inter.recipe.job}</span>
+                            <span>| 40耐久 | 35秒高速ワンポチマクロ推奨</span>
+                          </div>
                         </div>
                       </div>
 

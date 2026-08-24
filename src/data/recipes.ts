@@ -1,7 +1,7 @@
 import { Recipe } from '../types/ff14';
 
 export const RECIPES_DATABASE: Recipe[] = [
-  // ================= 7.2 最新戦闘新式 (Courtly Lover Series IL770 - 4★) =================
+  // ================= 7.4 最新戦闘新式 (Courtly Lover Series IL770 - 4★) =================
   {
     id: 'gear_courtly_lover_fending_coat',
     itemId: 49272,
@@ -9,7 +9,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Surcoat of Fending',
     icon: '57321',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'ARM',
     level: 100,
     stars: 4,
@@ -23,7 +23,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '甲冑師秘伝書:第12巻',
     defaultSellingPrice: 160000,
-    description: 'パッチ7.2最新戦闘新式 タンク胴防具 IL770 (高難易度零式・絶対応)',
+    description: 'パッチ7.4最新戦闘新式 タンク胴防具 IL770 (高難易度零式・絶対応)',
     materials: [
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
       { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
@@ -41,7 +41,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Surcoat of Maiming',
     icon: '57322',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'ARM',
     level: 100,
     stars: 4,
@@ -55,7 +55,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '甲冑師秘伝書:第12巻',
     defaultSellingPrice: 160000,
-    description: 'パッチ7.2最新戦闘新式 スレイヤー胴防具 (竜騎士/リーパー) IL770',
+    description: 'パッチ7.4最新戦闘新式 スレイヤー胴防具 (竜騎士/リーパー) IL770',
     materials: [
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
       { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
@@ -73,7 +73,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Cloak of Striking',
     icon: '57325',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'WVR',
     level: 100,
     stars: 4,
@@ -87,7 +87,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 170000,
-    description: 'パッチ7.2最新戦闘新式 ストライカー胴防具 (モンク/侍) IL770',
+    description: 'パッチ7.4最新戦闘新式 ストライカー胴防具 (モンク/侍) IL770',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 49216, name: 'ペルペルレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_pelupelu_leather', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -105,7 +105,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Shirt of Scouting',
     icon: '57327',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'WVR',
     level: 100,
     stars: 4,
@@ -119,7 +119,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 170000,
-    description: 'パッチ7.2最新戦闘新式 スカウト胴防具 (忍者/ヴァイパー) IL770',
+    description: 'パッチ7.4最新戦闘新式 スカウト胴防具 (忍者/ヴァイパー) IL770',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 49215, name: 'ゴールデンチタンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_golden_titanium_ingot', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -137,7 +137,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Battledress of Casting',
     icon: '57324',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'WVR',
     level: 100,
     stars: 4,
@@ -151,7 +151,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 175000,
-    description: 'パッチ7.2最新戦闘新式 キャスター胴防具 (黒魔/召喚/赤魔/ピクト) IL770',
+    description: 'パッチ7.4最新戦闘新式 キャスター胴防具 (黒魔/召喚/赤魔/ピクト) IL770',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
@@ -169,7 +169,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Ring of Slaying',
     icon: '54761',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'GSM',
     level: 100,
     stars: 4,
@@ -183,7 +183,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 85000,
-    description: 'パッチ7.2最新戦闘新式 アタッカー指輪 IL770',
+    description: 'パッチ7.4最新戦闘新式 アタッカー指輪 IL770',
     materials: [
       { itemId: 49215, name: 'ゴールデンチタンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_golden_titanium_ingot', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_super_duralumin_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
@@ -201,7 +201,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Choker of Slaying',
     icon: '55110',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'WVR',
     level: 100,
     stars: 4,
@@ -215,7 +215,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 90000,
-    description: 'パッチ7.2最新戦闘新式 アタッカー首飾り IL770',
+    description: 'パッチ7.4最新戦闘新式 アタッカー首飾り IL770',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_orqo_linen', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 49216, name: 'ペルペルレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_pelupelu_leather', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -233,7 +233,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Courtly Lover Earrings of Slaying',
     icon: '55565',
     category: 'gear',
-    patch: '7.2',
+    patch: '7.4',
     job: 'GSM',
     level: 100,
     stars: 4,
@@ -247,7 +247,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 88000,
-    description: 'パッチ7.2最新戦闘新式 アタッカー耳飾り IL770',
+    description: 'パッチ7.4最新戦闘新式 アタッカー耳飾り IL770',
     materials: [
       { itemId: 49215, name: 'ゴールデンチタンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_golden_titanium_ingot', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 49216, name: 'ペルペルレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_pelupelu_leather', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -759,7 +759,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Super Duralumin Ingot',
     icon: '20828',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'BSM',
     level: 100,
     stars: 4,
@@ -787,7 +787,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Golden Titanium Ingot',
     icon: '20829',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'GSM',
     level: 100,
     stars: 4,
@@ -815,7 +815,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Orqo Linen',
     icon: '21621',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'WVR',
     level: 100,
     stars: 4,
@@ -843,7 +843,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Pelupelu Leather',
     icon: '22008',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'LTW',
     level: 100,
     stars: 4,
@@ -871,7 +871,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Grade 4 Infusion of Strength',
     icon: '22680',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'ALC',
     level: 100,
     stars: 4,
@@ -901,7 +901,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Grade 4 Infusion of Intelligence',
     icon: '22679',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'ALC',
     level: 100,
     stars: 4,
@@ -931,7 +931,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Grade 4 Infusion of Dexterity',
     icon: '22681',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'ALC',
     level: 100,
     stars: 4,
@@ -961,7 +961,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     enName: 'Grade 4 Infusion of Vitality',
     icon: '22680',
     category: 'intermediate',
-    patch: '7.2',
+    patch: '7.4',
     job: 'ALC',
     level: 100,
     stars: 4,
@@ -1401,8 +1401,12 @@ export function getRecipesByPurpose(purpose?: string): Recipe[] {
     return RECIPES_DATABASE;
   }
   
-  if (purpose === 'patch72' || purpose === 'latestPatch') {
-    return RECIPES_DATABASE.filter(r => r.patch === '7.2' || r.ilvl >= 740);
+  if (purpose === 'patch74' || purpose === 'latestPatch') {
+    return RECIPES_DATABASE.filter(r => r.patch === '7.4' || r.ilvl >= 770);
+  }
+
+  if (purpose === 'patch72') {
+    return RECIPES_DATABASE.filter(r => r.patch === '7.2' || (r.ilvl >= 740 && r.ilvl < 770));
   }
 
   if (purpose === 'patch71') {

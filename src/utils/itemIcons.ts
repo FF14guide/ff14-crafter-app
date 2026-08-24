@@ -365,18 +365,49 @@ export function getItemIconUrl(itemId?: number, name?: string, customIcon?: stri
  * Official Crafter & Gatherer Job Class Icons
  */
 export const OFFICIAL_JOB_ICONS: Record<string, string> = {
-  CRP: 'https://xivapi.com/cj/1/carpenter.png',
-  BSM: 'https://xivapi.com/cj/1/blacksmith.png',
-  ARM: 'https://xivapi.com/cj/1/armorer.png',
-  GSM: 'https://xivapi.com/cj/1/goldsmith.png',
-  LTW: 'https://xivapi.com/cj/1/leatherworker.png',
-  WVR: 'https://xivapi.com/cj/1/weaver.png',
-  ALC: 'https://xivapi.com/cj/1/alchemist.png',
-  CUL: 'https://xivapi.com/cj/1/culinarian.png',
-  MIN: 'https://xivapi.com/cj/1/miner.png',
-  BTN: 'https://xivapi.com/cj/1/botanist.png',
-  FSH: 'https://xivapi.com/cj/1/fisher.png',
+  CRP: 'https://garlandtools.org/files/icons/job/CRP.png',
+  BSM: 'https://garlandtools.org/files/icons/job/BSM.png',
+  ARM: 'https://garlandtools.org/files/icons/job/ARM.png',
+  GSM: 'https://garlandtools.org/files/icons/job/GSM.png',
+  LTW: 'https://garlandtools.org/files/icons/job/LTW.png',
+  WVR: 'https://garlandtools.org/files/icons/job/WVR.png',
+  ALC: 'https://garlandtools.org/files/icons/job/ALC.png',
+  CUL: 'https://garlandtools.org/files/icons/job/CUL.png',
+  MIN: 'https://garlandtools.org/files/icons/job/MIN.png',
+  BTN: 'https://garlandtools.org/files/icons/job/BTN.png',
+  FSH: 'https://garlandtools.org/files/icons/job/FSH.png',
 };
+
+/**
+ * Get official Job Class Icon URL
+ */
+export function getJobIconUrl(job: string): string {
+  const upper = job.toUpperCase();
+  if (OFFICIAL_JOB_ICONS[upper]) {
+    return OFFICIAL_JOB_ICONS[upper];
+  }
+  return `https://garlandtools.org/files/icons/job/${upper}.png`;
+}
+
+/**
+ * Fallback Emoji for Job Class
+ */
+export function getFallbackJobEmoji(job: string): string {
+  switch (job.toUpperCase()) {
+    case 'CRP': return '🪵';
+    case 'BSM': return '🔨';
+    case 'ARM': return '🛡️';
+    case 'GSM': return '💎';
+    case 'LTW': return '👞';
+    case 'WVR': return '🧵';
+    case 'ALC': return '🧪';
+    case 'CUL': return '🍳';
+    case 'MIN': return '⛏️';
+    case 'BTN': return '🌲';
+    case 'FSH': return '🎣';
+    default: return '⚒️';
+  }
+}
 
 /**
  * Fallback Emoji when offline or error

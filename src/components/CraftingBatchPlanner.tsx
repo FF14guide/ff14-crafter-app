@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BatchCraftItem, Recipe } from '../types/ff14';
 import { ItemIcon } from './common/ItemIcon';
+import { JobIcon } from './common/JobIcon';
 import {
   ListPlus,
   Trash2,
@@ -254,8 +255,9 @@ export const CraftingBatchPlanner: React.FC<CraftingBatchPlannerProps> = ({
                     <ItemIcon itemId={item.recipe.itemId} icon={item.recipe.icon} name={item.recipe.name} size="md" />
                     <div>
                       <div className="font-semibold text-slate-200 text-xs">{item.recipe.name}</div>
-                      <div className="text-[10px] text-slate-400 font-rajdhani">
-                        {item.recipe.job} Lv{item.recipe.level} | 単価: 約{(livePrices[item.recipe.itemId] || item.recipe.defaultSellingPrice || 5000).toLocaleString()}G
+                      <div className="text-[10px] text-slate-400 font-rajdhani flex items-center gap-1">
+                        <JobIcon job={item.recipe.job} size="xs" />
+                        <span>{item.recipe.job} Lv{item.recipe.level} | 単価: 約{(livePrices[item.recipe.itemId] || item.recipe.defaultSellingPrice || 5000).toLocaleString()}G</span>
                       </div>
                     </div>
                   </div>

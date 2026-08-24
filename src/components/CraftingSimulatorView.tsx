@@ -3,6 +3,7 @@ import { Recipe, CrafterStats } from '../types/ff14';
 import { CRAFTER_SKILLS, CrafterSkill, SKILL_MAP } from '../data/crafterSkills';
 import { simulateRotation, generateMacroBlocks } from '../utils/craftingSimulator';
 import { ItemIcon } from './common/ItemIcon';
+import { JobIcon } from './common/JobIcon';
 import confetti from 'canvas-confetti';
 import {
   Hammer,
@@ -122,8 +123,9 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="text-base font-bold text-slate-100">{recipe.name} クラフトシミュレータ</h2>
-              <span className="text-xs bg-indigo-500/20 text-indigo-300 font-semibold px-2 py-0.5 rounded-full border border-indigo-500/40">
-                Lv{recipe.level} {recipe.job}
+              <span className="text-xs bg-indigo-500/20 text-indigo-300 font-semibold px-2 py-0.5 rounded-full border border-indigo-500/40 flex items-center gap-1">
+                <JobIcon job={recipe.job} size="xs" />
+                <span>Lv{recipe.level} {recipe.job}</span>
               </span>
             </div>
             <p className="text-xs text-slate-400">

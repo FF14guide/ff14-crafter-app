@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Recipe, CraftJob, CRAFT_JOBS } from '../types/ff14';
 import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass } from 'lucide-react';
 import { ItemIcon } from './common/ItemIcon';
+import { JobIcon } from './common/JobIcon';
 
 interface RecipeCatalogProps {
   recipes: Recipe[];
@@ -31,7 +32,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   const filteredRecipes = recipes.filter((recipe) => {
     // Purpose filter
     if (currentPurpose === 'latestPatch') {
-      if (recipe.patch !== '7.2' && recipe.ilvl < 740) return false;
+      if (recipe.patch !== '7.4' && recipe.patch !== '7.2' && recipe.ilvl < 740) return false;
     } else if (currentPurpose !== 'all') {
       if (recipe.category !== currentPurpose) return false;
     }
@@ -55,7 +56,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   });
 
   const categories = [
-    { id: 'latestPatch', label: '🔥 最新パッチ 7.2', desc: '新式IL770・宝薬G3・最新飯' },
+    { id: 'latestPatch', label: '🔥 最新パッチ 7.4/7.2', desc: '新式IL770・宝薬G3・最新飯' },
     { id: 'foodPotion', label: '🍗 レイド飯・薬', desc: '最新飯・宝薬G3/G2・薬茶' },
     { id: 'gear', label: '🛡️ 新式装備・防具', desc: 'IL770 コートリーラヴァー / IL710' },
     { id: 'intermediate', label: '🟫 中間素材', desc: '黄金のレザー・インゴット・布' },
@@ -140,7 +141,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                 }`}
                 title={job.name}
               >
-                <span>{job.icon}</span>
+                <JobIcon job={jobCode} size="xs" />
                 <span className="font-rajdhani font-semibold">{jobCode}</span>
               </button>
             );
@@ -162,10 +163,10 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                 <div className="flex items-center justify-between gap-2 mb-2">
                   <div className="flex items-center gap-1.5">
                     <span
-                      className="px-2 py-0.5 rounded text-[11px] font-semibold text-white flex items-center gap-1 font-rajdhani"
+                      className="px-2 py-0.5 rounded text-[11px] font-semibold text-white flex items-center gap-1.5 font-rajdhani"
                       style={{ backgroundColor: `${jobInfo.color}CC` }}
                     >
-                      <span>{jobInfo.icon}</span>
+                      <JobIcon job={recipe.job} size="xs" />
                       <span>{jobInfo.code}</span>
                       <span>Lv{recipe.level}</span>
                     </span>
