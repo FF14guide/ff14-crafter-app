@@ -265,6 +265,7 @@ export default function App() {
               stats={crafterStats}
               inventoryData={inventoryData}
               selectedWorldOrDc={selectedWorldOrDc}
+              onChangeStats={setCrafterStats}
               onOpenInventorySync={() => setIsInventoryModalOpen(true)}
               onNavigateToSim={handleSelectRecipeForSim}
             />
@@ -312,11 +313,16 @@ export default function App() {
           {activeTab === 'batchPlanner' && (
             <CraftingBatchPlanner
               batchItems={batchItems}
+              crafterStats={crafterStats}
+              inventoryData={inventoryData}
               selectedWorldOrDc={selectedWorldOrDc}
+              onChangeStats={setCrafterStats}
               onUpdateQuantity={handleUpdateBatchQuantity}
               onRemoveItem={handleRemoveBatchItem}
               onClearAll={handleClearBatchAll}
               onSelectRecipeForSim={handleSelectRecipeForSim}
+              onAddToBatch={handleAddToBatch}
+              onOpenInventorySync={() => setIsInventoryModalOpen(true)}
             />
           )}
         </main>

@@ -14,6 +14,7 @@ import {
 import { LocationTooltip } from '../inventory/LocationTooltip';
 import { ItemIcon } from '../common/ItemIcon';
 import { JobIcon } from '../common/JobIcon';
+import { CrafterStatsBar } from '../common/CrafterStatsBar';
 import { generateGameMacro } from '../../utils/macroGenerator';
 import { calculateEorzeaTime, EorzeaTimeState } from '../../utils/eorzeaTime';
 import { fetchUniversalisMultiPrices } from '../../services/universalisApi';
@@ -48,6 +49,7 @@ interface RestanetCraftingWorkflowProps {
   stats: CrafterStats;
   inventoryData: InventorySyncData | null;
   selectedWorldOrDc: string;
+  onChangeStats?: (newStats: CrafterStats) => void;
   onOpenInventorySync: () => void;
   onNavigateToSim: (recipe: Recipe) => void;
   onSelectAnotherRecipe?: (recipe: Recipe) => void;
@@ -58,6 +60,7 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
   stats,
   inventoryData,
   selectedWorldOrDc,
+  onChangeStats,
   onOpenInventorySync,
   onNavigateToSim,
 }) => {
@@ -359,6 +362,9 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
           </button>
         </div>
       </div>
+
+      {/* Crafter Equipment Stats & Food / Potion / Specialist Bar */}
+      {onChangeStats && <CrafterStatsBar stats={stats} onChangeStats={onChangeStats} />}
 
       {/* Main 2-Column Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">

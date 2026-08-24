@@ -1,4 +1,4 @@
-import { Recipe, MaterialRequirement, InventorySyncData } from '../types/ff14';
+import { Recipe, MaterialRequirement, InventorySyncData, BatchCraftItem } from '../types/ff14';
 import { RECIPES_DATABASE } from '../data/recipes';
 import { getItemStockTotal } from './inventoryStorage';
 import { getMaterialSource, DetailedMaterialSource } from '../data/materialSourceRegistry';
@@ -51,7 +51,7 @@ export function findSubRecipe(subRecipeId?: string, itemId?: number): Recipe | u
 }
 
 /**
- * Build recursive recipe tree node
+ * Build recursive recipe tree node for a single recipe
  */
 export function buildRecipeTree(
   rootRecipe: Recipe,
@@ -137,7 +137,7 @@ export function buildRecipeTree(
 }
 
 /**
- * Calculate intermediate craft requirements based on current inventory
+ * Calculate intermediate craft requirements based on current inventory for a single recipe
  */
 export function getIntermediateCraftRequirements(
   rootRecipe: Recipe,
@@ -176,7 +176,7 @@ export function getIntermediateCraftRequirements(
 export const getIntermediateCraftsNeeded = getIntermediateCraftRequirements;
 
 /**
- * Calculate raw material shortages taking into account owned intermediate items
+ * Calculate raw material shortages taking into account owned intermediate items for a single recipe
  */
 export function getRawShortages(
   rootRecipe: Recipe,
@@ -193,7 +193,6 @@ export function getRawShortages(
     const shortage = Math.max(0, needed - owned);
     const detailedSource = getMaterialSource(mat.itemId, mat.name);
 
-    // Resolve accurate gatheringInfo if available
     let gatheringInfo = mat.gatheringInfo;
     if (!gatheringInfo && detailedSource && (detailedSource.sourceType === 'legendary' || detailedSource.sourceType === 'ephemeral' || detailedSource.sourceType === 'gathering')) {
       gatheringInfo = {
@@ -239,7 +238,6 @@ export function getRawShortages(
     const intermediateShortage = Math.max(0, needed - owned);
 
     if (subRecipe && mat.sourceType === 'subcraft') {
-      // Need to craft `intermediateShortage` of this subcraft
       if (intermediateShortage > 0) {
         const subYield = subRecipe.yields || 1;
         const subRuns = Math.ceil(intermediateShortage / subYield);
@@ -249,10 +247,174 @@ export function getRawShortages(
         }
       }
     } else {
-      // Direct raw material
       processMaterial(mat, craftRuns);
     }
   }
 
   return Object.values(shortagesMap);
+}
+
+// ==========================================
+// BATCH CRAFTING HELPERS (FOR BATCH PLANNER)
+// ==========================================
+
+export interface BatchRecipeTreeNode {
+  batchItem: BatchCraftItem;
+  treeRoot: RecipeTreeNode;
+}
+
+/**
+ * Build trees for all batch items in the planner
+ */
+export function buildBatchRecipeTree(
+  batchItems: BatchCraftItem[],
+  inventoryData: InventorySyncData | null
+): BatchRecipeTreeNode[] {
+  return batchItems.map((item) => ({
+    batchItem: item,
+    treeRoot: buildRecipeTree(item.recipe, item.quantity, inventoryData),
+  }));
+}
+
+/**
+ * Aggregates intermediate craft requirements across ALL items in the batch plan
+ */
+export function getBatchIntermediateCraftRequirements(
+  batchItems: BatchCraftItem[],
+  inventoryData: InventorySyncData | null
+): IntermediateCraftRequirement[] {
+  const intermediateTotals: Record<
+    string,
+    {
+      recipe: Recipe;
+      subRecipeId: string;
+      neededTotal: number;
+      yieldPerCraft: number;
+    }
+  > = {};
+
+  for (const item of batchItems) {
+    const yieldCount = item.recipe.yields || 1;
+    const craftRuns = Math.ceil(item.quantity / yieldCount);
+
+    for (const mat of item.recipe.materials) {
+      const subRecipe = findSubRecipe(mat.subRecipeId, mat.itemId);
+      if (subRecipe && mat.sourceType === 'subcraft') {
+        const needed = mat.amount * craftRuns;
+        if (!intermediateTotals[subRecipe.id]) {
+          intermediateTotals[subRecipe.id] = {
+            recipe: subRecipe,
+            subRecipeId: subRecipe.id,
+            neededTotal: needed,
+            yieldPerCraft: subRecipe.yields || 1,
+          };
+        } else {
+          intermediateTotals[subRecipe.id].neededTotal += needed;
+        }
+      }
+    }
+  }
+
+  const result: IntermediateCraftRequirement[] = [];
+
+  for (const [subId, data] of Object.entries(intermediateTotals)) {
+    const ownedTotal = getItemStockTotal(data.recipe.itemId, inventoryData);
+    const shortage = Math.max(0, data.neededTotal - ownedTotal);
+    const craftsNeeded = Math.ceil(shortage / data.yieldPerCraft);
+
+    result.push({
+      recipe: data.recipe,
+      subRecipeId: subId,
+      neededTotal: data.neededTotal,
+      ownedTotal,
+      craftsNeeded,
+      yieldPerCraft: data.yieldPerCraft,
+    });
+  }
+
+  return result;
+}
+
+/**
+ * Aggregates raw material shortages across ALL items and intermediate shortages in the batch plan
+ */
+export function getBatchRawShortages(
+  batchItems: BatchCraftItem[],
+  inventoryData: InventorySyncData | null
+): RawShortageMaterial[] {
+  const rawTotalsMap: Record<number, { needed: number; mat: MaterialRequirement }> = {};
+
+  for (const item of batchItems) {
+    const yieldCount = item.recipe.yields || 1;
+    const craftRuns = Math.ceil(item.quantity / yieldCount);
+
+    for (const mat of item.recipe.materials) {
+      const subRecipe = findSubRecipe(mat.subRecipeId, mat.itemId);
+      const ownedInter = getItemStockTotal(mat.itemId, inventoryData);
+      const neededInter = mat.amount * craftRuns;
+      const shortageInter = Math.max(0, neededInter - ownedInter);
+
+      if (subRecipe && mat.sourceType === 'subcraft') {
+        if (shortageInter > 0) {
+          const subYield = subRecipe.yields || 1;
+          const subRuns = Math.ceil(shortageInter / subYield);
+
+          for (const subMat of subRecipe.materials) {
+            const subNeeded = subMat.amount * subRuns;
+            if (!rawTotalsMap[subMat.itemId]) {
+              rawTotalsMap[subMat.itemId] = { needed: subNeeded, mat: subMat };
+            } else {
+              rawTotalsMap[subMat.itemId].needed += subNeeded;
+            }
+          }
+        }
+      } else {
+        // Direct raw material
+        const needed = mat.amount * craftRuns;
+        if (!rawTotalsMap[mat.itemId]) {
+          rawTotalsMap[mat.itemId] = { needed, mat };
+        } else {
+          rawTotalsMap[mat.itemId].needed += needed;
+        }
+      }
+    }
+  }
+
+  const result: RawShortageMaterial[] = [];
+
+  for (const [itemIdStr, entry] of Object.entries(rawTotalsMap)) {
+    const itemId = parseInt(itemIdStr);
+    const ownedTotal = getItemStockTotal(itemId, inventoryData);
+    const shortage = Math.max(0, entry.needed - ownedTotal);
+    const detailedSource = getMaterialSource(itemId, entry.mat.name);
+
+    let gatheringInfo = entry.mat.gatheringInfo;
+    if (!gatheringInfo && detailedSource && (detailedSource.sourceType === 'legendary' || detailedSource.sourceType === 'ephemeral' || detailedSource.sourceType === 'gathering')) {
+      gatheringInfo = {
+        location: detailedSource.zone || 'トピア',
+        zone: detailedSource.zone || 'トピア',
+        nodeType: (detailedSource.sourceType === 'legendary' || detailedSource.sourceType === 'ephemeral') ? detailedSource.sourceType : 'normal',
+        spawnTimes: detailedSource.spawnHours,
+        slot: detailedSource.slot,
+        job: (detailedSource.job === 'MIN' || detailedSource.job === 'BTN' || detailedSource.job === 'FSH') ? detailedSource.job : 'BTN',
+      };
+    }
+
+    const resolvedSourceType = detailedSource ? detailedSource.sourceType : entry.mat.sourceType;
+
+    result.push({
+      itemId,
+      name: entry.mat.name,
+      neededTotal: entry.needed,
+      ownedTotal,
+      shortage,
+      sourceType: resolvedSourceType,
+      gatheringInfo,
+      detailedSource,
+      marketPriceNQ: entry.mat.defaultPriceNQ || 1000,
+      totalMarketCost: shortage * (entry.mat.defaultPriceNQ || 1000),
+    });
+  }
+
+  return result;
 }
