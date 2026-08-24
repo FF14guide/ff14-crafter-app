@@ -106,6 +106,7 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'メスカル料理酒': getGarlandIconUrl(25057),
 
   // Gathering & Raw Materials (Legendary / Ephemeral / Raw)
+  '帯雷繭': getGarlandIconUrl(21617),
   'ラムプレスチキン': getGarlandIconUrl(25158),
   'ブラウンカルダモン': getGarlandIconUrl(25021),
   'ワイルドコーヒービーン': getGarlandIconUrl(25919),
@@ -273,6 +274,7 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   49317: getGarlandIconUrl(55908), // コートリーラヴァー・アタッカーリストレット
 
   // Raw & Gathering
+  44028: getGarlandIconUrl(21617), // 帯雷繭
   44170: getGarlandIconUrl(25158), // ラムプレスチキン
   44171: getGarlandIconUrl(25021), // ブラウンカルダモン
   44172: getGarlandIconUrl(25919), // ワイルドコーヒービーン

@@ -16,6 +16,7 @@ import { ItemIcon } from '../common/ItemIcon';
 import { generateGameMacro } from '../../utils/macroGenerator';
 import { calculateEorzeaTime, EorzeaTimeState } from '../../utils/eorzeaTime';
 import { fetchUniversalisMultiPrices } from '../../services/universalisApi';
+import { getMaterialSource } from '../../data/materialSourceRegistry';
 import {
   Check,
   Copy,
@@ -183,13 +184,18 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
       `目標: ${recipe.name} × ${targetQuantity}個 (${selectedWorldOrDc})`,
       `----------------------------------------`,
       ...rawShortages.map((s) => {
-        const info = s.gatheringInfo
+        const dSource = s.detailedSource || getMaterialSource(s.itemId, s.name);
+        const info = dSource
+          ? `[${dSource.categoryLabel}: ${dSource.zone || dSource.details}]`
+          : s.gatheringInfo
           ? `[採集: ${s.gatheringInfo.zone} ET${s.gatheringInfo.spawnTimes ? s.gatheringInfo.spawnTimes.join(':00, ') + ':00' : '常時'}]`
           : s.sourceType === 'tomestone'
-          ? `[因果/美学/軍票交換]`
+          ? `[天道/美学 20交換]`
+          : s.sourceType === 'bicolor'
+          ? `[バイカラージェム交換]`
           : s.sourceType === 'reduction'
-          ? `[精選]`
-          : `[モンスター/マケボ]`;
+          ? `[刻限精選]`
+          : `[モンスター/ショップ/マケボ]`;
         return `・${s.name} × 不足 ${s.shortage}個 ${info} (約 ${s.totalMarketCost.toLocaleString()} G)`;
       }),
       `----------------------------------------`,
@@ -643,34 +649,140 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
 
                         {/* Gathering or source info */}
                         <div className="flex flex-wrap items-center gap-2 text-[11px] text-slate-400">
-                          {gInfo ? (
-                            <>
-                              <span className="bg-slate-900 px-2 py-0.5 rounded text-amber-300 border border-slate-700 flex items-center gap-1 font-rajdhani">
-                                <Clock className="w-3 h-3 text-amber-400" />
-                                {gInfo.spawnTimes ? `ET ${gInfo.spawnTimes.join(':00, ')}:00~` : '常時採集'}
-                              </span>
-                              <span className="flex items-center gap-1 text-slate-300">
-                                <MapPin className="w-3 h-3 text-sky-400" />
-                                {gInfo.location} ({gInfo.job})
-                              </span>
-                              {gInfo.slot && (
-                                <span className="text-slate-400">{gInfo.slot}段目</span>
-                              )}
-                              {gInfo.perceptionReq && (
-                                <span className="text-slate-500">技術 {gInfo.perceptionReq}</span>
-                              )}
-                            </>
-                          ) : item.sourceType === 'tomestone' ? (
-                            <span className="bg-indigo-950/60 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded font-medium">
-                              因果 / 美学 20 または軍票交換
-                            </span>
-                          ) : item.sourceType === 'reduction' ? (
-                            <span className="bg-purple-950/60 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded font-medium">
-                              精選 (黄金の霊砂・刻限)
-                            </span>
-                          ) : (
-                            <span className="text-slate-400">モンスタードロップ / ショップ</span>
-                          )}
+                          {(() => {
+                            const dSource = item.detailedSource || getMaterialSource(item.itemId, item.name);
+                            if (dSource) {
+                              if (dSource.sourceType === 'legendary') {
+                                return (
+                                  <>
+                                    <span className="bg-amber-950/60 text-amber-300 border border-amber-500/40 px-2 py-0.5 rounded font-medium flex items-center gap-1 font-rajdhani">
+                                      <Clock className="w-3 h-3 text-amber-400" />
+                                      伝説 ET {dSource.spawnHours ? dSource.spawnHours.join(':00, ') + ':00~' : ''} ({dSource.slot ? `${dSource.slot}段目` : ''})
+                                    </span>
+                                    <span className="flex items-center gap-1 text-slate-300">
+                                      <MapPin className="w-3 h-3 text-sky-400" />
+                                      {dSource.zone} {dSource.coordinates && `(${dSource.coordinates})`}
+                                    </span>
+                                    <span className="bg-slate-900 px-1.5 py-0.5 rounded text-[10px] text-slate-400 border border-slate-700">
+                                      {dSource.job} Lv{dSource.level}
+                                    </span>
+                                    {dSource.folkloreBook && (
+                                      <span className="text-[10px] text-amber-400/80">📜 {dSource.folkloreBook}</span>
+                                    )}
+                                  </>
+                                );
+                              }
+                              if (dSource.sourceType === 'ephemeral') {
+                                return (
+                                  <>
+                                    <span className="bg-purple-950/60 text-purple-300 border border-purple-500/40 px-2 py-0.5 rounded font-medium flex items-center gap-1">
+                                      <Sparkles className="w-3 h-3 text-purple-400" />
+                                      刻限精選 / 紫貨・オレンジ貨
+                                    </span>
+                                    <span className="flex items-center gap-1 text-slate-300">
+                                      <MapPin className="w-3 h-3 text-purple-300" />
+                                      {dSource.zone}
+                                    </span>
+                                    {dSource.spawnHours && (
+                                      <span className="bg-slate-900 px-1.5 py-0.5 rounded text-[10px] text-purple-300 border border-slate-700 font-rajdhani">
+                                        ET {dSource.spawnHours.join(':00, ')}:00~
+                                      </span>
+                                    )}
+                                  </>
+                                );
+                              }
+                              if (dSource.sourceType === 'gathering') {
+                                return (
+                                  <>
+                                    <span className="bg-emerald-950/60 text-emerald-300 border border-emerald-500/40 px-2 py-0.5 rounded font-medium flex items-center gap-1">
+                                      <MapPin className="w-3 h-3 text-emerald-400" />
+                                      常時採集 ({dSource.job} Lv{dSource.level || '90+'})
+                                    </span>
+                                    <span className="text-slate-300">
+                                      {dSource.zone} {dSource.coordinates && `(${dSource.coordinates})`}
+                                    </span>
+                                    {dSource.vendorCost && (
+                                      <span className="text-slate-400 bg-slate-900 px-1.5 py-0.5 rounded text-[10px] border border-slate-800">
+                                        🛒 {dSource.vendorCost}
+                                      </span>
+                                    )}
+                                  </>
+                                );
+                              }
+                              if (dSource.sourceType === 'tomestone') {
+                                return (
+                                  <>
+                                    <span className="bg-indigo-950/60 text-indigo-300 border border-indigo-500/40 px-2 py-0.5 rounded font-medium">
+                                      🪙 トームストーン: 天道 / 美学 20個交換
+                                    </span>
+                                    <span className="text-slate-300">
+                                      {dSource.zone} {dSource.coordinates && `(${dSource.coordinates})`}
+                                    </span>
+                                  </>
+                                );
+                              }
+                              if (dSource.sourceType === 'bicolor') {
+                                return (
+                                  <>
+                                    <span className="bg-orange-950/60 text-orange-300 border border-orange-500/40 px-2 py-0.5 rounded font-medium">
+                                      💎 バイカラージェム 10個交換
+                                    </span>
+                                    <span className="text-slate-300">
+                                      {dSource.zone} {dSource.coordinates && `(${dSource.coordinates})`}
+                                    </span>
+                                  </>
+                                );
+                              }
+                              if (dSource.sourceType === 'monster') {
+                                return (
+                                  <>
+                                    <span className="bg-rose-950/60 text-rose-300 border border-rose-500/40 px-2 py-0.5 rounded font-medium">
+                                      ⚔️ モンスター討伐 / ジェム交換
+                                    </span>
+                                    <span className="text-slate-300">
+                                      {dSource.monsterName || dSource.zone} ({dSource.exchangeRate || 'ジェム2個'})
+                                    </span>
+                                  </>
+                                );
+                              }
+                            }
+
+                            if (gInfo) {
+                              return (
+                                <>
+                                  <span className="bg-slate-900 px-2 py-0.5 rounded text-amber-300 border border-slate-700 flex items-center gap-1 font-rajdhani">
+                                    <Clock className="w-3 h-3 text-amber-400" />
+                                    {gInfo.spawnTimes ? `ET ${gInfo.spawnTimes.join(':00, ')}:00~` : '常時採集'}
+                                  </span>
+                                  <span className="flex items-center gap-1 text-slate-300">
+                                    <MapPin className="w-3 h-3 text-sky-400" />
+                                    {gInfo.location} ({gInfo.job})
+                                  </span>
+                                  {gInfo.slot && (
+                                    <span className="text-slate-400">{gInfo.slot}段目</span>
+                                  )}
+                                </>
+                              );
+                            }
+
+                            if (item.sourceType === 'tomestone') {
+                              return (
+                                <span className="bg-indigo-950/60 text-indigo-300 border border-indigo-500/30 px-2 py-0.5 rounded font-medium">
+                                  トームストーン: 天道 / 美学 20個交換
+                                </span>
+                              );
+                            }
+
+                            if (item.sourceType === 'reduction') {
+                              return (
+                                <span className="bg-purple-950/60 text-purple-300 border border-purple-500/30 px-2 py-0.5 rounded font-medium">
+                                  刻限精選 (霊砂)
+                                </span>
+                              );
+                            }
+
+                            return <span className="text-slate-400">マケボ調達 / 採集</span>;
+                          })()}
                         </div>
                       </div>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Recipe } from '../types/ff14';
 import { TIMED_GATHERING_NODES } from '../data/gatheringNodes';
+import { getMaterialSource } from '../data/materialSourceRegistry';
 import { calculateEorzeaTime, getRealSecondsUntilETHour, formatRealTimeRemaining } from '../utils/eorzeaTime';
 import { ItemIcon } from './common/ItemIcon';
 import { Clock, MapPin, CheckSquare, Square, Copy, Check, Sparkles, Compass, AlertCircle, ArrowRight } from 'lucide-react';
@@ -138,29 +139,41 @@ export const MaterialTreeGathering: React.FC<MaterialTreeGatheringProps> = ({
                       {mat.name}
                     </div>
                     <div className="flex items-center gap-2 mt-0.5 text-[11px] text-slate-400">
-                      <span
-                        className={`px-1.5 py-0.2 rounded text-[10px] ${
-                          mat.sourceType === 'gathering'
-                            ? 'bg-emerald-500/20 text-emerald-300'
-                            : mat.sourceType === 'reduction'
-                            ? 'bg-purple-500/20 text-purple-300'
-                            : mat.sourceType === 'tomestone'
-                            ? 'bg-amber-500/20 text-amber-300'
-                            : mat.sourceType === 'subcraft'
-                            ? 'bg-indigo-500/20 text-indigo-300'
-                            : 'bg-slate-800 text-slate-400'
-                        }`}
-                      >
-                        {mat.sourceType === 'gathering'
-                          ? '🌲 採集'
-                          : mat.sourceType === 'reduction'
-                          ? '✨ 霊砂・精選'
-                          : mat.sourceType === 'tomestone'
-                          ? '🪙 トームストーン'
-                          : mat.sourceType === 'subcraft'
-                          ? '🔨 中間素材'
-                          : '🛒 店売り/他'}
-                      </span>
+                      {(() => {
+                        const dSource = getMaterialSource(mat.itemId, mat.name);
+                        if (dSource) {
+                          return (
+                            <span className="px-1.5 py-0.2 rounded text-[10px] bg-slate-800 text-sky-300 border border-slate-700">
+                              {dSource.categoryLabel} ({dSource.zone || dSource.details})
+                            </span>
+                          );
+                        }
+                        return (
+                          <span
+                            className={`px-1.5 py-0.2 rounded text-[10px] ${
+                              mat.sourceType === 'gathering'
+                                ? 'bg-emerald-500/20 text-emerald-300'
+                                : mat.sourceType === 'reduction'
+                                ? 'bg-purple-500/20 text-purple-300'
+                                : mat.sourceType === 'tomestone'
+                                ? 'bg-amber-500/20 text-amber-300'
+                                : mat.sourceType === 'subcraft'
+                                ? 'bg-indigo-500/20 text-indigo-300'
+                                : 'bg-slate-800 text-slate-400'
+                            }`}
+                          >
+                            {mat.sourceType === 'gathering'
+                              ? '🌲 採集'
+                              : mat.sourceType === 'reduction'
+                              ? '✨ 霊砂・精選'
+                              : mat.sourceType === 'tomestone'
+                              ? '🪙 トームストーン'
+                              : mat.sourceType === 'subcraft'
+                              ? '🔨 中間素材'
+                              : '🛒 店売り/他'}
+                          </span>
+                        );
+                      })()}
                     </div>
                   </div>
                 </div>
