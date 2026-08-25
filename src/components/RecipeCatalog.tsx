@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Recipe, CraftJob, CRAFT_JOBS } from '../types/ff14';
-import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass } from 'lucide-react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { Recipe, CraftJob, CRAFT_JOBS, UniversalisItemData } from '../types/ff14';
+import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass, ArrowUpDown, TrendingUp, Percent, AlertTriangle, Globe } from 'lucide-react';
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
+import { fetchUniversalisMultiPrices } from '../services/universalisApi';
 
 interface RecipeCatalogProps {
   recipes: Recipe[];
@@ -13,6 +14,48 @@ interface RecipeCatalogProps {
   onSelectRecipeForTree: (recipe: Recipe) => void;
   onSelectRecipeForSim: (recipe: Recipe) => void;
   onAddToBatch: (recipe: Recipe) => void;
+  selectedWorldOrDc: string;
+}
+
+type SortMode = 'default' | 'profitDesc' | 'profitRateDesc';
+
+const PATCH_OPTIONS = ['7.0', '7.1', '7.2', '7.3', '7.4', '7.5'];
+
+interface RecipeEconomics {
+  materialCost: number;
+  grossRevenue: number;
+  netProfit: number;
+  profitRatePercent: number;
+  isEstimate: boolean;
+}
+
+/** Same formula as CostProfitCalculator (single-craft basis): NQ material
+ * cost, HQ (or NQ if the recipe can't be HQ) selling price, 5% market tax. */
+function computeEconomics(recipe: Recipe, marketData: Record<number, UniversalisItemData>): RecipeEconomics {
+  let materialCost = 0;
+  let anyEstimate = false;
+
+  for (const mat of recipe.materials) {
+    const md = marketData[mat.itemId];
+    const price = md?.minPriceNQ ?? mat.defaultPriceNQ ?? 0;
+    if (md?.isEstimate) anyEstimate = true;
+    materialCost += price * mat.amount;
+  }
+
+  const productMarket = marketData[recipe.itemId];
+  const unitSellingPrice = recipe.canHq
+    ? productMarket?.minPriceHQ ?? recipe.defaultSellingPrice ?? 0
+    : productMarket?.minPriceNQ ?? recipe.defaultSellingPrice ?? 0;
+  if (productMarket?.isEstimate) anyEstimate = true;
+
+  const yields = recipe.yields || 1;
+  const grossRevenue = unitSellingPrice * yields;
+  const marketTax = Math.round(grossRevenue * 0.05);
+  const netRevenue = grossRevenue - marketTax;
+  const netProfit = netRevenue - materialCost;
+  const profitRatePercent = grossRevenue > 0 ? Math.round((netProfit / grossRevenue) * 100) : 0;
+
+  return { materialCost, grossRevenue, netProfit, profitRatePercent, isEstimate: anyEstimate };
 }
 
 export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
@@ -24,9 +67,45 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   onSelectRecipeForTree,
   onSelectRecipeForSim,
   onAddToBatch,
+  selectedWorldOrDc,
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedJob, setSelectedJob] = useState<CraftJob | 'ALL'>('ALL');
+  const [selectedPatches, setSelectedPatches] = useState<string[]>([]);
+  const [sortMode, setSortMode] = useState<SortMode>('default');
+  const [marketData, setMarketData] = useState<Record<number, UniversalisItemData>>({});
+  const [loadingMarket, setLoadingMarket] = useState(false);
+
+  const togglePatch = (patch: string) => {
+    setSelectedPatches((prev) => (prev.includes(patch) ? prev.filter((p) => p !== patch) : [...prev, patch]));
+  };
+
+  // Fetch live market prices (product + every material) for every recipe in
+  // the catalog in one batched request, so cost/profit/rate can be shown and
+  // sorted on without opening each recipe's dedicated cost calculator.
+  const loadMarketData = useCallback(async () => {
+    setLoadingMarket(true);
+    try {
+      const idsSet = new Set<number>();
+      const fallbackPrices: Record<number, number> = {};
+      for (const recipe of recipes) {
+        idsSet.add(recipe.itemId);
+        fallbackPrices[recipe.itemId] = recipe.defaultSellingPrice || 5000;
+        for (const mat of recipe.materials) {
+          idsSet.add(mat.itemId);
+          fallbackPrices[mat.itemId] = mat.defaultPriceNQ || 1000;
+        }
+      }
+      const data = await fetchUniversalisMultiPrices(Array.from(idsSet), selectedWorldOrDc, fallbackPrices);
+      setMarketData(data);
+    } finally {
+      setLoadingMarket(false);
+    }
+  }, [recipes, selectedWorldOrDc]);
+
+  useEffect(() => {
+    loadMarketData();
+  }, [loadMarketData]);
 
   // Filter recipes
   const filteredRecipes = recipes.filter((recipe) => {
@@ -42,6 +121,11 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
       return false;
     }
 
+    // Patch filter (multi-select; empty = no restriction)
+    if (selectedPatches.length > 0 && !selectedPatches.includes(recipe.patch)) {
+      return false;
+    }
+
     // Search query
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
@@ -54,6 +138,23 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
 
     return true;
   });
+
+  // Attach economics to each recipe (memoized on marketData/recipe list) and
+  // apply the selected sort.
+  const sortedRecipes = useMemo(() => {
+    const withEconomics = filteredRecipes.map((recipe) => ({
+      recipe,
+      econ: computeEconomics(recipe, marketData),
+    }));
+
+    if (sortMode === 'profitDesc') {
+      withEconomics.sort((a, b) => b.econ.netProfit - a.econ.netProfit);
+    } else if (sortMode === 'profitRateDesc') {
+      withEconomics.sort((a, b) => b.econ.profitRatePercent - a.econ.profitRatePercent);
+    }
+
+    return withEconomics;
+  }, [filteredRecipes, marketData, sortMode]);
 
   const categories = [
     { id: 'latestPatch', label: '🔥 最新パッチ 7.4/7.2', desc: '新式IL770・宝薬G3・最新飯' },
@@ -149,9 +250,82 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
         </div>
       </div>
 
+      {/* Sort & Patch Filters */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/40 p-3 rounded-xl border border-slate-800/80">
+        {/* Sort buttons */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-[11px] text-slate-400 flex items-center gap-1 mr-1">
+            <ArrowUpDown className="w-3.5 h-3.5" />
+            並び替え:
+          </span>
+          <button
+            onClick={() => setSortMode('default')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              sortMode === 'default'
+                ? 'bg-slate-700 text-slate-100 border-slate-600'
+                : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+            }`}
+          >
+            デフォルト
+          </button>
+          <button
+            onClick={() => setSortMode('profitDesc')}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              sortMode === 'profitDesc'
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60'
+                : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+            }`}
+          >
+            <TrendingUp className="w-3.5 h-3.5" />
+            利益額が高い順
+          </button>
+          <button
+            onClick={() => setSortMode('profitRateDesc')}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              sortMode === 'profitRateDesc'
+                ? 'bg-sky-500/20 text-sky-300 border-sky-500/60'
+                : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+            }`}
+          >
+            <Percent className="w-3.5 h-3.5" />
+            利益率が高い順
+          </button>
+          {loadingMarket && <span className="text-[10px] text-slate-500 ml-1">マケボ価格取得中...</span>}
+        </div>
+
+        {/* Patch filter buttons */}
+        <div className="flex items-center gap-1.5 flex-wrap">
+          <span className="text-[11px] text-slate-400 mr-0.5">パッチ:</span>
+          {PATCH_OPTIONS.map((patch) => {
+            const isActive = selectedPatches.includes(patch);
+            return (
+              <button
+                key={patch}
+                onClick={() => togglePatch(patch)}
+                className={`px-2 py-1 rounded-lg text-xs font-rajdhani font-bold border transition-all ${
+                  isActive
+                    ? 'bg-amber-500 text-slate-950 border-amber-400'
+                    : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                }`}
+              >
+                {patch}
+              </button>
+            );
+          })}
+          {selectedPatches.length > 0 && (
+            <button
+              onClick={() => setSelectedPatches([])}
+              className="text-[10px] text-slate-500 hover:text-slate-300 underline ml-1"
+            >
+              クリア
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* Recipes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredRecipes.map((recipe) => {
+        {sortedRecipes.map(({ recipe, econ }) => {
           const jobInfo = CRAFT_JOBS[recipe.job];
           return (
             <div
@@ -212,7 +386,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                 )}
 
                 {/* Recipe Stats Requirements */}
-                <div className="grid grid-cols-3 gap-1.5 bg-slate-950/40 p-2 rounded-xl border border-slate-800/60 text-[11px] mb-3 font-rajdhani">
+                <div className="grid grid-cols-3 gap-1.5 bg-slate-950/40 p-2 rounded-xl border border-slate-800/60 text-[11px] mb-2 font-rajdhani">
                   <div>
                     <span className="text-slate-400 block text-[10px]">耐久</span>
                     <span className="text-slate-200 font-semibold">{recipe.durability}</span>
@@ -224,6 +398,34 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                   <div>
                     <span className="text-slate-400 block text-[10px]">最大品質</span>
                     <span className="text-sky-300 font-semibold">{recipe.maxQuality}</span>
+                  </div>
+                </div>
+
+                {/* Cost / Profit / Rate summary */}
+                <div className="grid grid-cols-3 gap-1.5 bg-slate-950/60 p-2 rounded-xl border border-slate-800/60 text-[11px] mb-3 font-rajdhani">
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">原価 (材料費)</span>
+                    <span className="text-slate-200 font-semibold">{Math.round(econ.materialCost).toLocaleString()}G</span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px]">利益額</span>
+                    <span className={`font-semibold ${econ.netProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
+                      {econ.netProfit >= 0 ? '+' : ''}
+                      {Math.round(econ.netProfit).toLocaleString()}G
+                    </span>
+                  </div>
+                  <div>
+                    <span className="text-slate-400 block text-[10px] flex items-center gap-1">
+                      利益率
+                      {econ.isEstimate && (
+                        <span title="マケボ価格の一部が推定値です">
+                          <AlertTriangle className="w-2.5 h-2.5 text-amber-500/80" />
+                        </span>
+                      )}
+                    </span>
+                    <span className={`font-semibold ${econ.profitRatePercent >= 0 ? 'text-sky-300' : 'text-rose-400'}`}>
+                      {econ.profitRatePercent}%
+                    </span>
                   </div>
                 </div>
 
@@ -312,6 +514,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
             onClick={() => {
               setSearchQuery('');
               setSelectedJob('ALL');
+              setSelectedPatches([]);
               onChangePurpose('latestPatch');
             }}
             className="mt-3 text-xs text-amber-400 hover:underline inline-flex items-center gap-1"

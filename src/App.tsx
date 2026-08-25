@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useEffect, ReactNode, ErrorInfo } from 'react';
+import { useState, useEffect, useRef, ReactNode, ErrorInfo } from 'react';
 import { Recipe, CrafterStats, BatchCraftItem, InventorySyncData } from './types/ff14';
 import { RECIPES_DATABASE } from './data/recipes';
 import { Header, MainTabType } from './components/Header';
@@ -13,7 +13,7 @@ import { RestanetCraftingWorkflow } from './components/craft/RestanetCraftingWor
 import { InventorySyncModal } from './components/inventory/InventorySyncModal';
 import { ItemIcon } from './components/common/ItemIcon';
 import { loadStoredInventory, saveStoredInventory, SAMPLE_INVENTORY_DATA } from './utils/inventoryStorage';
-import { getSafeUrlParams, updateUrlQueryParam, safeJsonParse } from './utils/jsonSafe';
+import { getSafeUrlParams, updateUrlQueryParam, pushUrlState, safeJsonParse } from './utils/jsonSafe';
 import { Sparkles, AlertCircle, RefreshCw, Compass } from 'lucide-react';
 
 // Error Boundary to prevent crashes
@@ -142,6 +142,10 @@ export default function App() {
     }
   }, [batchItems]);
 
+  // Guards against the popstate handler's own state updates re-triggering
+  // a pushState (which would create a duplicate/looping history entry).
+  const isHandlingPopState = React.useRef(false);
+
   // Handle URL Search Params on initial mount (?purpose=latestPatch, etc.)
   useEffect(() => {
     const params = getSafeUrlParams();
@@ -154,7 +158,65 @@ export default function App() {
         setSelectedRecipe(found);
       }
     }
+    if (params.tab) {
+      setActiveTab(params.tab as MainTabType);
+    }
+    // Establish a baseline history entry carrying the initial tab so the
+    // very first Back press has something of ours to land on.
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (!url.searchParams.get('tab')) {
+        url.searchParams.set('tab', params.tab || 'workflow');
+        window.history.replaceState({ tab: params.tab || 'workflow' }, '', url.toString());
+      }
+    }
   }, []);
+
+  // Respond to the browser's Back/Forward buttons by restoring the tab and
+  // recipe that were active at that point in history, instead of letting the
+  // browser fall through to whatever page was open before this site.
+  useEffect(() => {
+    const handlePopState = () => {
+      isHandlingPopState.current = true;
+      const params = getSafeUrlParams();
+      if (params.tab) {
+        setActiveTab(params.tab as MainTabType);
+      }
+      if (params.itemId) {
+        const found = RECIPES_DATABASE.find((r) => r.itemId === parseInt(params.itemId!));
+        if (found) setSelectedRecipe(found);
+      }
+      // Release the guard after this render cycle so subsequent user-driven
+      // navigation still pushes new history entries normally.
+      setTimeout(() => {
+        isHandlingPopState.current = false;
+      }, 0);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  /** Switches the active tab and pushes a real history entry for it, so the
+   * browser Back button returns to the previous in-app tab rather than
+   * leaving the site. Skipped while we're already responding to a
+   * popstate event to avoid pushing a duplicate entry. */
+  const navigateToTab = (tab: MainTabType) => {
+    if (tab === activeTab) return;
+    setActiveTab(tab);
+    if (!isHandlingPopState.current) {
+      pushUrlState({ tab });
+    }
+  };
+
+  /** Selects a recipe and switches tab in one step, pushing a single
+   * combined history entry. */
+  const navigateToRecipe = (recipe: Recipe, tab: MainTabType) => {
+    setSelectedRecipe(recipe);
+    setActiveTab(tab);
+    if (!isHandlingPopState.current) {
+      pushUrlState({ tab, itemId: String(recipe.itemId) });
+    }
+  };
 
   const handleChangePurpose = (purpose: string) => {
     setCurrentPurpose(purpose);
@@ -162,23 +224,19 @@ export default function App() {
   };
 
   const handleSelectRecipeForWorkflow = (recipe: Recipe) => {
-    setSelectedRecipe(recipe);
-    setActiveTab('workflow');
+    navigateToRecipe(recipe, 'workflow');
   };
 
   const handleSelectRecipeForCost = (recipe: Recipe) => {
-    setSelectedRecipe(recipe);
-    setActiveTab('costProfit');
+    navigateToRecipe(recipe, 'costProfit');
   };
 
   const handleSelectRecipeForTree = (recipe: Recipe) => {
-    setSelectedRecipe(recipe);
-    setActiveTab('gatheringTree');
+    navigateToRecipe(recipe, 'gatheringTree');
   };
 
   const handleSelectRecipeForSim = (recipe: Recipe) => {
-    setSelectedRecipe(recipe);
-    setActiveTab('simulator');
+    navigateToRecipe(recipe, 'simulator');
   };
 
   const handleAddToBatch = (recipe: Recipe) => {
@@ -217,7 +275,7 @@ export default function App() {
 
   const handleApplyPreset = (preset: MacroPreset) => {
     // Navigate to simulator tab with preset loaded
-    setActiveTab('simulator');
+    navigateToTab('simulator');
   };
 
   return (
@@ -226,7 +284,7 @@ export default function App() {
         {/* Header */}
         <Header
           activeTab={activeTab}
-          onSelectTab={setActiveTab}
+          onSelectTab={navigateToTab}
           selectedWorldOrDc={selectedWorldOrDc}
           onSelectWorldOrDc={setSelectedWorldOrDc}
           batchCount={batchItems.length}
@@ -295,6 +353,7 @@ export default function App() {
               onSelectRecipeForTree={handleSelectRecipeForTree}
               onSelectRecipeForSim={handleSelectRecipeForSim}
               onAddToBatch={handleAddToBatch}
+              selectedWorldOrDc={selectedWorldOrDc}
             />
           )}
 

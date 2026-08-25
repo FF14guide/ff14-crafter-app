@@ -52,7 +52,7 @@ export function safeJsonParse<T>(jsonStr: string | null | undefined, fallback: T
 /**
  * Parses query params safely without throwing
  */
-export function getSafeUrlParams(): { purpose?: string; itemId?: string; job?: string; patch?: string } {
+export function getSafeUrlParams(): { purpose?: string; itemId?: string; job?: string; patch?: string; tab?: string } {
   if (typeof window === 'undefined') {
     return {};
   }
@@ -65,6 +65,7 @@ export function getSafeUrlParams(): { purpose?: string; itemId?: string; job?: s
       itemId: params.get('itemId') || undefined,
       job: params.get('job') || undefined,
       patch: params.get('patch') || undefined,
+      tab: params.get('tab') || undefined,
     };
   } catch (err) {
     console.warn('[URL Params] Failed to parse URL search params, returning default empty:', err);
@@ -84,5 +85,28 @@ export function updateUrlQueryParam(key: string, value?: string | null) {
     window.history.replaceState({}, '', url.toString());
   } catch (e) {
     console.warn('Could not update URL history:', e);
+  }
+}
+
+/**
+ * Pushes a *new* browser history entry (unlike updateUrlQueryParam, which
+ * only rewrites the current one) so the browser's Back/Forward buttons can
+ * navigate between in-app states instead of leaving the site entirely.
+ * Pass `null`/`undefined` for a param to remove it from the URL.
+ */
+export function pushUrlState(params: Record<string, string | null | undefined>) {
+  if (typeof window === 'undefined') return;
+  try {
+    const url = new URL(window.location.href);
+    for (const [key, value] of Object.entries(params)) {
+      if (value) {
+        url.searchParams.set(key, value);
+      } else {
+        url.searchParams.delete(key);
+      }
+    }
+    window.history.pushState({ ...params }, '', url.toString());
+  } catch (e) {
+    console.warn('Could not push URL history:', e);
   }
 }
