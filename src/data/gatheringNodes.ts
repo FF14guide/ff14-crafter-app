@@ -45,7 +45,7 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
   {
     id: 'node_phantom_sand_ephemeral',
     itemId: 46246,
-    itemName: '幻晃の霊砂 (刻限精選 / スクリップ紫貨)',
+    itemName: '紫電の霊砂 (刻限精選 / スクリップ紫貨)',
     job: 'BTN',
     level: 100,
     stars: 3,
@@ -60,14 +60,14 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
     perceptionReq: 4700,
     itemIcon: '21248',
     isEphemeral: true,
-    reductionYield: '幻晃の霊砂 (最高品質精選)',
+    reductionYield: '紫電の霊砂 (最高品質精選)',
   },
 
   // ================= 7.05 伝説素材 (2★ / IL710新式素材) =================
   {
     id: 'node_mountain_sage',
     itemId: 44040,
-    itemName: 'マウンテンセージ',
+    itemName: 'コザマル・カモミール',
     job: 'BTN',
     level: 100,
     stars: 2,

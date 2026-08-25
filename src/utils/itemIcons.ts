@@ -105,8 +105,6 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   '絶縁塗料': getGarlandIconUrl(22654),
   '高山食塩': getGarlandIconUrl(25104),
   'フラントーヨオイル': getGarlandIconUrl(25451),
-  'ココナッツミルク': getGarlandIconUrl(25103),
-  'トラルバター': getGarlandIconUrl(25102),
   'ホイップクリーム': getGarlandIconUrl(25056),
   'トラルコーンオイル': getGarlandIconUrl(25451),
   'メスカル料理酒': getGarlandIconUrl(25057),
@@ -122,7 +120,6 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'ヤースラニガーリック': getGarlandIconUrl(25006),
   'リトルレモン': getGarlandIconUrl(25305),
   '黄金の霊砂': getGarlandIconUrl(21246),
-  '幻晃の霊砂': getGarlandIconUrl(21248),
   '紫電の霊砂': getGarlandIconUrl(21248),
   '混鉄鉱': getGarlandIconUrl(21221),
   '真銀鉱': getGarlandIconUrl(21223),
@@ -130,7 +127,6 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   '海島綿': getGarlandIconUrl(25032),
   'プルスサウルスの粗皮': getGarlandIconUrl(21825),
   'コザマル・カモミール': getGarlandIconUrl(25008),
-  'マウンテンセージ': getGarlandIconUrl(25010),
   'ウィンドローレル': getGarlandIconUrl(25009),
   '黒鉄鉱': getGarlandIconUrl(21231),
   'ガルガンチュアの粗皮': getGarlandIconUrl(21814),
@@ -139,7 +135,6 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'ルテニウム鉱': getGarlandIconUrl(21213),
   'ブラックスター原石': getGarlandIconUrl(21476),
   'ローズガーネット原石': getGarlandIconUrl(21475),
-  'ククルビーン': getGarlandIconUrl(25301),
   'バニラビーンズ': getGarlandIconUrl(25014),
   'チェリモヤ': getGarlandIconUrl(25334),
   'オルコ・パチャの湧水': getGarlandIconUrl(25401),
@@ -240,7 +235,6 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   45989: getGarlandIconUrl(22670), // 多色錬金薬
   49214: getGarlandIconUrl(20828), // タングステンインゴット
   49217: getGarlandIconUrl(21621), // コチニールクロス
-  49215: getGarlandIconUrl(20829), // ゴールデンチタンインゴット
   49216: getGarlandIconUrl(22008), // ペルペルレザー
   49218: getGarlandIconUrl(22680), // 剛力の宝水G4
   49219: getGarlandIconUrl(22681), // 眼力の宝水G4
@@ -292,13 +286,12 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   43985: getGarlandIconUrl(25006), // ヤースラニガーリック
   27835: getGarlandIconUrl(25305), // リトルレモン
   44035: getGarlandIconUrl(21246), // 黄金の霊砂
-  46246: getGarlandIconUrl(21248), // 幻晃の霊砂
+  46246: getGarlandIconUrl(21248), // 紫電の霊砂
   44135: getGarlandIconUrl(21221), // 混鉄鉱
   44136: getGarlandIconUrl(21223), // 真銀鉱
   44137: getGarlandIconUrl(22415), // イペー原木
   44138: getGarlandIconUrl(25032), // 海島綿
   44145: getGarlandIconUrl(21825), // プルスサウルスの粗皮
-  44040: getGarlandIconUrl(25010), // マウンテンセージ / コザマル・カモミール
   44041: getGarlandIconUrl(25009), // ウィンドローレル
   43996: getGarlandIconUrl(21231), // 黒鉄鉱
   44057: getGarlandIconUrl(21814), // ガルガンチュアの粗皮
@@ -340,28 +333,31 @@ export function getItemIconUrl(itemId?: number, name?: string, customIcon?: stri
     return getGarlandIconUrl(customIcon);
   }
 
-  // 1. Match by Item Name (Exact official game mapping)
+  // 1. Match by Item ID (most reliable — itemId is a stable game identifier,
+  //    whereas name-based lookups can silently match the wrong item)
+  if (itemId && OFFICIAL_ITEM_ICON_BY_ID[itemId]) {
+    return OFFICIAL_ITEM_ICON_BY_ID[itemId];
+  }
+
+  // 2. Fall back to Garland Tools CDN by item ID directly (still ID-based,
+  //    so still reliable even though it's not in our curated table)
+  if (itemId && itemId > 0) {
+    return `https://garlandtools.org/files/icons/item/${itemId}.png`;
+  }
+
+  // 3. Match by exact Item Name (only used when no itemId is available at all)
   if (name && OFFICIAL_ITEM_ICON_BY_NAME[name]) {
     return OFFICIAL_ITEM_ICON_BY_NAME[name];
   }
 
-  // 2. Match by partial item name
+  // 4. Match by partial item name (last resort — can be wrong, since it does
+  //    substring matching; only attempted when nothing more reliable exists)
   if (name) {
     for (const [keyName, url] of Object.entries(OFFICIAL_ITEM_ICON_BY_NAME)) {
       if (name.includes(keyName) || keyName.includes(name)) {
         return url;
       }
     }
-  }
-
-  // 3. Match by Item ID
-  if (itemId && OFFICIAL_ITEM_ICON_BY_ID[itemId]) {
-    return OFFICIAL_ITEM_ICON_BY_ID[itemId];
-  }
-
-  // 4. Default to Garland Tools CDN by item ID
-  if (itemId && itemId > 0) {
-    return `https://garlandtools.org/files/icons/item/${itemId}.png`;
   }
 
   // 5. Default generic crystal/item
