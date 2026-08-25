@@ -310,50 +310,66 @@ export async function fetchUniversalisMultiPrices(
 
   let batchFailureReason = 'マーケット情報を取得できませんでした（通信エラー、またはこのワールドに出品がありません）';
 
-  try {
-    const idParam = idsToFetch.join(',');
-    const res = await fetch(
-      `https://universalis.app/api/v2/${encodeURIComponent(worldOrDc)}/${idParam}?listings=10&entries=10`,
-      {
-        headers: {
-          Accept: 'application/json',
-        },
-      }
-    );
-
-    if (res.ok) {
-      const text = await res.text();
-      const raw = safeJsonParse<any>(text, null);
-
-      if (raw) {
-        // Multi-item response format: { items: { [itemId]: {...} }, ... }
-        if (raw.items && typeof raw.items === 'object') {
-          for (const id of idsToFetch) {
-            const itemRaw = raw.items[id.toString()] || raw.items[id];
-            const fallbackPrice = fallbackPrices[id] || 3000;
-            const parsed = itemRaw
-              ? parseUniversalisItem(itemRaw, id, worldOrDc, fallbackPrice)
-              : createFallbackItem(id, worldOrDc, fallbackPrice, 'このワールド/DCではこのアイテムの出品が見つかりませんでした');
-            results[id] = parsed;
-            memoryCache.set(`${worldOrDc}_${id}`, { data: parsed, timestamp: Date.now() });
-          }
-        } else if (raw.itemID || raw.itemId) {
-          // Single item returned if only 1 was queried
-          const targetId = raw.itemID || raw.itemId || idsToFetch[0];
-          const parsed = parseUniversalisItem(raw, targetId, worldOrDc, fallbackPrices[targetId] || 3000);
-          results[targetId] = parsed;
-          memoryCache.set(`${worldOrDc}_${targetId}`, { data: parsed, timestamp: Date.now() });
-        }
-      } else {
-        batchFailureReason = 'Universalisからの応答を解析できませんでした';
-      }
-    } else {
-      batchFailureReason = `Universalis APIエラー (HTTP ${res.status})`;
-    }
-  } catch (err) {
-    console.warn(`[Universalis] Batch fetch failed on ${worldOrDc} for [${idsToFetch.join(',')}]:`, err);
-    batchFailureReason = 'Universalisへの通信に失敗しました（ネットワークエラー）';
+  // Universalis's multi-item endpoint has an undocumented but observed limit
+  // on how many item IDs can be queried in one request. Sending too many at
+  // once can cause the server to return an error response without CORS
+  // headers, which browsers then surface as an opaque "blocked by CORS
+  // policy" failure rather than the real cause. Chunking keeps every
+  // individual request comfortably under that limit.
+  const CHUNK_SIZE = 90;
+  const chunks: number[][] = [];
+  for (let i = 0; i < idsToFetch.length; i += CHUNK_SIZE) {
+    chunks.push(idsToFetch.slice(i, i + CHUNK_SIZE));
   }
+
+  await Promise.all(
+    chunks.map(async (chunkIds) => {
+      try {
+        const idParam = chunkIds.join(',');
+        const res = await fetch(
+          `https://universalis.app/api/v2/${encodeURIComponent(worldOrDc)}/${idParam}?listings=10&entries=10`,
+          {
+            headers: {
+              Accept: 'application/json',
+            },
+          }
+        );
+
+        if (res.ok) {
+          const text = await res.text();
+          const raw = safeJsonParse<any>(text, null);
+
+          if (raw) {
+            // Multi-item response format: { items: { [itemId]: {...} }, ... }
+            if (raw.items && typeof raw.items === 'object') {
+              for (const id of chunkIds) {
+                const itemRaw = raw.items[id.toString()] || raw.items[id];
+                const fallbackPrice = fallbackPrices[id] || 3000;
+                const parsed = itemRaw
+                  ? parseUniversalisItem(itemRaw, id, worldOrDc, fallbackPrice)
+                  : createFallbackItem(id, worldOrDc, fallbackPrice, 'このワールド/DCではこのアイテムの出品が見つかりませんでした');
+                results[id] = parsed;
+                memoryCache.set(`${worldOrDc}_${id}`, { data: parsed, timestamp: Date.now() });
+              }
+            } else if (raw.itemID || raw.itemId) {
+              // Single item returned if only 1 was queried
+              const targetId = raw.itemID || raw.itemId || chunkIds[0];
+              const parsed = parseUniversalisItem(raw, targetId, worldOrDc, fallbackPrices[targetId] || 3000);
+              results[targetId] = parsed;
+              memoryCache.set(`${worldOrDc}_${targetId}`, { data: parsed, timestamp: Date.now() });
+            }
+          } else {
+            batchFailureReason = 'Universalisからの応答を解析できませんでした';
+          }
+        } else {
+          batchFailureReason = `Universalis APIエラー (HTTP ${res.status})`;
+        }
+      } catch (err) {
+        console.warn(`[Universalis] Batch fetch failed on ${worldOrDc} for [${chunkIds.join(',')}]:`, err);
+        batchFailureReason = 'Universalisへの通信に失敗しました（ネットワークエラー）';
+      }
+    })
+  );
 
   // Populate any missing with fallback
   for (const id of idsToFetch) {

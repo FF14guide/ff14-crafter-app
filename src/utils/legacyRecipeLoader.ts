@@ -33,6 +33,7 @@ interface RawLegacyRecipe {
   stars: number;
   ilvl: number;
   expansion: Expansion;
+  recipeCategory: 'gear' | 'foodPotion' | 'intermediate';
   durability: number;
   difficulty: number;
   maxQuality: number;
@@ -65,7 +66,7 @@ function toRecipe(r: RawLegacyRecipe): Recipe {
     name: r.name,
     enName: r.enName,
     icon: iconUrl(r.icon),
-    category: 'legacy',
+    category: r.recipeCategory,
     patch: r.expansion, // precise patch isn't tracked for legacy data; expansion is the best available grouping
     job: r.job,
     level: r.level,
