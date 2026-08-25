@@ -280,6 +280,36 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   49307: getGarlandIconUrl(55565), // コートリーラヴァー・アタッカーイヤリング
   49312: getGarlandIconUrl(55110), // コートリーラヴァー・アタッカーチョーカー
   49322: getGarlandIconUrl(54761), // コートリーラヴァー・アタッカーリング
+  44848: getGarlandIconUrl(22701), // 高濃縮錬金薬
+  45968: getGarlandIconUrl(22414), // コーディア原木
+  45969: getGarlandIconUrl(21203), // オクタヘドライト鉱石
+  45970: getGarlandIconUrl(21471), // ロードクロサイト原石
+  45971: getGarlandIconUrl(27501), // シャーローニ・コーヒー
+  45972: getGarlandIconUrl(25011), // コチニール染料
+  45974: getGarlandIconUrl(22466), // コーディア材
+  45975: getGarlandIconUrl(20808), // オクタヘドライトナゲット
+  45976: getGarlandIconUrl(21284), // ロードクロサイト
+  45977: getGarlandIconUrl(22008), // クロノピオレザー
+  45978: getGarlandIconUrl(21680), // ディアトリマの毛布
+  45984: getGarlandIconUrl(20661), // 浸透性防腐塗料
+  45985: getGarlandIconUrl(21462), // シャーローニ・コークス
+  45986: getGarlandIconUrl(21479), // 新王国の研磨剤
+  45987: getGarlandIconUrl(21820), // クロノピオの粗皮
+  45988: getGarlandIconUrl(21616), // ディアトリマの毛
+  46243: getGarlandIconUrl(22687), // コーディア樹液塊
+  46244: getGarlandIconUrl(21472), // デザートラピス原石
+  46250: getGarlandIconUrl(21289), // デザートラピス
+  46251: getGarlandIconUrl(22703), // 匠の宝水
+  46252: getGarlandIconUrl(22603), // 石匠の研磨剤
+  47184: getGarlandIconUrl(56872), // ピーコック・クラフターヘッドバンド
+  47185: getGarlandIconUrl(57293), // ピーコック・クラフターシャツ
+  47186: getGarlandIconUrl(56381), // ピーコック・クラフターグローブ
+  47187: getGarlandIconUrl(57797), // ピーコック・クラフターキュロット
+  47188: getGarlandIconUrl(57888), // ピーコック・クラフターブーツ
+  47194: getGarlandIconUrl(55557), // ピーコック・クラフターイヤリング
+  47195: getGarlandIconUrl(55104), // ピーコック・クラフターネックレス
+  47196: getGarlandIconUrl(55902), // ピーコック・クラフターブレスレット
+  47197: getGarlandIconUrl(54754), // ピーコック・クラフターリング
 };
 
 /**
