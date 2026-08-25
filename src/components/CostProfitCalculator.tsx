@@ -14,6 +14,7 @@ import {
   Globe,
   Layers,
   HelpCircle,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface CostProfitCalculatorProps {
@@ -197,6 +198,15 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
                 <Globe className="w-3 h-3" />
                 <span>マケボ参照: <b>{selectedWorldOrDc}</b></span>
               </span>
+              {productMarket?.isEstimate && (
+                <span
+                  className="inline-flex items-center gap-1 text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/40"
+                  title={productMarket.estimateReason}
+                >
+                  <AlertTriangle className="w-3 h-3" />
+                  <span>推定値（実際のマケボ価格未取得）</span>
+                </span>
+              )}
               {lastFetchedTime && (
                 <span className="text-[11px] text-slate-400">
                   (取得: {new Date(lastFetchedTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })})
@@ -521,6 +531,11 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
                         >
                           HQ {priceState.marketHQ.toLocaleString()}G
                         </button>
+                        {itemMarket?.isEstimate && (
+                          <span title={itemMarket.estimateReason || '推定値（マケボ未取得）'}>
+                            <AlertTriangle className="w-3 h-3 text-amber-500/80" />
+                          </span>
+                        )}
                       </div>
                     </td>
 
@@ -582,40 +597,53 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
       </div>
 
       {/* Recent Market History */}
-      {productMarket && productMarket.recentHistory && productMarket.recentHistory.length > 0 && (
+      {productMarket && (
         <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
           <h4 className="text-xs font-semibold text-slate-200 mb-3 flex items-center justify-between">
             <span className="flex items-center gap-1.5">
               <span>📜 最近のマケボ成立履歴</span>
               <span className="text-amber-400/90 font-mono">({selectedWorldOrDc})</span>
             </span>
-            <span className="text-[11px] text-slate-400">最新 {productMarket.recentHistory.length} 件</span>
+            {productMarket.recentHistory.length > 0 && (
+              <span className="text-[11px] text-slate-400">最新 {productMarket.recentHistory.length} 件</span>
+            )}
           </h4>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
-            {productMarket.recentHistory.slice(0, 4).map((h, i) => (
-              <div key={i} className="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 text-xs flex justify-between items-center">
-                <div>
-                  <span
-                    className={`text-[10px] font-bold px-1.5 py-0.5 rounded mr-1.5 ${
-                      h.hq ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-800 text-slate-400'
-                    }`}
-                  >
-                    {h.hq ? 'HQ' : 'NQ'}
-                  </span>
-                  <span className="font-rajdhani font-bold text-slate-100">{h.pricePerUnit.toLocaleString()} G</span>
-                  <span className="text-slate-400 ml-1 font-rajdhani">x{h.quantity}</span>
-                </div>
-                <div className="text-right">
-                  <div className="text-[10px] text-slate-400 font-rajdhani">
-                    {new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {productMarket.recentHistory.length > 0 ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+              {productMarket.recentHistory.slice(0, 4).map((h, i) => (
+                <div key={i} className="bg-slate-950/70 p-2.5 rounded-xl border border-slate-800 text-xs flex justify-between items-center">
+                  <div>
+                    <span
+                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded mr-1.5 ${
+                        h.hq ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40' : 'bg-slate-800 text-slate-400'
+                      }`}
+                    >
+                      {h.hq ? 'HQ' : 'NQ'}
+                    </span>
+                    <span className="font-rajdhani font-bold text-slate-100">{h.pricePerUnit.toLocaleString()} G</span>
+                    <span className="text-slate-400 ml-1 font-rajdhani">x{h.quantity}</span>
                   </div>
-                  {h.buyerName && (
-                    <div className="text-[9px] text-slate-400 truncate max-w-[80px]">{h.buyerName}</div>
-                  )}
+                  <div className="text-right">
+                    <div className="text-[10px] text-slate-400 font-rajdhani">
+                      {new Date(h.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                    {h.buyerName && (
+                      <div className="text-[9px] text-slate-400 truncate max-w-[80px]">{h.buyerName}</div>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-950/50 border border-slate-800 rounded-xl p-3">
+              <AlertTriangle className="w-3.5 h-3.5 text-amber-500/70 shrink-0" />
+              <span>
+                {productMarket.isEstimate
+                  ? productMarket.estimateReason || 'このワールド/DCの取引履歴を取得できませんでした。上記の価格は推定値です。'
+                  : '直近の取引履歴がありません。'}
+              </span>
+            </div>
+          )}
         </div>
       )}
     </div>

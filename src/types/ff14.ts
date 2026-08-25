@@ -100,6 +100,15 @@ export interface UniversalisItemData {
   regularSaleVelocity: number;
   lastUploadTime: number;
   listingsCount: number;
+  // True when some or all of the above prices could not be read from a live
+  // Universalis response and were instead computed from a rough fallback
+  // heuristic (e.g. Universalis was unreachable, or returned no listings for
+  // this item/world). The UI must surface this to the user rather than
+  // presenting the numbers as confirmed market data.
+  isEstimate: boolean;
+  // Short human-readable reason shown alongside the "estimated" badge,
+  // e.g. "マーケット情報を取得できませんでした" — omitted when isEstimate is false.
+  estimateReason?: string;
   recentHistory: {
     hq: boolean;
     pricePerUnit: number;

@@ -91,7 +91,8 @@ const CACHE_TTL_MS = 60 * 1000; // 1 minute cache
 function createFallbackItem(
   itemId: number,
   worldOrDc: string,
-  defaultFallbackPrice = 5000
+  defaultFallbackPrice = 5000,
+  reason: string = 'マーケット情報を取得できませんでした（通信エラー、またはこのワールドに出品がありません）'
 ): UniversalisItemData {
   const fallbackHq = Math.round(defaultFallbackPrice * 1.35);
   return {
@@ -103,14 +104,15 @@ function createFallbackItem(
     averagePriceNQ: defaultFallbackPrice,
     averagePriceHQ: fallbackHq,
     currentAveragePrice: fallbackHq,
-    regularSaleVelocity: 6.2,
-    lastUploadTime: Date.now() - 1000 * 60 * 20,
-    listingsCount: 5,
-    recentHistory: [
-      { hq: true, pricePerUnit: fallbackHq, quantity: 3, timestamp: Date.now() - 1000 * 60 * 30, buyerName: 'Light Warrior' },
-      { hq: true, pricePerUnit: fallbackHq + 500, quantity: 1, timestamp: Date.now() - 1000 * 60 * 90, buyerName: 'Crystal Crafter' },
-      { hq: false, pricePerUnit: defaultFallbackPrice, quantity: 5, timestamp: Date.now() - 1000 * 60 * 180, buyerName: 'Scion Adventurer' }
-    ],
+    regularSaleVelocity: 0,
+    lastUploadTime: 0,
+    listingsCount: 0,
+    isEstimate: true,
+    estimateReason: reason,
+    // No fabricated sales here — inventing buyer names/timestamps that look
+    // like real Universalis transactions is misleading. When we have no real
+    // data, we show no history rather than a fake one.
+    recentHistory: [],
   };
 }
 
@@ -130,6 +132,7 @@ function parseUniversalisItem(
 
   // Lowest NQ price
   let minNQ = 0;
+  let nqIsEstimate = false;
   if (typeof raw.minPriceNQ === 'number' && raw.minPriceNQ > 0) {
     minNQ = raw.minPriceNQ;
   } else if (nqListings.length > 0 && nqListings[0].pricePerUnit > 0) {
@@ -141,11 +144,14 @@ function parseUniversalisItem(
   } else if (raw.minPrice && raw.minPrice > 0 && nqListings.length > 0) {
     minNQ = raw.minPrice;
   } else {
+    // No real NQ price signal anywhere in the response — this number is a guess.
     minNQ = defaultFallbackPrice;
+    nqIsEstimate = true;
   }
 
   // Lowest HQ price
   let minHQ = 0;
+  let hqIsEstimate = false;
   if (typeof raw.minPriceHQ === 'number' && raw.minPriceHQ > 0) {
     minHQ = raw.minPriceHQ;
   } else if (hqListings.length > 0 && hqListings[0].pricePerUnit > 0) {
@@ -157,12 +163,17 @@ function parseUniversalisItem(
   } else if (raw.minPrice && raw.minPrice > 0 && hqListings.length > 0) {
     minHQ = raw.minPrice;
   } else {
+    // No real HQ price signal — derive a rough estimate from NQ (or the
+    // fallback price) rather than leave it at 0, but flag it as a guess.
     minHQ = Math.round(minNQ > 0 ? minNQ * 1.3 : defaultFallbackPrice * 1.35);
+    hqIsEstimate = true;
   }
 
   const avgNQ = (raw.averagePriceNQ && raw.averagePriceNQ > 0) ? raw.averagePriceNQ : minNQ;
   const avgHQ = (raw.averagePriceHQ && raw.averagePriceHQ > 0) ? raw.averagePriceHQ : minHQ;
   const currentAvg = raw.currentAveragePrice || (hqListings.length > 0 ? avgHQ : avgNQ);
+
+  const isEstimate = nqIsEstimate || hqIsEstimate || listings.length === 0;
 
   return {
     itemId,
@@ -173,15 +184,22 @@ function parseUniversalisItem(
     averagePriceNQ: Math.round(avgNQ),
     averagePriceHQ: Math.round(avgHQ),
     currentAveragePrice: Math.round(currentAvg),
-    regularSaleVelocity: typeof raw.regularSaleVelocity === 'number' ? raw.regularSaleVelocity : 5.0,
-    lastUploadTime: raw.lastUploadTime || Date.now(),
+    regularSaleVelocity: typeof raw.regularSaleVelocity === 'number' ? raw.regularSaleVelocity : 0,
+    lastUploadTime: raw.lastUploadTime || 0,
     listingsCount: listings.length,
+    isEstimate,
+    estimateReason: isEstimate
+      ? 'このワールド/DCでは出品または取引履歴が確認できなかったため、価格の一部は概算です'
+      : undefined,
+    // Only ever reflects sales Universalis actually reported. If the person's
+    // name wasn't included in the response we simply omit it — we never
+    // invent a placeholder that could be mistaken for a real buyer.
     recentHistory: (raw.recentHistory || []).map((h: any) => ({
       hq: !!h.hq,
       pricePerUnit: h.pricePerUnit,
       quantity: h.quantity,
       timestamp: (h.timestamp > 100000000000 ? h.timestamp : h.timestamp * 1000) || Date.now(),
-      buyerName: h.buyerName || 'Eorzean Adventurer',
+      buyerName: h.buyerName || undefined,
       worldName: h.worldName,
     })),
   };
@@ -200,6 +218,8 @@ export async function fetchUniversalisPrice(
   if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
     return cached.data;
   }
+
+  let failureReason = 'マーケット情報を取得できませんでした（通信エラー、またはこのワールドに出品がありません）';
 
   try {
     const res = await fetch(
@@ -220,15 +240,20 @@ export async function fetchUniversalisPrice(
         memoryCache.set(cacheKey, { data: itemData, timestamp: Date.now() });
         return itemData;
       }
+      failureReason = 'Universalisからの応答を解析できませんでした';
+    } else {
+      failureReason = `Universalis APIエラー (HTTP ${res.status})`;
     }
   } catch (err) {
     console.warn(`[Universalis] Failed to fetch item ${itemId} on ${worldOrDc}:`, err);
+    failureReason = 'Universalisへの通信に失敗しました（ネットワークエラー）';
   }
 
-  const fallbackData = createFallbackItem(itemId, worldOrDc, defaultFallbackPrice);
+  const fallbackData = createFallbackItem(itemId, worldOrDc, defaultFallbackPrice, failureReason);
   memoryCache.set(cacheKey, { data: fallbackData, timestamp: Date.now() });
   return fallbackData;
 }
+
 
 /**
  * Fetch multiple items at once from Universalis in a single batch request
@@ -259,6 +284,8 @@ export async function fetchUniversalisMultiPrices(
     return results;
   }
 
+  let batchFailureReason = 'マーケット情報を取得できませんでした（通信エラー、またはこのワールドに出品がありません）';
+
   try {
     const idParam = idsToFetch.join(',');
     const res = await fetch(
@@ -280,7 +307,9 @@ export async function fetchUniversalisMultiPrices(
           for (const id of idsToFetch) {
             const itemRaw = raw.items[id.toString()] || raw.items[id];
             const fallbackPrice = fallbackPrices[id] || 3000;
-            const parsed = parseUniversalisItem(itemRaw, id, worldOrDc, fallbackPrice);
+            const parsed = itemRaw
+              ? parseUniversalisItem(itemRaw, id, worldOrDc, fallbackPrice)
+              : createFallbackItem(id, worldOrDc, fallbackPrice, 'このワールド/DCではこのアイテムの出品が見つかりませんでした');
             results[id] = parsed;
             memoryCache.set(`${worldOrDc}_${id}`, { data: parsed, timestamp: Date.now() });
           }
@@ -291,16 +320,21 @@ export async function fetchUniversalisMultiPrices(
           results[targetId] = parsed;
           memoryCache.set(`${worldOrDc}_${targetId}`, { data: parsed, timestamp: Date.now() });
         }
+      } else {
+        batchFailureReason = 'Universalisからの応答を解析できませんでした';
       }
+    } else {
+      batchFailureReason = `Universalis APIエラー (HTTP ${res.status})`;
     }
   } catch (err) {
     console.warn(`[Universalis] Batch fetch failed on ${worldOrDc} for [${idsToFetch.join(',')}]:`, err);
+    batchFailureReason = 'Universalisへの通信に失敗しました（ネットワークエラー）';
   }
 
   // Populate any missing with fallback
   for (const id of idsToFetch) {
     if (!results[id]) {
-      const fallbackData = createFallbackItem(id, worldOrDc, fallbackPrices[id] || 3000);
+      const fallbackData = createFallbackItem(id, worldOrDc, fallbackPrices[id] || 3000, batchFailureReason);
       results[id] = fallbackData;
       memoryCache.set(`${worldOrDc}_${id}`, { data: fallbackData, timestamp: Date.now() });
     }
