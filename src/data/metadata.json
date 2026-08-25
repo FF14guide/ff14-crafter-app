@@ -1,0 +1,6 @@
+{
+  "name": "Eorzean Crafter",
+  "description": "FF14クラフター総合支援サイト。最新パッチアイテム選定、Universalis原価・利益計算、素材集め階層ツリー・未知タイマー、マクロ生成＆シミュレータを一気通貫でサポート。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
