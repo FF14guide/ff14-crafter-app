@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Recipe, CrafterStats, InventorySyncData } from '../../types/ff14';
+import { Recipe, CrafterStats, InventorySyncData, UniversalisItemData } from '../../types/ff14';
 import {
   buildRecipeTree,
   getIntermediateCraftsNeeded,
@@ -42,6 +42,7 @@ import {
   Plus,
   Minus,
   RefreshCw,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface RestanetCraftingWorkflowProps {
@@ -72,6 +73,7 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
   const [copiedFinalMacro, setCopiedFinalMacro] = useState<number | null>(null);
   const [etState, setEtState] = useState<EorzeaTimeState>(calculateEorzeaTime());
   const [livePrices, setLivePrices] = useState<Record<number, number>>({});
+  const [liveMarketData, setLiveMarketData] = useState<Record<number, UniversalisItemData>>({});
   const [liveSellingPrice, setLiveSellingPrice] = useState<number>(recipe.defaultSellingPrice || 120000);
   const [loadingMarket, setLoadingMarket] = useState<boolean>(false);
 
@@ -100,7 +102,8 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
         fallbackMap[s.itemId] = s.marketPriceNQ || 1000;
       }
       const dataMap = await fetchUniversalisMultiPrices(allItemIds, selectedWorldOrDc, fallbackMap);
-      
+      setLiveMarketData(dataMap);
+
       const newLivePrices: Record<number, number> = {};
       for (const s of rawShortages) {
         const itemMarket = dataMap[s.itemId];
@@ -796,10 +799,26 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
 
                       {/* Market Price calculation */}
                       <div className="text-right font-rajdhani">
-                        <span className="text-[10px] text-slate-500 block">マケボ最安 単価 {item.marketPriceNQ.toLocaleString()} G</span>
-                        <span className="text-xs font-bold text-sky-300">
-                          不足分計: {item.totalMarketCost.toLocaleString()} Gil
-                        </span>
+                        {(() => {
+                          const liveUnitPrice = livePrices[item.itemId] ?? item.marketPriceNQ;
+                          const liveTotal = liveUnitPrice * item.shortage;
+                          const itemMarket = liveMarketData[item.itemId];
+                          return (
+                            <>
+                              <span className="text-[10px] text-slate-500 flex items-center justify-end gap-1">
+                                マケボ最安 単価 {liveUnitPrice.toLocaleString()} G
+                                {itemMarket?.isEstimate && (
+                                  <span title={itemMarket.estimateReason || '推定値（マケボ未取得）'}>
+                                    <AlertTriangle className="w-3 h-3 text-amber-500/80" />
+                                  </span>
+                                )}
+                              </span>
+                              <span className="text-xs font-bold text-sky-300">
+                                不足分計: {liveTotal.toLocaleString()} Gil
+                              </span>
+                            </>
+                          );
+                        })()}
                       </div>
                     </div>
                   );

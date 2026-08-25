@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BatchCraftItem, Recipe, CrafterStats, InventorySyncData, InventoryItemLocation } from '../types/ff14';
+import { BatchCraftItem, Recipe, CrafterStats, InventorySyncData, InventoryItemLocation, UniversalisItemData } from '../types/ff14';
 import { RECIPES_DATABASE } from '../data/recipes';
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
@@ -40,6 +40,7 @@ import {
   FileCode,
   Layers,
   Search,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface CraftingBatchPlannerProps {
@@ -76,6 +77,7 @@ export const CraftingBatchPlanner: React.FC<CraftingBatchPlannerProps> = ({
   const [copiedMacroInterId, setCopiedMacroInterId] = useState<string | null>(null);
   const [copiedFinalMacro, setCopiedFinalMacro] = useState<{ itemId: number; part: number } | null>(null);
   const [livePrices, setLivePrices] = useState<Record<number, number>>({});
+  const [liveMarketData, setLiveMarketData] = useState<Record<number, UniversalisItemData>>({});
   const [loadingPrices, setLoadingPrices] = useState(false);
   const [selectedQuickRecipeId, setSelectedQuickRecipeId] = useState<string>(RECIPES_DATABASE[0].id);
 
@@ -107,6 +109,7 @@ export const CraftingBatchPlanner: React.FC<CraftingBatchPlannerProps> = ({
       }
 
       const marketData = await fetchUniversalisMultiPrices(Array.from(allIds), selectedWorldOrDc, fallbackMap);
+      setLiveMarketData(marketData);
       const newLivePrices: Record<number, number> = {};
       for (const [idStr, data] of Object.entries(marketData)) {
         const id = parseInt(idStr);
@@ -960,8 +963,13 @@ export const CraftingBatchPlanner: React.FC<CraftingBatchPlannerProps> = ({
 
                         {/* Price Subtotal */}
                         <div className="text-right font-rajdhani">
-                          <span className="text-[10px] text-slate-500 block">
+                          <span className="text-[10px] text-slate-500 flex items-center justify-end gap-1">
                             単価 {unitPrice.toLocaleString()} G
+                            {liveMarketData[item.itemId]?.isEstimate && (
+                              <span title={liveMarketData[item.itemId]?.estimateReason || '推定値（マケボ未取得）'}>
+                                <AlertTriangle className="w-3 h-3 text-amber-500/80" />
+                              </span>
+                            )}
                           </span>
                           <span className="text-xs font-bold text-sky-300">
                             不足計: {itemCost.toLocaleString()} Gil
