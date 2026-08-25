@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Recipe, CraftJob, CRAFT_JOBS, UniversalisItemData } from '../types/ff14';
-import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass, ArrowUpDown, TrendingUp, Percent, AlertTriangle, Globe } from 'lucide-react';
+import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass, ArrowUpDown, TrendingUp, Percent, AlertTriangle, Globe, Loader2, ChevronLeft } from 'lucide-react';
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
 import { fetchUniversalisMultiPrices } from '../services/universalisApi';
+import { loadExpansionRecipes } from '../utils/legacyRecipeLoader';
 
 interface RecipeCatalogProps {
   recipes: Recipe[];
@@ -20,6 +21,21 @@ interface RecipeCatalogProps {
 type SortMode = 'default' | 'profitDesc' | 'profitRateDesc';
 
 const PATCH_OPTIONS = ['7.0', '7.1', '7.2', '7.3', '7.4', '7.5'];
+
+// Approximate patch grouping for the bulk (non-curated) Dawntrail recipes,
+// based on the item-level tiers verified during this session's research.
+// This is a best-effort bucketing, not confirmed per-recipe patch data —
+// recipes outside these known "new-style" tiers are grouped as 'DT' (shown
+// under no specific patch filter) since their exact sub-patch isn't verified.
+function approximatePatch(ilvl: number): string | null {
+  if (ilvl === 690 || ilvl === 700 || ilvl === 710) return '7.0';
+  if (ilvl === 720) return '7.1';
+  if (ilvl === 740) return '7.2';
+  if (ilvl === 750) return '7.3';
+  if (ilvl === 770) return '7.4';
+  if (ilvl === 780) return '7.5';
+  return null;
+}
 
 interface RecipeEconomics {
   materialCost: number;
@@ -75,20 +91,58 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   const [sortMode, setSortMode] = useState<SortMode>('default');
   const [marketData, setMarketData] = useState<Record<number, UniversalisItemData>>({});
   const [loadingMarket, setLoadingMarket] = useState(false);
+  const [allDtRecipes, setAllDtRecipes] = useState<Recipe[] | null>(null);
+  const [page, setPage] = useState(0);
+  const CATALOG_PAGE_SIZE = 30;
+
+  // Merge the hand-curated recipes with the full Dawntrail catalog so this
+  // page covers all of patch 7.0-7.5, not just the manually-curated subset.
+  // Curated entries (richer sourceType/masterbook/pricing detail) win when
+  // the same itemId appears in both.
+  useEffect(() => {
+    let cancelled = false;
+    loadExpansionRecipes('DT').then((dtRecipes) => {
+      if (cancelled) return;
+      const curatedIds = new Set(recipes.map((r) => r.itemId));
+      const extra = dtRecipes
+        .filter((r) => !curatedIds.has(r.itemId))
+        .map((r) => {
+          const approx = approximatePatch(r.ilvl);
+          return approx ? { ...r, patch: approx } : r;
+        });
+      setAllDtRecipes(extra);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [recipes]);
+
+  const mergedRecipes = useMemo(() => {
+    return allDtRecipes ? [...recipes, ...allDtRecipes] : recipes;
+  }, [recipes, allDtRecipes]);
 
   const togglePatch = (patch: string) => {
     setSelectedPatches((prev) => (prev.includes(patch) ? prev.filter((p) => p !== patch) : [...prev, patch]));
   };
 
-  // Fetch live market prices (product + every material) for every recipe in
-  // the catalog in one batched request, so cost/profit/rate can be shown and
-  // sorted on without opening each recipe's dedicated cost calculator.
-  const loadMarketData = useCallback(async () => {
+  const MAX_ECONOMICS_ITEMS = 300;
+
+  // Fetch live market prices (product + every material) for every recipe
+  // currently shown, so cost/profit/rate can be displayed and sorted on.
+  // Capped to a reasonable result size — with thousands of Dawntrail
+  // recipes now merged in, fetching prices for an unfiltered full list
+  // would mean a huge batch request; narrowing by job/patch/search brings
+  // the count under the cap.
+  const loadMarketData = useCallback(async (targetRecipes: Recipe[]) => {
+    if (targetRecipes.length === 0 || targetRecipes.length > MAX_ECONOMICS_ITEMS) {
+      setMarketData({});
+      return;
+    }
     setLoadingMarket(true);
     try {
       const idsSet = new Set<number>();
       const fallbackPrices: Record<number, number> = {};
-      for (const recipe of recipes) {
+      for (const recipe of targetRecipes) {
         idsSet.add(recipe.itemId);
         fallbackPrices[recipe.itemId] = recipe.defaultSellingPrice || 5000;
         for (const mat of recipe.materials) {
@@ -101,14 +155,10 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
     } finally {
       setLoadingMarket(false);
     }
-  }, [recipes, selectedWorldOrDc]);
-
-  useEffect(() => {
-    loadMarketData();
-  }, [loadMarketData]);
+  }, [selectedWorldOrDc]);
 
   // Filter recipes
-  const filteredRecipes = recipes.filter((recipe) => {
+  const filteredRecipes = mergedRecipes.filter((recipe) => {
     // Purpose filter
     if (currentPurpose === 'latestPatch') {
       if (recipe.patch !== '7.4' && recipe.patch !== '7.2' && recipe.ilvl < 740) return false;
@@ -139,6 +189,14 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
     return true;
   });
 
+  useEffect(() => {
+    loadMarketData(filteredRecipes);
+    setPage(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadMarketData, filteredRecipes.length, currentPurpose, selectedJob, selectedPatches.join(','), searchQuery]);
+
+  const economicsAvailable = filteredRecipes.length > 0 && filteredRecipes.length <= MAX_ECONOMICS_ITEMS;
+
   // Attach economics to each recipe (memoized on marketData/recipe list) and
   // apply the selected sort.
   const sortedRecipes = useMemo(() => {
@@ -155,6 +213,9 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
 
     return withEconomics;
   }, [filteredRecipes, marketData, sortMode]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedRecipes.length / CATALOG_PAGE_SIZE));
+  const pageRecipes = sortedRecipes.slice(page * CATALOG_PAGE_SIZE, (page + 1) * CATALOG_PAGE_SIZE);
 
   const categories = [
     { id: 'latestPatch', label: '🔥 最新パッチ 7.4/7.2', desc: '新式IL770・宝薬G3・最新飯' },
@@ -175,7 +236,15 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
             <Sparkles className="w-4 h-4 text-amber-400" />
             <h2 className="text-sm font-semibold text-slate-200">目的別レシピ選定 (Purpose Filter)</h2>
           </div>
-          <span className="text-xs text-slate-400">該当レシピ: {filteredRecipes.length} 件</span>
+          <span className="text-xs text-slate-400 flex items-center gap-1.5">
+            該当レシピ: {filteredRecipes.length.toLocaleString()} 件
+            {allDtRecipes === null && (
+              <span className="flex items-center gap-1 text-slate-500">
+                <Loader2 className="w-3 h-3 animate-spin" />
+                黄金の全レシピを読み込み中...
+              </span>
+            )}
+          </span>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-7 gap-2">
@@ -325,7 +394,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
 
       {/* Recipes Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {sortedRecipes.map(({ recipe, econ }) => {
+        {pageRecipes.map(({ recipe, econ }) => {
           const jobInfo = CRAFT_JOBS[recipe.job];
           return (
             <div
@@ -402,32 +471,38 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                 </div>
 
                 {/* Cost / Profit / Rate summary */}
-                <div className="grid grid-cols-3 gap-1.5 bg-slate-950/60 p-2 rounded-xl border border-slate-800/60 text-[11px] mb-3 font-rajdhani">
-                  <div>
-                    <span className="text-slate-400 block text-[10px]">原価 (材料費)</span>
-                    <span className="text-slate-200 font-semibold">{Math.round(econ.materialCost).toLocaleString()}G</span>
+                {economicsAvailable ? (
+                  <div className="grid grid-cols-3 gap-1.5 bg-slate-950/60 p-2 rounded-xl border border-slate-800/60 text-[11px] mb-3 font-rajdhani">
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">原価 (材料費)</span>
+                      <span className="text-slate-200 font-semibold">{Math.round(econ.materialCost).toLocaleString()}G</span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px]">利益額</span>
+                      <span className={`font-semibold ${econ.netProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
+                        {econ.netProfit >= 0 ? '+' : ''}
+                        {Math.round(econ.netProfit).toLocaleString()}G
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-slate-400 block text-[10px] flex items-center gap-1">
+                        利益率
+                        {econ.isEstimate && (
+                          <span title="マケボ価格の一部が推定値です">
+                            <AlertTriangle className="w-2.5 h-2.5 text-amber-500/80" />
+                          </span>
+                        )}
+                      </span>
+                      <span className={`font-semibold ${econ.profitRatePercent >= 0 ? 'text-sky-300' : 'text-rose-400'}`}>
+                        {econ.profitRatePercent}%
+                      </span>
+                    </div>
                   </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px]">利益額</span>
-                    <span className={`font-semibold ${econ.netProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
-                      {econ.netProfit >= 0 ? '+' : ''}
-                      {Math.round(econ.netProfit).toLocaleString()}G
-                    </span>
+                ) : (
+                  <div className="text-[10px] text-slate-500 bg-slate-950/40 p-2 rounded-xl border border-slate-800/40 mb-3">
+                    絞り込み件数が多いため原価・利益は非表示です（{MAX_ECONOMICS_ITEMS}件以下で表示）
                   </div>
-                  <div>
-                    <span className="text-slate-400 block text-[10px] flex items-center gap-1">
-                      利益率
-                      {econ.isEstimate && (
-                        <span title="マケボ価格の一部が推定値です">
-                          <AlertTriangle className="w-2.5 h-2.5 text-amber-500/80" />
-                        </span>
-                      )}
-                    </span>
-                    <span className={`font-semibold ${econ.profitRatePercent >= 0 ? 'text-sky-300' : 'text-rose-400'}`}>
-                      {econ.profitRatePercent}%
-                    </span>
-                  </div>
-                </div>
+                )}
 
                 {/* Materials preview */}
                 <div className="space-y-1 mb-3">
@@ -506,6 +581,28 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
           );
         })}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center gap-3 py-2">
+          <button
+            onClick={() => setPage((p) => Math.max(0, p - 1))}
+            disabled={page === 0}
+            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:border-slate-700"
+          >
+            <ChevronLeft className="w-4 h-4" />
+          </button>
+          <span className="text-xs text-slate-400 font-rajdhani">
+            {page + 1} / {totalPages} ページ（全{sortedRecipes.length.toLocaleString()}件）
+          </span>
+          <button
+            onClick={() => setPage((p) => Math.min(totalPages - 1, p + 1))}
+            disabled={page >= totalPages - 1}
+            className="p-1.5 rounded-lg bg-slate-900 border border-slate-800 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:border-slate-700"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {filteredRecipes.length === 0 && (
         <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-12 text-center">
