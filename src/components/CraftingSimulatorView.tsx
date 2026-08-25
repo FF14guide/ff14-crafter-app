@@ -3,6 +3,7 @@ import { Recipe, CrafterStats } from '../types/ff14';
 import { CRAFTER_SKILLS, CrafterSkill, SKILL_MAP } from '../data/crafterSkills';
 import { simulateRotation, generateMacroBlocks } from '../utils/craftingSimulator';
 import { ItemIcon } from './common/ItemIcon';
+import { ActionIcon } from './common/ActionIcon';
 import { JobIcon } from './common/JobIcon';
 import confetti from 'canvas-confetti';
 import {
@@ -362,7 +363,9 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
           </div>
         ) : (
           <div className="flex flex-wrap gap-1.5">
-            {simResult.steps.map((step, idx) => (
+            {simResult.steps.map((step, idx) => {
+              const stepSkill = SKILL_MAP.get(step.actionId);
+              return (
               <button
                 key={idx}
                 onClick={() => handleRemoveSkill(idx)}
@@ -370,11 +373,12 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
                 title={`${step.stepNumber}. ${step.actionName} (消費CP:${step.cpCost} 耐久:${step.durabilityCost})`}
               >
                 <span className="text-[10px] text-slate-500 font-rajdhani font-semibold">#{step.stepNumber}</span>
-                <span>{step.actionIcon}</span>
+                <ActionIcon icon={stepSkill?.icon} fallbackIcon={stepSkill?.fallbackIcon} name={step.actionName} size="xs" />
                 <span className="font-medium text-slate-200 group-hover:text-rose-300">{step.actionName}</span>
                 <span className="text-[10px] text-slate-500 group-hover:text-rose-400 font-mono ml-0.5">✕</span>
               </button>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -439,9 +443,7 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
               className="bg-slate-950/80 hover:bg-slate-800/80 border border-slate-800 hover:border-amber-500/50 p-2.5 rounded-xl text-left transition-all flex items-start justify-between group"
             >
               <div className="flex items-start gap-2">
-                <span className="text-xl p-1 bg-slate-900 rounded border border-slate-800 group-hover:border-amber-500/40">
-                  {skill.icon}
-                </span>
+                <ActionIcon icon={skill.icon} fallbackIcon={skill.fallbackIcon} name={skill.name} size="lg" className="group-hover:border-amber-500/40" />
                 <div>
                   <div className="text-xs font-semibold text-slate-200 group-hover:text-amber-300">
                     {skill.name}

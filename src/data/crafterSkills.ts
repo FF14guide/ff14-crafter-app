@@ -1,3 +1,8 @@
+/** Builds the official FF14 action icon URL from Garland Tools' CDN. */
+export function getActionIconUrl(iconId: number): string {
+  return `https://garlandtools.org/files/icons/action/${iconId}.png`;
+}
+
 export interface CrafterSkill {
   id: string;
   name: string;
@@ -10,7 +15,11 @@ export interface CrafterSkill {
   efficiencyQuality?: number;
   successRate: number; // usually 100%
   description: string;
+  // Official action icon URL (Garland Tools CDN). Falls back to a generic
+  // emoji glyph in the UI if the image fails to load.
   icon: string;
+  // Plain emoji glyph used as a fallback while the image loads or if it fails.
+  fallbackIcon: string;
   waitDuration?: number; // Macro wait duration in seconds (e.g. 3)
 }
 
@@ -27,7 +36,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyProgress: 300,
     successRate: 100,
     description: '1ターン目のみ使用可能。作業進捗を300%進め、次回以降の作業アクションの効率を100%上昇させるバフ(5ターン)を付与する。',
-    icon: '⚡',
+    icon: getActionIconUrl(1994),
+    fallbackIcon: '⚡',
     waitDuration: 3,
   },
   {
@@ -41,7 +51,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyProgress: 360,
     successRate: 100,
     description: '耐久を20消費して作業を大幅に進める(効率360%)。残り耐久が足りない場合は効率が半減する。',
-    icon: '🔨',
+    icon: getActionIconUrl(1867),
+    fallbackIcon: '🔨',
     waitDuration: 3,
   },
   {
@@ -55,7 +66,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyProgress: 180,
     successRate: 100,
     description: '耐久の消費を半減(5)させて作業を進める(効率180%)。マニピュレーション等の倹約系バフ中は使用不可。',
-    icon: '⚒️',
+    icon: getActionIconUrl(1870),
+    fallbackIcon: '⚒️',
     waitDuration: 3,
   },
   {
@@ -69,7 +81,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyProgress: 120,
     successRate: 100,
     description: '耐久を10消費して作業を進める(効率120%)。CP消費なし。',
-    icon: '🛠️',
+    icon: getActionIconUrl(1851),
+    fallbackIcon: '🛠️',
     waitDuration: 3,
   },
   {
@@ -84,7 +97,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 100,
     successRate: 100,
     description: '作業と品質を同時に上昇させる(各効率100%)。',
-    icon: '🎯',
+    icon: getActionIconUrl(1853),
+    fallbackIcon: '🎯',
     waitDuration: 3,
   },
 
@@ -100,7 +114,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 300,
     successRate: 100,
     description: '1ターン目のみ使用可能。品質を300%上昇させ、インナークワイエットを即座に3スタック追加する。',
-    icon: '💎',
+    icon: getActionIconUrl(1982),
+    fallbackIcon: '💎',
     waitDuration: 3,
   },
   {
@@ -114,7 +129,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 200,
     successRate: 100,
     description: '耐久を20消費して品質を大幅に上げる(効率200%)。インナークワイエットを2スタック増加。',
-    icon: '✨',
+    icon: getActionIconUrl(1857),
+    fallbackIcon: '✨',
     waitDuration: 3,
   },
   {
@@ -128,7 +144,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 100, // +20% per IQ stack, max 300%
     successRate: 100,
     description: 'インナークワイエットのスタック数に応じて品質を大幅に上昇させる(最大効率300%)。使用後にインナークワイエットは消費される。',
-    icon: '🌟',
+    icon: getActionIconUrl(1975),
+    fallbackIcon: '🌟',
     waitDuration: 3,
   },
   {
@@ -142,7 +159,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 100,
     successRate: 100,
     description: '耐久の消費を半減(5)させて品質を上げる(効率100%)。',
-    icon: '✨',
+    icon: getActionIconUrl(1886),
+    fallbackIcon: '✨',
     waitDuration: 3,
   },
   {
@@ -156,7 +174,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 100,
     successRate: 100,
     description: '耐久を10消費して品質を上げる(効率100%)。中級加工へコンボ可能。',
-    icon: '🔹',
+    icon: getActionIconUrl(1852),
+    fallbackIcon: '🔹',
     waitDuration: 3,
   },
   {
@@ -170,7 +189,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 125,
     successRate: 100,
     description: '耐久を10消費して品質を上げる(効率125%)。加工コンボ時CP18。',
-    icon: '🔷',
+    icon: getActionIconUrl(1865),
+    fallbackIcon: '🔷',
     waitDuration: 3,
   },
   {
@@ -184,7 +204,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 150,
     successRate: 100,
     description: '耐久を10消費して品質を上げる(効率150%)。中級加工コンボ時CP18。',
-    icon: '💠',
+    icon: getActionIconUrl(1869),
+    fallbackIcon: '💠',
     waitDuration: 3,
   },
   {
@@ -198,7 +219,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 150,
     successRate: 60,
     description: '【黄金Lv96】CPを消費せずに品質を上げる(成功率60% / 効率150%)。',
-    icon: '💫',
+    icon: getActionIconUrl(1998),
+    fallbackIcon: '💫',
     waitDuration: 3,
   },
   {
@@ -212,7 +234,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 100,
     successRate: 100,
     description: '【黄金Lv92】加工の直後に使用可能。インナークワイエットが追加で1スタック増加する。',
-    icon: '✨',
+    icon: getActionIconUrl(1926),
+    fallbackIcon: '✨',
     waitDuration: 3,
   },
   {
@@ -226,7 +249,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     efficiencyQuality: 1000,
     successRate: 100,
     description: '1ターン目かつ自身よりレベルが10以上低いレシピのみ使用可能。一撃で品質を100%にする。',
-    icon: '👁️',
+    icon: getActionIconUrl(786),
+    fallbackIcon: '👁️',
     waitDuration: 3,
   },
 
@@ -241,7 +265,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '4ターンの間、作業アクションの効率を50%上昇させる。',
-    icon: '📈',
+    icon: getActionIconUrl(1995),
+    fallbackIcon: '📈',
     waitDuration: 2,
   },
   {
@@ -254,7 +279,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '4ターンの間、加工アクションの効率を50%上昇させる。',
-    icon: '💡',
+    icon: getActionIconUrl(1987),
+    fallbackIcon: '💡',
     waitDuration: 2,
   },
   {
@@ -267,7 +293,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '3ターンの間、次に行う加工アクション1回の効率を100%上昇させる。',
-    icon: '👣',
+    icon: getActionIconUrl(1955),
+    fallbackIcon: '👣',
     waitDuration: 2,
   },
   {
@@ -280,7 +307,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '8ターンの間、ターン終了時に耐久を5回復する。',
-    icon: '🔄',
+    icon: getActionIconUrl(1985),
+    fallbackIcon: '🔄',
     waitDuration: 2,
   },
   {
@@ -293,7 +321,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '8ターンの間、アクションによる耐久消費を50%削減する。',
-    icon: '🛡️',
+    icon: getActionIconUrl(1985),
+    fallbackIcon: '🛡️',
     waitDuration: 2,
   },
   {
@@ -306,7 +335,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '4ターンの間、アクションによる耐久消費を50%削減する。',
-    icon: '🛡️',
+    icon: getActionIconUrl(1992),
+    fallbackIcon: '🛡️',
     waitDuration: 2,
   },
   {
@@ -319,7 +349,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '耐久を30回復する。',
-    icon: '💚',
+    icon: getActionIconUrl(1952),
+    fallbackIcon: '💚',
     waitDuration: 2,
   },
   {
@@ -332,7 +363,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '5ターンの間、製作完成時に1度だけ作業進捗を最大値-1で止める。',
-    icon: '🛑',
+    icon: getActionIconUrl(1983),
+    fallbackIcon: '🛑',
     waitDuration: 2,
   },
   {
@@ -345,7 +377,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: '状態「高品質」または「最高品質」の時のみ使用可能。CPを20回復する。',
-    icon: '🃏',
+    icon: getActionIconUrl(1990),
+    fallbackIcon: '🃏',
     waitDuration: 2,
   },
   {
@@ -358,7 +391,8 @@ export const CRAFTER_SKILLS: CrafterSkill[] = [
     durabilityCost: 0,
     successRate: 100,
     description: 'マイスター専用。1回の製作につき1度のみ、状態に関係なく秘訣を使用可能にする。',
-    icon: '👑',
+    icon: '',
+    fallbackIcon: '👑',
     waitDuration: 2,
   }
 ];
