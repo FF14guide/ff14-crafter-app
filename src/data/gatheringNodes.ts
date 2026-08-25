@@ -5,7 +5,7 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
   {
     id: 'node_fulgurite',
     itemId: 49208,
-    itemName: 'フルグライト',
+    itemName: '高密度軽銀鉱',
     job: 'MIN',
     level: 100,
     stars: 4,
@@ -25,7 +25,7 @@ export const TIMED_GATHERING_NODES: TimedGatheringNode[] = [
   {
     id: 'node_cordia_log',
     itemId: 49211,
-    itemName: 'コーディア原木',
+    itemName: 'オルコ亜麻',
     job: 'BTN',
     level: 100,
     stars: 4,

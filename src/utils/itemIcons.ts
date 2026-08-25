@@ -58,16 +58,12 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   '巨匠の薬茶': getGarlandIconUrl(24412),
 
   // Intermediate Materials (Crafted Master / 7.05 - 7.55)
-  'タングステンインゴット': getGarlandIconUrl(20828),
   'スーパージュラルミンインゴット': getGarlandIconUrl(20828),
-  'コチニールクロス': getGarlandIconUrl(21621),
   'オルコ・リネン': getGarlandIconUrl(21621),
   'ゴールデンチタンインゴット': getGarlandIconUrl(20829),
   'ペルペルレザー': getGarlandIconUrl(22008),
   'マストドンレザー': getGarlandIconUrl(21836),
-  'フルグライト': getGarlandIconUrl(21206),
   '高密度軽銀鉱': getGarlandIconUrl(21206),
-  'タングステン鉱': getGarlandIconUrl(22663),
   '被膜形成材': getGarlandIconUrl(22663),
   '多色錬金薬': getGarlandIconUrl(22670),
   '大聖水': getGarlandIconUrl(22653),
@@ -78,8 +74,8 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'イペー材': getGarlandIconUrl(22467),
   '海島綿布': getGarlandIconUrl(23252),
   'プルスサウルスレザー': getGarlandIconUrl(21836),
-  '剛力の宝水G4': getGarlandIconUrl(22680),
-  '眼力の宝水G4': getGarlandIconUrl(22681),
+  '剛力の宝水G4': getGarlandIconUrl(22683),
+  '眼力の宝水G4': getGarlandIconUrl(22682),
   '活力の宝水G4': getGarlandIconUrl(22680),
   '知力の宝水G4': getGarlandIconUrl(22679),
   '心力の宝水G4': getGarlandIconUrl(22678),
@@ -98,9 +94,7 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'ガーデン・ソフトウォーター': getGarlandIconUrl(22678),
   'ヤクテル天然水': getGarlandIconUrl(22614),
   'タンブルクラブの枯草': getGarlandIconUrl(21689),
-  'コーディア原木': getGarlandIconUrl(25033),
   'オルコ亜麻': getGarlandIconUrl(25033),
-  'コチニール染料': getGarlandIconUrl(22648),
   'トライヨラの染料': getGarlandIconUrl(22648),
   '絶縁塗料': getGarlandIconUrl(22654),
   '高山食塩': getGarlandIconUrl(25104),
@@ -110,7 +104,7 @@ export const OFFICIAL_ITEM_ICON_BY_NAME: Record<string, string> = {
   'メスカル料理酒': getGarlandIconUrl(25057),
 
   // Gathering & Raw Materials (Legendary / Ephemeral / Raw)
-  '帯雷繭': getGarlandIconUrl(21617),
+  '帯雷繭': getGarlandIconUrl(21687),
   'ラムプレスチキン': getGarlandIconUrl(25158),
   'ブラウンカルダモン': getGarlandIconUrl(25021),
   'ワイルドコーヒービーン': getGarlandIconUrl(25919),
@@ -236,8 +230,8 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   49214: getGarlandIconUrl(20828), // タングステンインゴット
   49217: getGarlandIconUrl(21621), // コチニールクロス
   49216: getGarlandIconUrl(22008), // ペルペルレザー
-  49218: getGarlandIconUrl(22680), // 剛力の宝水G4
-  49219: getGarlandIconUrl(22681), // 眼力の宝水G4
+  49218: getGarlandIconUrl(22683), // 剛力の宝水G4
+  49219: getGarlandIconUrl(22682), // 眼力の宝水G4
   49220: getGarlandIconUrl(22680), // 活力の宝水G4
   49221: getGarlandIconUrl(22679), // 知力の宝水G4
   49222: getGarlandIconUrl(22678), // 心力の宝水G4
@@ -275,7 +269,7 @@ export const OFFICIAL_ITEM_ICON_BY_ID: Record<number, string> = {
   49317: getGarlandIconUrl(55908), // コートリーラヴァー・アタッカーリストレット
 
   // Raw & Gathering
-  44028: getGarlandIconUrl(21617), // 帯雷繭
+  44028: getGarlandIconUrl(21687), // 帯雷繭
   44170: getGarlandIconUrl(25158), // ラムプレスチキン
   44171: getGarlandIconUrl(25021), // ブラウンカルダモン
   44172: getGarlandIconUrl(25919), // ワイルドコーヒービーン
