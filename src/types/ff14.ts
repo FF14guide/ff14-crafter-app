@@ -30,6 +30,11 @@ export interface MaterialRequirement {
   isSubCraft?: boolean;
   subRecipeId?: string;
   sourceType: 'gathering' | 'subcraft' | 'scrip' | 'tomestone' | 'reduction' | 'vendor' | 'monster';
+  // False only for items that structurally have no HQ variant in-game
+  // (elemental crystals/clusters, aethersand from reduction). Omitted/true
+  // for everything else. The UI must not show an HQ price or toggle when
+  // this is false.
+  hqAvailable?: boolean;
   gatheringInfo?: {
     location: string;
     zone: string;

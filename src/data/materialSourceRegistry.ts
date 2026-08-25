@@ -121,7 +121,7 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
   },
   49216: {
     itemId: 49216,
-    name: 'ペルペルレザー',
+    name: 'マストドンレザー',
     patch: '7.2',
     sourceType: 'subcraft',
     categoryLabel: '革細工師 製作 (Lv100★★★★)',
@@ -506,9 +506,12 @@ export const MATERIAL_SOURCE_REGISTRY: Record<number, DetailedMaterialSource> = 
     job: 'MIN',
     level: 96,
   },
+  // TODO(要検証): 公式データ上、itemId 44021 の正しい名前は「ダークマホガニー材」（大工師が
+  // 制作する加工材）であり、採集アイテムではない可能性が高い。sourceType/job/detailsは未検証のまま
+  // 据え置いている。現在このitemIdはどのレシピからも参照されていない。
   44021: {
     itemId: 44021,
-    name: 'クラロウォルナット原木',
+    name: 'ダークマホガニー材',
     patch: '7.0',
     sourceType: 'gathering',
     categoryLabel: '園芸師 採集 (Lv96)',

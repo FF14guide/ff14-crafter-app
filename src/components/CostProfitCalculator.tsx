@@ -520,17 +520,27 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
                         >
                           NQ {priceState.marketNQ.toLocaleString()}G
                         </button>
-                        <button
-                          onClick={() => setMaterialTier(mat.itemId, 'HQ')}
-                          className={`px-1.5 py-0.5 rounded border text-[11px] font-semibold transition-all ${
-                            priceState.selectedTier === 'HQ' && !priceState.isSelfGathered
-                              ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold'
-                              : 'bg-slate-850 text-slate-400 border-slate-700 hover:text-slate-200'
-                          }`}
-                          title="HQ最安値を使用"
-                        >
-                          HQ {priceState.marketHQ.toLocaleString()}G
-                        </button>
+                        {mat.hqAvailable !== false && (
+                          <button
+                            onClick={() => setMaterialTier(mat.itemId, 'HQ')}
+                            className={`px-1.5 py-0.5 rounded border text-[11px] font-semibold transition-all ${
+                              priceState.selectedTier === 'HQ' && !priceState.isSelfGathered
+                                ? 'bg-amber-500 text-slate-950 border-amber-400 font-bold'
+                                : 'bg-slate-850 text-slate-400 border-slate-700 hover:text-slate-200'
+                            }`}
+                            title="HQ最安値を使用"
+                          >
+                            HQ {priceState.marketHQ.toLocaleString()}G
+                          </button>
+                        )}
+                        {mat.hqAvailable === false && (
+                          <span
+                            className="px-1.5 py-0.5 rounded border border-slate-800 text-[10px] text-slate-600"
+                            title="このアイテムにHQは存在しません"
+                          >
+                            HQなし
+                          </span>
+                        )}
                         {itemMarket?.isEstimate && (
                           <span title={itemMarket.estimateReason || '推定値（マケボ未取得）'}>
                             <AlertTriangle className="w-3 h-3 text-amber-500/80" />

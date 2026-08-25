@@ -29,9 +29,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
       { itemId: 49220, name: '活力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_vital_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 15, name: 'アイスクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 15, name: 'アイスクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -61,9 +61,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
       { itemId: 49218, name: '剛力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 15, name: 'アイスクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 15, name: 'アイスクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -93,9 +93,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49213, name: 'エレクトロパイン材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
       { itemId: 49218, name: '剛力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -125,9 +125,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49215, name: 'ローズガーネット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
       { itemId: 49219, name: '眼力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_dex_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -157,9 +157,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
       { itemId: 44033, name: 'サンダーヤードシルク', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_thunderyard_silk', defaultPriceNQ: 8000, defaultPriceHQ: 12000 },
       { itemId: 49221, name: '知力の宝水G4', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_intel_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -189,9 +189,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000 },
       { itemId: 44012, name: 'ブラックスター', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_black_star', defaultPriceNQ: 3000, defaultPriceHQ: 5000 },
       { itemId: 49218, name: '剛力の宝水G4', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 14, name: 'ファイアクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 16, name: 'ウィンドクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 14, name: 'ファイアクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -221,9 +221,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49213, name: 'エレクトロパイン材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44012, name: 'ブラックスター', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_black_star', defaultPriceNQ: 3000, defaultPriceHQ: 5000 },
       { itemId: 49218, name: '剛力の宝水G4', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 18, name: 'ライトニングクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 18, name: 'ライトニングクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 16, name: 'ウィンドクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -253,9 +253,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 49213, name: 'エレクトロパイン材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
       { itemId: 44012, name: 'ブラックスター', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_black_star', defaultPriceNQ: 3000, defaultPriceHQ: 5000 },
       { itemId: 49218, name: '剛力の宝水G4', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_strength_water_g3', defaultPriceNQ: 9000, defaultPriceHQ: 14000 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
-      { itemId: 16, name: 'ウィンドクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 14, name: 'ファイアクラスター', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200, defaultPriceHQ: 2200 },
+      { itemId: 16, name: 'ウィンドクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 14, name: 'ファイアクラスター', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
 
@@ -286,9 +286,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 45989, name: '多色錬金薬', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_multicolor_alkahest', defaultPriceNQ: 50, defaultPriceHQ: 100 },
       { itemId: 44051, name: '大聖水', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_holy_water_grand', defaultPriceNQ: 250, defaultPriceHQ: 850 },
       { itemId: 44039, name: 'ウィンドパセリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 150, defaultPriceHQ: 300 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -317,9 +317,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 45989, name: '多色錬金薬', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_multicolor_alkahest', defaultPriceNQ: 50, defaultPriceHQ: 100 },
       { itemId: 44051, name: '大聖水', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_holy_water_grand', defaultPriceNQ: 250, defaultPriceHQ: 850 },
       { itemId: 44039, name: 'ウィンドパセリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 150, defaultPriceHQ: 300 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -348,9 +348,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 45989, name: '多色錬金薬', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_multicolor_alkahest', defaultPriceNQ: 50, defaultPriceHQ: 100 },
       { itemId: 44051, name: '大聖水', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_holy_water_grand', defaultPriceNQ: 250, defaultPriceHQ: 850 },
       { itemId: 44039, name: 'ウィンドパセリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 150, defaultPriceHQ: 300 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -379,9 +379,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 45989, name: '多色錬金薬', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_multicolor_alkahest', defaultPriceNQ: 50, defaultPriceHQ: 100 },
       { itemId: 44051, name: '大聖水', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_holy_water_grand', defaultPriceNQ: 250, defaultPriceHQ: 850 },
       { itemId: 44039, name: 'ウィンドパセリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 150, defaultPriceHQ: 300 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -410,9 +410,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 45989, name: '多色錬金薬', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_multicolor_alkahest', defaultPriceNQ: 50, defaultPriceHQ: 100 },
       { itemId: 44051, name: '大聖水', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_holy_water_grand', defaultPriceNQ: 250, defaultPriceHQ: 850 },
       { itemId: 44039, name: 'ウィンドパセリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 150, defaultPriceHQ: 300 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 3, sourceType: 'gathering', defaultPriceNQ: 80 }
     ]
   },
   {
@@ -442,9 +442,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 43985, name: 'ヤースラニガーリック', amount: 2, sourceType: 'gathering', defaultPriceNQ: 700, defaultPriceHQ: 1200 },
       { itemId: 27835, name: 'リトルレモン', amount: 2, sourceType: 'gathering', defaultPriceNQ: 500 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -477,9 +477,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 27838, name: 'フラントーヨオイル', amount: 1, sourceType: 'vendor', defaultPriceNQ: 300 },
       { itemId: 43985, name: 'ヤースラニガーリック', amount: 2, sourceType: 'gathering', defaultPriceNQ: 700, defaultPriceHQ: 1200 },
       { itemId: 27835, name: 'リトルレモン', amount: 1, sourceType: 'gathering', defaultPriceNQ: 500 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -509,9 +509,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 43976, name: 'トラルコーンオイル', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 800 },
       { itemId: 43985, name: 'ヤースラニガーリック', amount: 2, sourceType: 'gathering', defaultPriceNQ: 700, defaultPriceHQ: 1200 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600, defaultPriceHQ: 1000 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -540,9 +540,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44106, name: 'ロネークの肩肉', amount: 2, sourceType: 'monster', defaultPriceNQ: 1400, defaultPriceHQ: 2200 },
       { itemId: 44171, name: 'ブラウンカルダモン', amount: 2, sourceType: 'gathering', defaultPriceNQ: 900, defaultPriceHQ: 1500 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600, defaultPriceHQ: 1000 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -572,9 +572,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 4833, name: 'バニラビーンズ', amount: 2, sourceType: 'gathering', defaultPriceNQ: 400 },
       { itemId: 43975, name: 'ホイップクリーム', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 600 },
       { itemId: 43977, name: '高山食塩', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -602,9 +602,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44152, name: '剛力の宝水G2', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 1800, defaultPriceHQ: 2800 },
       { itemId: 44040, name: 'コザマル・カモミール', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1100, defaultPriceHQ: 1800 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -632,9 +632,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44153, name: '眼力の宝水G2', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 1800, defaultPriceHQ: 2800 },
       { itemId: 44040, name: 'コザマル・カモミール', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1100, defaultPriceHQ: 1800 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -662,9 +662,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44155, name: '知力の宝水G2', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 1800, defaultPriceHQ: 2800 },
       { itemId: 44040, name: 'コザマル・カモミール', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1100, defaultPriceHQ: 1800 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -691,8 +691,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44041, name: 'ウィンドローレル', amount: 2, sourceType: 'gathering', defaultPriceNQ: 400 },
       { itemId: 44040, name: 'コザマル・カモミール', amount: 1, sourceType: 'gathering', defaultPriceNQ: 900 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -721,7 +721,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44071, name: 'タンブルクラブの枯草', amount: 2, sourceType: 'gathering', defaultPriceNQ: 180 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -748,8 +748,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     description: 'パッチ7.2最新錬金薬 (宝薬G3製造用)',
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -776,8 +776,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 49208, name: '高密度軽銀鉱', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2200, defaultPriceHQ: 3500 },
       { itemId: 49224, name: '被膜形成材', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
-      { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 11, name: 'アースクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -804,8 +804,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 49208, name: '高密度軽銀鉱', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2200, defaultPriceHQ: 3500 },
       { itemId: 49224, name: '被膜形成材', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -832,8 +832,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 49211, name: 'オルコ亜麻', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2000, defaultPriceHQ: 3200 },
       { itemId: 49227, name: 'トライヨラの染料', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -860,8 +860,8 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 49211, name: 'オルコ亜麻', amount: 4, sourceType: 'gathering', defaultPriceNQ: 2000, defaultPriceHQ: 3200 },
       { itemId: 49227, name: 'トライヨラの染料', amount: 2, sourceType: 'vendor', defaultPriceNQ: 1500 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 9, name: 'アイスクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 9, name: 'アイスクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -888,9 +888,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44041, name: 'ウィンドローレル', amount: 1, sourceType: 'gathering', defaultPriceNQ: 400 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -917,9 +917,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44042, name: 'ユーカリ', amount: 1, sourceType: 'gathering', defaultPriceNQ: 400 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -946,9 +946,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44040, name: 'コザマル・カモミール', amount: 1, sourceType: 'gathering', defaultPriceNQ: 900 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -975,9 +975,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 2, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44040, name: 'コザマル・カモミール', amount: 1, sourceType: 'gathering', defaultPriceNQ: 900 },
-      { itemId: 46246, name: '紫電の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 46246, name: '紫電の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 1200 },
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1002,7 +1002,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     defaultSellingPrice: 8000,
     materials: [
       { itemId: 44028, name: '帯雷繭', amount: 4, sourceType: 'gathering', defaultPriceNQ: 1500 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1027,7 +1027,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     defaultSellingPrice: 3000,
     materials: [
       { itemId: 44006, name: 'ブラックスター原石', amount: 3, sourceType: 'gathering', defaultPriceNQ: 800 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -1071,9 +1071,9 @@ export const RECIPES_DATABASE: Recipe[] = [
           job: 'MIN'
         }
       },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 11, name: 'アースクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1115,9 +1115,9 @@ export const RECIPES_DATABASE: Recipe[] = [
           job: 'MIN'
         }
       },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1159,9 +1159,9 @@ export const RECIPES_DATABASE: Recipe[] = [
           job: 'BTN'
         }
       },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 9, name: 'アイスクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 9, name: 'アイスクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1203,9 +1203,9 @@ export const RECIPES_DATABASE: Recipe[] = [
           job: 'BTN'
         }
       },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1231,9 +1231,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     defaultSellingPrice: 21000,
     materials: [
       { itemId: 44145, name: 'プルスサウルスの粗皮', amount: 4, sourceType: 'monster', defaultPriceNQ: 2400, defaultPriceHQ: 3600 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 11, name: 'アースクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -1264,9 +1264,9 @@ export const RECIPES_DATABASE: Recipe[] = [
       { itemId: 44150, name: '海島綿布', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_sea_island_cloth', defaultPriceNQ: 19000, defaultPriceHQ: 27000 },
       { itemId: 44151, name: 'プルスサウルスレザー', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_purussaurus_leather', defaultPriceNQ: 21000, defaultPriceHQ: 30000 },
       { itemId: 44148, name: 'スターリングシルバーインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_sterling_silver_ingot', defaultPriceNQ: 18500, defaultPriceHQ: 26000 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 12, name: 'ライトニングクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 12, name: 'ライトニングクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1294,9 +1294,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44151, name: 'プルスサウルスレザー', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_purussaurus_leather', defaultPriceNQ: 21000, defaultPriceHQ: 30000 },
       { itemId: 44150, name: '海島綿布', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_sea_island_cloth', defaultPriceNQ: 19000, defaultPriceHQ: 27000 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 11, name: 'アースクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 2, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 11, name: 'アースクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
   {
@@ -1329,9 +1329,9 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44148, name: 'スターリングシルバーインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_sterling_silver_ingot', defaultPriceNQ: 18500, defaultPriceHQ: 26000 },
       { itemId: 44006, name: 'ブラックスター原石', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1500, defaultPriceHQ: 2500 },
-      { itemId: 44035, name: '黄金の霊砂', amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
-      { itemId: 8, name: 'ファイアクリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300, defaultPriceHQ: 600 },
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 },
+      { itemId: 8, name: 'ファイアクリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -1360,7 +1360,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 44006, name: 'ブラックスター原石', amount: 2, sourceType: 'gathering', defaultPriceNQ: 1500 },
       { itemId: 43993, name: 'ルテニウム鉱', amount: 1, sourceType: 'gathering', defaultPriceNQ: 600 },
-      { itemId: 10, name: 'ウィンドクリスタル', amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 10, name: 'ウィンドクリスタル', hqAvailable: false, amount: 6, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   },
 
@@ -1389,7 +1389,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     materials: [
       { itemId: 43996, name: '黒鉄鉱', amount: 4, sourceType: 'gathering', defaultPriceNQ: 1200 },
       { itemId: 44147, name: 'マルエージングインゴット', amount: 1, sourceType: 'subcraft', defaultPriceNQ: 19500 },
-      { itemId: 13, name: 'ウォータークリスタル', amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
+      { itemId: 13, name: 'ウォータークリスタル', hqAvailable: false, amount: 8, sourceType: 'gathering', defaultPriceNQ: 50 }
     ]
   }
 ];
