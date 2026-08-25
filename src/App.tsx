@@ -110,7 +110,21 @@ export default function App() {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('eorzean_crafter_batch');
       if (saved) {
-        return safeJsonParse<BatchCraftItem[]>(saved, []);
+        const parsed = safeJsonParse<BatchCraftItem[]>(saved, []);
+        // The stored value embeds a full snapshot of each recipe object,
+        // which can go stale after a data fix ships (item names, materials,
+        // icons, etc. would otherwise stay frozen at whatever they looked
+        // like when the item was added to the batch). Re-hydrate every
+        // entry against the current RECIPES_DATABASE by id so batch items
+        // always reflect the latest recipe data; drop any whose recipe no
+        // longer exists.
+        const rehydrated = parsed
+          .map((item) => {
+            const current = RECIPES_DATABASE.find((r) => r.id === item.recipe?.id);
+            return current ? { ...item, recipe: current } : null;
+          })
+          .filter((item): item is BatchCraftItem => item !== null);
+        return rehydrated;
       }
     }
     return [
