@@ -20,7 +20,7 @@ export const CRAFT_JOBS: Record<CraftJob, CraftJobInfo> = {
   CUL: { code: 'CUL', name: '調理師', enName: 'Culinarian', icon: '🍳', color: '#EA580C' },
 };
 
-export type RecipeCategory = 'latestPatch' | 'foodPotion' | 'gear' | 'collectibles' | 'housing' | 'intermediate';
+export type RecipeCategory = 'latestPatch' | 'foodPotion' | 'gear' | 'collectibles' | 'housing' | 'intermediate' | 'legacy';
 
 export interface MaterialRequirement {
   itemId: number;

@@ -4,6 +4,7 @@ import { Recipe, CrafterStats, BatchCraftItem, InventorySyncData } from './types
 import { RECIPES_DATABASE } from './data/recipes';
 import { Header, MainTabType } from './components/Header';
 import { RecipeCatalog } from './components/RecipeCatalog';
+import { LegacyRecipeBrowser } from './components/LegacyRecipeBrowser';
 import { CostProfitCalculator } from './components/CostProfitCalculator';
 import { MaterialTreeGathering } from './components/MaterialTreeGathering';
 import { CraftingSimulatorView } from './components/CraftingSimulatorView';
@@ -120,6 +121,12 @@ export default function App() {
         // longer exists.
         const rehydrated = parsed
           .map((item) => {
+            if (item.recipe?.id?.startsWith('legacy_')) {
+              // Legacy (historical) recipes aren't part of the actively-curated
+              // RECIPES_DATABASE, so there's nothing to refresh them against —
+              // keep the stored snapshot as-is.
+              return item;
+            }
             const current = RECIPES_DATABASE.find((r) => r.id === item.recipe?.id);
             return current ? { ...item, recipe: current } : null;
           })
@@ -354,6 +361,14 @@ export default function App() {
               onSelectRecipeForSim={handleSelectRecipeForSim}
               onAddToBatch={handleAddToBatch}
               selectedWorldOrDc={selectedWorldOrDc}
+            />
+          )}
+
+          {activeTab === 'legacyRecipes' && (
+            <LegacyRecipeBrowser
+              onAddToBatch={handleAddToBatch}
+              onSelectRecipeForCost={handleSelectRecipeForCost}
+              onSelectRecipeForSim={handleSelectRecipeForSim}
             />
           )}
 

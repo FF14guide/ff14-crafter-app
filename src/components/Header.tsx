@@ -15,9 +15,10 @@ import {
   Compass,
   Layers,
   Check,
+  History,
 } from 'lucide-react';
 
-export type MainTabType = 'workflow' | 'recipeCatalog' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
+export type MainTabType = 'workflow' | 'recipeCatalog' | 'legacyRecipes' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
 
 interface HeaderProps {
   activeTab: MainTabType;
@@ -192,6 +193,19 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <ScrollText className="w-4 h-4" />
             <span>レシピ選定</span>
+          </button>
+
+          <button
+            id="tab-legacy-recipes"
+            onClick={() => onSelectTab('legacyRecipes')}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              activeTab === 'legacyRecipes'
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
+          >
+            <History className="w-4 h-4" />
+            <span>歴代レシピ</span>
           </button>
 
           <button
