@@ -2,6 +2,7 @@ import React, { useState, useMemo } from 'react';
 import { Recipe, CrafterStats } from '../types/ff14';
 import { CRAFTER_SKILLS, CrafterSkill, SKILL_MAP } from '../data/crafterSkills';
 import { simulateRotation, generateMacroBlocks } from '../utils/craftingSimulator';
+import { generateGameMacro } from '../utils/macroGenerator';
 import { ItemIcon } from './common/ItemIcon';
 import { ActionIcon } from './common/ActionIcon';
 import { JobIcon } from './common/JobIcon';
@@ -75,6 +76,18 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
     setSelectedSkillIds([]);
   };
 
+  // Auto-generate a rotation by running the real simulation-driven macro
+  // builder (same engine used for the workflow tab's macro output) against
+  // the crafter's currently entered stats, and load its result into the step
+  // list so every existing view (gauges, macro output, step chips) updates.
+  const [autoGenerateInfo, setAutoGenerateInfo] = useState<{ isFullyAchieved: boolean; warning?: string } | null>(null);
+
+  const handleAutoGenerate = () => {
+    const result = generateGameMacro(recipe, stats);
+    setSelectedSkillIds(result.simulationResult.steps.map((s) => s.actionId));
+    setAutoGenerateInfo({ isFullyAchieved: result.isFullyAchieved, warning: result.warning });
+  };
+
   // Trigger celebration confetti on 100% HQ craft
   const handleCelebrate = () => {
     if (simResult.hqChance === 100 && simResult.isCompleted) {
@@ -137,6 +150,14 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
 
         <div className="flex items-center gap-2">
           <button
+            onClick={handleAutoGenerate}
+            className="flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-emerald-500/30 to-emerald-600/30 hover:from-emerald-500/40 hover:to-emerald-600/40 text-emerald-200 rounded-lg text-xs border border-emerald-500/50 font-bold transition-all shadow-sm"
+            title="現在のステータス・飯・薬・マイスター設定から自動でローテーションをシミュレートして組み立てます"
+          >
+            <Zap className="w-3.5 h-3.5" />
+            <span>マクロ自動生成</span>
+          </button>
+          <button
             onClick={onOpenPresets}
             className="flex items-center gap-1.5 px-3 py-1.5 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded-lg text-xs border border-amber-500/40 font-medium transition-all"
           >
@@ -153,6 +174,27 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
         </div>
       </div>
 
+      {autoGenerateInfo && (
+        <div
+          className={`flex items-start gap-2 text-xs rounded-xl p-3 border ${
+            autoGenerateInfo.isFullyAchieved
+              ? 'bg-emerald-950/40 border-emerald-500/40 text-emerald-300'
+              : 'bg-amber-950/40 border-amber-500/40 text-amber-300'
+          }`}
+        >
+          {autoGenerateInfo.isFullyAchieved ? (
+            <Check className="w-4 h-4 shrink-0 mt-0.5" />
+          ) : (
+            <HelpCircle className="w-4 h-4 shrink-0 mt-0.5" />
+          )}
+          <span>
+            {autoGenerateInfo.isFullyAchieved
+              ? '現在のステータスで100%HQ・完成まで到達するローテーションを自動生成しました。'
+              : autoGenerateInfo.warning || 'ローテーションを自動生成しました（一部条件を満たせていません）。'}
+          </span>
+        </div>
+      )}
+
       {/* Crafter Stats & Buffs Configuration Bar */}
       <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
         <div className="flex items-center gap-2 mb-3">
@@ -160,7 +202,7 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
           <h3 className="text-xs font-semibold text-slate-200">クラフターステータス & 飯薬バフ設定</h3>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 text-xs">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-xs">
           <div>
             <label className="text-slate-400 block text-[11px] mb-1">作業精度 (Craftsmanship)</label>
             <input
@@ -227,6 +269,21 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
                 </option>
               ))}
             </select>
+          </div>
+
+          <div>
+            <label className="text-slate-400 block text-[11px] mb-1">マイスター (Specialist)</label>
+            <button
+              onClick={() => onChangeStats({ ...stats, specialist: !stats.specialist })}
+              className={`w-full flex items-center justify-center gap-1.5 rounded-lg px-2.5 py-1.5 text-xs font-bold border transition-all ${
+                stats.specialist
+                  ? 'bg-amber-500 text-slate-950 border-amber-400'
+                  : 'bg-slate-950 text-slate-400 border-slate-700 hover:text-slate-200'
+              }`}
+              title="マイスター装備時のボーナス(作業精度/加工精度+20, CP+15)を加味します"
+            >
+              {stats.specialist ? '✓ ON' : 'OFF'}
+            </button>
           </div>
         </div>
       </div>

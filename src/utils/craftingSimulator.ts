@@ -87,6 +87,12 @@ export function simulateRotation(
     final_appraisal: 0,
   };
 
+  // One-shot flags for the newer special-mechanic actions.
+  let trainedPerfectionUsed = false;
+  let quickInnovationUsed = false;
+  // Set by Trained Perfection; consumed by whichever action follows it.
+  let nextActionFreeDurability = false;
+
   const steps: CraftingStep[] = [];
   let totalWaitSeconds = 0;
   let lastTouchAction = '';
@@ -115,12 +121,20 @@ export function simulateRotation(
     // Check Durability cost with Waste Not buffs
     let actualDurabilityCost = skill.durabilityCost;
     if (actualDurabilityCost > 0) {
-      if (buffs.waste_not > 0 || buffs.waste_not_2 > 0) {
+      if (nextActionFreeDurability) {
+        actualDurabilityCost = 0;
+        nextActionFreeDurability = false;
+      } else if (buffs.waste_not > 0 || buffs.waste_not_2 > 0) {
         actualDurabilityCost = Math.floor(actualDurabilityCost / 2);
       }
     }
 
     currentDurability -= actualDurabilityCost;
+
+    // Immaculate Mend: restore full durability in one action.
+    if (skill.id === 'immaculate_mend') {
+      currentDurability = recipe.durability;
+    }
 
     // Progression Calc
     let progressGained = 0;
@@ -148,12 +162,29 @@ export function simulateRotation(
 
     // Quality Calc
     let qualityGained = 0;
-    if (skill.efficiencyQuality) {
+    if (skill.id === 'trained_eye' && i === 0 && recipe.level <= stats.level - 10) {
+      // Eligible Trained Eye: its real mechanic is an instant jump straight
+      // to the recipe's max quality, not an efficiency multiplier -- so we
+      // set it directly rather than routing through the generic formula
+      // below (which can under- or over-shoot depending on the recipe's
+      // quality curve).
+      qualityGained = recipe.maxQuality - currentQuality;
+      currentQuality = recipe.maxQuality;
+      innerQuiet = Math.min(10, innerQuiet + 1);
+      lastTouchAction = skill.id;
+    } else if (skill.efficiencyQuality) {
       let eff = skill.efficiencyQuality;
 
       // Byregot's Blessing scaling: +20% per IQ stack
       if (skill.id === 'byregot_blessing') {
         eff = 100 + innerQuiet * 20;
+      }
+
+      // An ineligible Trained Eye (used outside turn 1, or on a recipe not
+      // low enough level) degrades to an ordinary touch instead of silently
+      // pretending to still be a guaranteed-max-quality hit.
+      if (skill.id === 'trained_eye') {
+        eff = 100;
       }
 
       // Innovation buff +50%
@@ -179,7 +210,9 @@ export function simulateRotation(
       } else if (skill.id === 'preparatory_touch') {
         innerQuiet = Math.min(10, innerQuiet + 2);
       } else if (skill.id === 'refined_touch') {
-        innerQuiet = Math.min(10, innerQuiet + 2);
+        // Real combo bonus (+2 IQ total) only applies immediately after
+        // Basic Touch; otherwise it gains IQ like a normal touch action (+1).
+        innerQuiet = Math.min(10, innerQuiet + (lastTouchAction === 'basic_touch' ? 2 : 1));
       } else if (skill.id === 'byregot_blessing') {
         innerQuiet = 0;
       } else if (skill.efficiencyQuality > 0) {
@@ -203,19 +236,40 @@ export function simulateRotation(
     if (skill.id === 'waste_not_2') buffs.waste_not_2 = 8;
     if (skill.id === 'final_appraisal') buffs.final_appraisal = 5;
 
+    // Trained Perfection: once per craft, makes the next action's durability
+    // cost 0 (does not affect this turn's own cost -- it has none anyway).
+    if (skill.id === 'trained_perfection' && !trainedPerfectionUsed) {
+      trainedPerfectionUsed = true;
+      nextActionFreeDurability = true;
+    }
+
+    // Quick Innovation: once per craft, only while Innovation isn't already
+    // active; grants Innovation for 1 turn without consuming a turn itself
+    // (handled below by skipping the buff-decrement step for this action).
+    let quickInnovationConsumedNoTurn = false;
+    if (skill.id === 'quick_innovation' && !quickInnovationUsed && buffs.innovation === 0) {
+      quickInnovationUsed = true;
+      buffs.innovation = 1;
+      quickInnovationConsumedNoTurn = true;
+    }
+
     // Manipulation tick (+5 durability)
     if (buffs.manipulation > 0) {
       currentDurability = Math.min(recipe.durability, currentDurability + 5);
     }
 
-    // Decrement buff turn counts (except ones consumed manually)
-    if (buffs.veneration > 0 && skill.id !== 'veneration') buffs.veneration--;
-    if (buffs.innovation > 0 && skill.id !== 'innovation') buffs.innovation--;
-    if (buffs.great_strides > 0 && skill.id !== 'great_strides' && !skill.efficiencyQuality) buffs.great_strides--;
-    if (buffs.manipulation > 0 && skill.id !== 'manipulation') buffs.manipulation--;
-    if (buffs.waste_not > 0 && skill.id !== 'waste_not') buffs.waste_not--;
-    if (buffs.waste_not_2 > 0 && skill.id !== 'waste_not_2') buffs.waste_not_2--;
-    if (buffs.final_appraisal > 0 && skill.id !== 'final_appraisal') buffs.final_appraisal--;
+    // Decrement buff turn counts (except ones consumed manually).
+    // Quick Innovation doesn't consume a turn at all, so buffs are frozen
+    // for this step when it fires.
+    if (!quickInnovationConsumedNoTurn) {
+      if (buffs.veneration > 0 && skill.id !== 'veneration') buffs.veneration--;
+      if (buffs.innovation > 0 && skill.id !== 'innovation') buffs.innovation--;
+      if (buffs.great_strides > 0 && skill.id !== 'great_strides' && !skill.efficiencyQuality) buffs.great_strides--;
+      if (buffs.manipulation > 0 && skill.id !== 'manipulation') buffs.manipulation--;
+      if (buffs.waste_not > 0 && skill.id !== 'waste_not') buffs.waste_not--;
+      if (buffs.waste_not_2 > 0 && skill.id !== 'waste_not_2') buffs.waste_not_2--;
+      if (buffs.final_appraisal > 0 && skill.id !== 'final_appraisal') buffs.final_appraisal--;
+    }
 
     totalWaitSeconds += skill.waitDuration || 3;
 

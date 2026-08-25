@@ -15,6 +15,12 @@ export interface GeneratedMacro {
   };
   simulationResult: CraftingSimulationResult;
   isSingleMacro: boolean;
+  // True only when the simulated rotation both finishes progress AND reaches
+  // the recipe's maxQuality (i.e. a genuine 100% HQ macro). When false, the
+  // macro is the best the builder could do with the given stats -- `warning`
+  // explains what's short.
+  isFullyAchieved: boolean;
+  warning?: string;
 }
 
 /**
@@ -60,9 +66,263 @@ export function getEffectiveCrafterStats(stats: CrafterStats): {
   };
 }
 
+/** Convenience: last step's buff snapshot, or an empty object before turn 1. */
+function lastBuffs(sim: CraftingSimulationResult): Record<string, number> {
+  return sim.steps.length ? sim.steps[sim.steps.length - 1].buffs : {};
+}
+
+function lastInnerQuiet(sim: CraftingSimulationResult): number {
+  return sim.steps.length ? sim.steps[sim.steps.length - 1].innerQuietStacks : 0;
+}
+
+/** Returns 2 while Waste Not or Waste Not II is active (durability costs are
+ * halved by the simulator in that state), otherwise 1. Using the real
+ * divisor -- rather than always assuming full cost -- avoids leaving usable
+ * durability on the table once one of these buffs is up. */
+function durabilityDivisor(buffs: Record<string, number>): number {
+  return (buffs.waste_not_2 ?? 0) > 0 || (buffs.waste_not ?? 0) > 0 ? 2 : 1;
+}
+
 /**
- * Generate in-game macros formatted with /ac, <wait.x>, and sound cues
- * dynamically tailored to the player's actual equipment stats, food, potion, and specialist.
+ * Builds the "quality" half of the rotation: opens with either Muscle Memory
+ * (progress-focused opener) or Reflect (quality-focused opener, stacks Inner
+ * Quiet immediately), then greedily adds actions -- re-simulating against the
+ * real crafting engine after every addition -- until the recipe's maxQuality
+ * is reached or the CP/durability budget runs out.
+ *
+ * This directly reacts to the recipe's actual numbers (difficulty, durability,
+ * maxQuality, suggested stats) and the crafter's actual effective stats
+ * (which already include food/potion/specialist bonuses baked in via
+ * `simStats`), rather than picking from a fixed template.
+ */
+function buildQualityPhase(
+  recipe: Recipe,
+  simStats: CrafterStats,
+  opener: 'muscle_memory' | 'reflect'
+): string[] {
+  const skills: string[] = [opener];
+
+  // Larger-durability crafts (finished gear, typically 70-80 durability) can
+  // afford -- and usually need -- Manipulation to sustain a long touch chain.
+  // Small 40-durability intermediate materials rarely have room for its
+  // 96 CP cost, so we let the simulation decide by only attempting it when
+  // there's CP to spare.
+  const wantsManipulation = recipe.durability >= 60;
+  let manipulationUsed = false;
+
+  // Conversely, tight-durability crafts benefit far more from halving every
+  // action's durability cost than from sustaining durability over time --
+  // Waste Not II covers a full short rotation (8 turns) and effectively
+  // doubles how many actions the durability pool can support.
+  const wantsWasteNot = recipe.durability < 60;
+  let wasteNotUsed = false;
+
+  const MAX_ITER = 24;
+  for (let i = 0; i < MAX_ITER; i++) {
+    const sim = simulateRotation(recipe, simStats, skills);
+
+    if (sim.isFailed) {
+      // The last action broke durability -- undo it and stop the quality phase.
+      skills.pop();
+      break;
+    }
+    if (!recipe.canHq || recipe.maxQuality <= 0 || sim.finalQuality >= recipe.maxQuality) {
+      break;
+    }
+    if (sim.remainingDurability <= 0) break;
+
+    const buffs = lastBuffs(sim);
+    const iq = lastInnerQuiet(sim);
+    const qualityGapRatio = (recipe.maxQuality - sim.finalQuality) / recipe.maxQuality;
+    const durDivisor = durabilityDivisor(buffs);
+    const prepTouchDurCost = Math.floor(20 / durDivisor);
+    const basicTouchDurCost = Math.floor(10 / durDivisor);
+
+    // 1) Durability setup first, before any touch spends durability we can't
+    //    get back: apply Waste Not II (tight-durability crafts) or
+    //    Manipulation (large-durability crafts) as early as possible so the
+    //    buff covers as much of the rotation as it can.
+    if (wantsWasteNot && !wasteNotUsed) {
+      if (sim.remainingCp >= 98 + 60) {
+        skills.push('waste_not_2');
+        wasteNotUsed = true;
+        continue;
+      } else if (sim.remainingCp >= 56 + 40) {
+        skills.push('waste_not');
+        wasteNotUsed = true;
+        continue;
+      }
+    }
+    if (wantsManipulation && !manipulationUsed && sim.remainingCp >= 96 + 120) {
+      skills.push('manipulation');
+      manipulationUsed = true;
+      continue;
+    }
+
+    // 2) Keep Innovation up while we still plan to touch -- refresh a little
+    //    before it actually expires so we never touch un-buffed.
+    if ((buffs.innovation ?? 0) <= 1 && sim.remainingCp >= 18 + 40) {
+      skills.push('innovation');
+      continue;
+    }
+
+    // 3) Once Inner Quiet is well stacked and the remaining quality gap is
+    //    small enough that Byregot's Blessing can plausibly close it, finish
+    //    with Great Strides + Byregot's Blessing rather than grinding more
+    //    touches.
+    if (iq >= 6 && qualityGapRatio <= 0.35 && sim.remainingCp >= 32 + 24 && sim.remainingDurability >= 10) {
+      skills.push('great_strides', 'byregot_blessing');
+      continue;
+    }
+
+    // 4) Regular quality action: Preparatory Touch is the most CP-efficient
+    //    per point of quality *and* builds Inner Quiet, so prefer it whenever
+    //    the budget allows; otherwise fall back to the cheaper Basic Touch.
+    if (sim.remainingCp >= 40 && sim.remainingDurability >= prepTouchDurCost) {
+      skills.push('preparatory_touch');
+    } else if (sim.remainingCp >= 18 && sim.remainingDurability >= basicTouchDurCost) {
+      skills.push('basic_touch');
+    } else {
+      break; // Nothing affordable left for the quality phase.
+    }
+  }
+
+  return skills;
+}
+
+/**
+ * Builds the "progress" half of the rotation on top of whatever the quality
+ * phase left behind, greedily adding Veneration + Groundwork (falling back
+ * to CP-free Basic Synthesis) until the recipe's difficulty is met or the
+ * remaining budget runs out.
+ */
+function buildProgressPhase(recipe: Recipe, simStats: CrafterStats, base: string[]): string[] {
+  const skills = [...base];
+
+  const MAX_ITER = 20;
+  for (let i = 0; i < MAX_ITER; i++) {
+    const sim = simulateRotation(recipe, simStats, skills);
+
+    if (sim.isCompleted) break;
+    if (sim.isFailed) {
+      skills.pop();
+      break;
+    }
+    if (sim.remainingDurability <= 0) break;
+
+    const buffs = lastBuffs(sim);
+
+    // Keep Veneration up while progress remains.
+    if ((buffs.veneration ?? 0) <= 0 && sim.remainingCp >= 18 + 18) {
+      skills.push('veneration');
+      continue;
+    }
+
+    const durDivisor = durabilityDivisor(buffs);
+    const groundworkDurCost = Math.floor(20 / durDivisor);
+    const basicSynthDurCost = Math.floor(10 / durDivisor);
+
+    if (sim.remainingCp >= 18 && sim.remainingDurability >= groundworkDurCost) {
+      skills.push('groundwork');
+    } else if (sim.remainingCp >= 7 && sim.remainingDurability >= basicSynthDurCost) {
+      // Careful Synthesis (7 CP, 150% efficiency) is strictly better than
+      // the CP-free Basic Synthesis (120% efficiency) for the same
+      // durability cost, so prefer it whenever a little CP remains.
+      skills.push('careful_synthesis');
+    } else if (sim.remainingDurability >= basicSynthDurCost) {
+      // Basic Synthesis costs no CP at all -- always usable as a last resort
+      // while durability remains, even after CP is fully spent.
+      skills.push('basic_synthesis');
+    } else {
+      break;
+    }
+  }
+
+  return skills;
+}
+
+/**
+ * Last-resort repair pass: if the two structured phases above still leave
+ * progress unfinished (can happen when the crafter's stats are well below
+ * what the recipe suggests), keep appending whatever cheap action is still
+ * affordable until either progress completes or the budget is truly spent.
+ * This never fabricates success -- the caller is told via `isFullyAchieved`
+ * and `warning` whether the recipe was actually completed.
+ */
+function repairIncompleteProgress(recipe: Recipe, simStats: CrafterStats, base: string[]): string[] {
+  const skills = [...base];
+  const MAX_ITER = 10;
+  for (let i = 0; i < MAX_ITER; i++) {
+    const sim = simulateRotation(recipe, simStats, skills);
+    if (sim.isCompleted || sim.isFailed) break;
+    const durDivisor = durabilityDivisor(lastBuffs(sim));
+    const groundworkDurCost = Math.floor(20 / durDivisor);
+    const basicSynthDurCost = Math.floor(10 / durDivisor);
+    if (sim.remainingCp >= 18 && sim.remainingDurability >= groundworkDurCost) {
+      skills.push('groundwork');
+    } else if (sim.remainingCp >= 7 && sim.remainingDurability >= basicSynthDurCost) {
+      skills.push('careful_synthesis');
+    } else if (sim.remainingDurability >= basicSynthDurCost) {
+      skills.push('basic_synthesis');
+    } else {
+      break;
+    }
+  }
+  return skills;
+}
+
+/**
+ * Builds one full candidate rotation (quality phase, then progress phase)
+ * for a given opener choice, and returns it together with its simulated
+ * outcome so candidates can be compared on actual results.
+ */
+function buildCandidate(
+  recipe: Recipe,
+  simStats: CrafterStats,
+  opener: 'muscle_memory' | 'reflect'
+): { skillIds: string[]; sim: CraftingSimulationResult } {
+  let skillIds = buildQualityPhase(recipe, simStats, opener);
+  skillIds = buildProgressPhase(recipe, simStats, skillIds);
+
+  let sim = simulateRotation(recipe, simStats, skillIds);
+  if (!sim.isCompleted && !sim.isFailed) {
+    skillIds = repairIncompleteProgress(recipe, simStats, skillIds);
+    sim = simulateRotation(recipe, simStats, skillIds);
+  }
+
+  return { skillIds, sim };
+}
+
+/**
+ * Scores a simulated candidate so completed-and-quality-maxed rotations always
+ * win outright, and otherwise quality achieved dominates the ranking (a
+ * "completed" craft that only reached ~0% quality -- which can happen if
+ * Muscle Memory alone overshoots a low-difficulty recipe's progress before
+ * any quality action gets a turn -- must not outrank a candidate that
+ * actually built real quality, even if that one fell short on progress).
+ * Completion still earns a meaningful bonus so it breaks near-ties in favor
+ * of actually finishing the craft.
+ */
+function scoreCandidate(sim: CraftingSimulationResult, recipe: Recipe): number {
+  if (!recipe.canHq || recipe.maxQuality <= 0) {
+    // Progress-only recipe (no HQ concept): completion is everything.
+    return sim.isCompleted ? 1_000_000 : sim.finalProgress;
+  }
+  const qualityAchieved = Math.min(sim.finalQuality, recipe.maxQuality);
+  const completionBonus = sim.isCompleted ? recipe.maxQuality * 0.15 : 0;
+  return qualityAchieved + completionBonus;
+}
+
+/**
+ * Generate in-game macros formatted with /ac, <wait.x>, and sound cues.
+ *
+ * Unlike a fixed template, the rotation is constructed by repeatedly running
+ * the actual crafting simulator (same engine as the Simulator tab) against
+ * the recipe's real numbers -- difficulty, durability, maxQuality, suggested
+ * craftsmanship/control -- and the crafter's actual effective stats, which
+ * already fold in food, potion, and Specialist bonuses. Two candidate
+ * openers (Muscle Memory vs. Reflect) are built and simulated in full; the
+ * one that actually reaches 100% quality (or gets closest) is used.
  */
 export function generateGameMacro(
   recipe: Recipe,
@@ -70,10 +330,11 @@ export function generateGameMacro(
   macroNamePrefix?: string
 ): GeneratedMacro {
   const effective = getEffectiveCrafterStats(stats);
-  const is40Durability = recipe.durability <= 40;
   const label = macroNamePrefix || recipe.name;
 
-  // Clone stats object with effective values for simulator
+  // Clone stats object with effective values for simulator -- food/potion/
+  // specialist bonuses are already folded into craftsmanship/control/cp
+  // above, so the simulator sees a single "already-buffed" stat block.
   const simStats: CrafterStats = {
     ...stats,
     craftsmanship: effective.craftsmanship,
@@ -84,103 +345,22 @@ export function generateGameMacro(
     specialist: false,
   };
 
-  let skillIds: string[] = [];
+  // Try both openers and keep whichever candidate actually performs better.
+  const candidates = [
+    buildCandidate(recipe, simStats, 'muscle_memory'),
+    buildCandidate(recipe, simStats, 'reflect'),
+  ];
 
-  if (is40Durability) {
-    // 40 Durability Intermediate Material
-    // If CP is high enough (>= 520), use high-speed 1-macro rotation
-    if (effective.cp >= 560) {
-      skillIds = [
-        'reflect', // 真価 (+3 IQ)
-        'waste_not_2', // 長期倹約
-        'innovation', // イノベーション
-        'preparatory_touch', // 下地加工
-        'preparatory_touch', // 下地加工
-        'preparatory_touch', // 下地加工
-        'great_strides', // グレートストライド
-        'byregot_blessing', // ビエルゴの祝福
-        'veneration', // ヴェネレーション
-        'groundwork', // 下地作業
-        'groundwork', // 下地作業
-      ];
-    } else if (effective.cp >= 480) {
-      skillIds = [
-        'reflect', // 真価
-        'waste_not', // 倹約
-        'innovation', // イノベーション
-        'basic_touch', // 加工
-        'standard_touch', // 中級加工
-        'advanced_touch', // 上級加工
-        'great_strides', // グレートストライド
-        'byregot_blessing', // ビエルゴの祝福
-        'veneration', // ヴェネレーション
-        'groundwork', // 下地作業
-        'groundwork', // 下地作業
-      ];
-    } else {
-      skillIds = [
-        'muscle_memory', // 確信
-        'waste_not', // 倹約
-        'veneration', // ヴェネレーション
-        'groundwork', // 下地作業
-        'innovation', // イノベーション
-        'basic_touch', // 加工
-        'standard_touch', // 中級加工
-        'great_strides', // グレートストライド
-        'byregot_blessing', // ビエルゴの祝福
-        'basic_synthesis', // 作業
-      ];
-    }
-  } else {
-    // 70 / 80 Durability Finished Item (Equipment / Food / Potion)
-    // High-End 2-Macro 100% HQ
-    if (effective.cp >= 640) {
-      skillIds = [
-        'muscle_memory', // 確信
-        'manipulation', // マニピュレーション
-        'veneration', // ヴェネレーション
-        'waste_not_2', // 長期倹約
-        'groundwork', // 下地作業
-        'groundwork', // 下地作業
-        'innovation', // イノベーション
-        'preparatory_touch', // 下地加工
-        'preparatory_touch', // 下地加工
-        'preparatory_touch', // 下地加工
-        'preparatory_touch', // 下地加工
-        'manipulation', // マニピュレーション
-        'innovation', // イノベーション
-        'prudent_touch', // 倹約加工 (or 匠の絶技)
-        'great_strides', // グレートストライド
-        'byregot_blessing', // ビエルゴの祝福
-        'veneration', // ヴェネレーション
-        'groundwork', // 下地作業
-        'groundwork', // 下地作業
-      ];
-    } else {
-      skillIds = [
-        'muscle_memory', // 確信
-        'manipulation', // マニピュレーション
-        'waste_not', // 倹約
-        'veneration', // ヴェネレーション
-        'groundwork', // 下地作業
-        'groundwork', // 下地作業
-        'innovation', // イノベーション
-        'basic_touch',
-        'standard_touch',
-        'advanced_touch',
-        'great_strides',
-        'byregot_blessing',
-        'groundwork',
-      ];
-    }
-  }
+  candidates.sort((a, b) => scoreCandidate(b.sim, recipe) - scoreCandidate(a.sim, recipe));
 
-  // Run simulation with effective stats
-  const simResult = simulateRotation(recipe, simStats, skillIds);
+  const { skillIds, sim: simResult } = candidates[0];
 
-  // If simulation didn't finish progress, add extra groundwork
-  if (!simResult.isCompleted && simResult.remainingCp >= 18 && simResult.remainingDurability >= 10) {
-    skillIds.push('groundwork');
+  const isFullyAchieved = simResult.isCompleted && simResult.finalQuality >= recipe.maxQuality;
+  let warning: string | undefined;
+  if (!simResult.isCompleted) {
+    warning = '現在のステータスでは作業工数が足りず、製作を完了できません。装備・飯薬・薬を見直すか、必要製作数を減らしてください。';
+  } else if (recipe.canHq && simResult.finalQuality < recipe.maxQuality) {
+    warning = `現在のステータスでは最高品質(HQ確定)まで届きません（到達品質 ${simResult.qualityPercent}% / HQ率 ${simResult.hqChance}%）。加工精度を強化すると改善します。`;
   }
 
   // Format into macros of max 15 lines (14 actions + 1 echo)
@@ -205,6 +385,11 @@ export function generateGameMacro(
     basic_synthesis: { name: '作業', wait: 3 },
     groundwork: { name: '下地作業', wait: 3 },
     careful_synthesis: { name: '模範作業', wait: 3 },
+    refined_touch: { name: '洗練加工', wait: 3 },
+    trained_perfection: { name: '匠の絶技', wait: 3 },
+    trained_eye: { name: '匠の早業', wait: 3 },
+    quick_innovation: { name: 'クイックイノベーション', wait: 1 },
+    immaculate_mend: { name: 'パーフェクトメンド', wait: 3 },
   };
 
   let currentLines: string[] = [];
@@ -230,7 +415,8 @@ export function generateGameMacro(
     const isLastPart = p === totalParts - 1;
     const lines = [...macroChunks[p]];
     if (isLastPart) {
-      lines.push(`/echo 【${label}】製作完了！HQ完成！ <se.1>`);
+      const completionText = isFullyAchieved ? '製作完了！HQ完成！' : '製作完了！';
+      lines.push(`/echo 【${label}】${completionText} <se.1>`);
     } else {
       lines.push(`/echo 【${label}】マクロ${p + 1}終了 ➔ マクロ${p + 2}へ <se.6>`);
     }
@@ -246,5 +432,7 @@ export function generateGameMacro(
     effectiveStats: effective,
     simulationResult: simResult,
     isSingleMacro: formattedMacros.length === 1,
+    isFullyAchieved,
+    warning,
   };
 }
