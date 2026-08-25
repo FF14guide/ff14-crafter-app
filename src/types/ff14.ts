@@ -111,6 +111,11 @@ export interface UniversalisItemData {
   // this item/world). The UI must surface this to the user rather than
   // presenting the numbers as confirmed market data.
   isEstimate: boolean;
+  // True when the selected World had no listings and this data was instead
+  // fetched by aggregating across the whole Data Center. Still real market
+  // data (not a guess) — isEstimate stays false — but the UI may want to
+  // note that it isn't specific to the selected World.
+  isDcWide?: boolean;
   // Short human-readable reason shown alongside the "estimated" badge,
   // e.g. "マーケット情報を取得できませんでした" — omitted when isEstimate is false.
   estimateReason?: string;

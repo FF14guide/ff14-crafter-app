@@ -88,6 +88,15 @@ export const DATA_CENTERS: DataCenterOption[] = [
 const memoryCache = new Map<string, { data: UniversalisItemData; timestamp: number }>();
 const CACHE_TTL_MS = 60 * 1000; // 1 minute cache
 
+/**
+ * Given a World name, returns the name of the Data Center it belongs to.
+ * Returns undefined if the input is already a DC name or unrecognized.
+ */
+function resolveDataCenterForWorld(worldOrDc: string): string | undefined {
+  const dc = DATA_CENTERS.find((d) => d.worlds.includes(worldOrDc));
+  return dc?.name;
+}
+
 function createFallbackItem(
   itemId: number,
   worldOrDc: string,
@@ -237,6 +246,21 @@ export async function fetchUniversalisPrice(
 
       if (raw) {
         const itemData = parseUniversalisItem(raw, itemId, worldOrDc, defaultFallbackPrice);
+
+        // If this specific World had no real listings, try the whole Data
+        // Center before giving up — niche/gathered materials are often not
+        // listed on any one server but do have listings somewhere in the DC.
+        const noListingsOnWorld = itemData.isEstimate && (!raw.listings || raw.listings.length === 0);
+        const dcName = resolveDataCenterForWorld(worldOrDc);
+        if (noListingsOnWorld && dcName && dcName !== worldOrDc) {
+          const dcResult = await fetchUniversalisPrice(itemId, dcName, defaultFallbackPrice);
+          if (!dcResult.isEstimate) {
+            const dcWideData: UniversalisItemData = { ...dcResult, isDcWide: true };
+            memoryCache.set(cacheKey, { data: dcWideData, timestamp: Date.now() });
+            return dcWideData;
+          }
+        }
+
         memoryCache.set(cacheKey, { data: itemData, timestamp: Date.now() });
         return itemData;
       }
@@ -337,6 +361,37 @@ export async function fetchUniversalisMultiPrices(
       const fallbackData = createFallbackItem(id, worldOrDc, fallbackPrices[id] || 3000, batchFailureReason);
       results[id] = fallbackData;
       memoryCache.set(`${worldOrDc}_${id}`, { data: fallbackData, timestamp: Date.now() });
+    }
+  }
+
+  // For any items that had zero real listings on the selected World, retry
+  // them as a single extra batch request against the whole Data Center
+  // before falling back to a guessed price.
+  const dcName = resolveDataCenterForWorld(worldOrDc);
+  if (dcName && dcName !== worldOrDc) {
+    const zeroListingIds = idsToFetch.filter((id) => {
+      const r = results[id];
+      return r && r.isEstimate && r.listingsCount === 0;
+    });
+
+    if (zeroListingIds.length > 0) {
+      try {
+        const dcResults = await fetchUniversalisMultiPrices(
+          zeroListingIds,
+          dcName,
+          Object.fromEntries(zeroListingIds.map((id) => [id, fallbackPrices[id] || 3000]))
+        );
+        for (const id of zeroListingIds) {
+          const dcData = dcResults[id];
+          if (dcData && !dcData.isEstimate) {
+            const dcWideData: UniversalisItemData = { ...dcData, isDcWide: true };
+            results[id] = dcWideData;
+            memoryCache.set(`${worldOrDc}_${id}`, { data: dcWideData, timestamp: Date.now() });
+          }
+        }
+      } catch (err) {
+        console.warn(`[Universalis] DC-wide retry failed for [${zeroListingIds.join(',')}] on ${dcName}:`, err);
+      }
     }
   }
 

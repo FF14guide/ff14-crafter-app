@@ -198,6 +198,15 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
                 <Globe className="w-3 h-3" />
                 <span>マケボ参照: <b>{selectedWorldOrDc}</b></span>
               </span>
+              {productMarket?.isDcWide && (
+                <span
+                  className="inline-flex items-center gap-1 text-sky-300 bg-sky-950/40 px-2 py-0.5 rounded border border-sky-500/40"
+                  title="このワールドには出品がなかったため、同じDC内の他ワールドを含めた価格です"
+                >
+                  <Globe className="w-3 h-3" />
+                  <span>DC全体平均</span>
+                </span>
+              )}
               {productMarket?.isEstimate && (
                 <span
                   className="inline-flex items-center gap-1 text-amber-400 bg-amber-950/40 px-2 py-0.5 rounded border border-amber-500/40"
@@ -539,6 +548,11 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
                             title="このアイテムにHQは存在しません"
                           >
                             HQなし
+                          </span>
+                        )}
+                        {itemMarket?.isDcWide && (
+                          <span title="このワールドには出品がなかったため、DC全体の価格です">
+                            <Globe className="w-3 h-3 text-sky-400/80" />
                           </span>
                         )}
                         {itemMarket?.isEstimate && (

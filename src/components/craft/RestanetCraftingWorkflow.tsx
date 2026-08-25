@@ -43,6 +43,7 @@ import {
   Minus,
   RefreshCw,
   AlertTriangle,
+  Globe,
 } from 'lucide-react';
 
 interface RestanetCraftingWorkflowProps {
@@ -807,6 +808,11 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                             <>
                               <span className="text-[10px] text-slate-500 flex items-center justify-end gap-1">
                                 マケボ最安 単価 {liveUnitPrice.toLocaleString()} G
+                                {itemMarket?.isDcWide && (
+                                  <span title="このワールドには出品がなかったため、DC全体の価格です">
+                                    <Globe className="w-3 h-3 text-sky-400/80" />
+                                  </span>
+                                )}
                                 {itemMarket?.isEstimate && (
                                   <span title={itemMarket.estimateReason || '推定値（マケボ未取得）'}>
                                     <AlertTriangle className="w-3 h-3 text-amber-500/80" />

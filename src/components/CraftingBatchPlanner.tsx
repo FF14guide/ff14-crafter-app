@@ -41,6 +41,7 @@ import {
   Layers,
   Search,
   AlertTriangle,
+  Globe,
 } from 'lucide-react';
 
 interface CraftingBatchPlannerProps {
@@ -965,6 +966,11 @@ export const CraftingBatchPlanner: React.FC<CraftingBatchPlannerProps> = ({
                         <div className="text-right font-rajdhani">
                           <span className="text-[10px] text-slate-500 flex items-center justify-end gap-1">
                             単価 {unitPrice.toLocaleString()} G
+                            {liveMarketData[item.itemId]?.isDcWide && (
+                              <span title="このワールドには出品がなかったため、DC全体の価格です">
+                                <Globe className="w-3 h-3 text-sky-400/80" />
+                              </span>
+                            )}
                             {liveMarketData[item.itemId]?.isEstimate && (
                               <span title={liveMarketData[item.itemId]?.estimateReason || '推定値（マケボ未取得）'}>
                                 <AlertTriangle className="w-3 h-3 text-amber-500/80" />
