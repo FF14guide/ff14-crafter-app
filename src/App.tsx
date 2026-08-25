@@ -369,6 +369,7 @@ export default function App() {
               onAddToBatch={handleAddToBatch}
               onSelectRecipeForCost={handleSelectRecipeForCost}
               onSelectRecipeForSim={handleSelectRecipeForSim}
+              selectedWorldOrDc={selectedWorldOrDc}
             />
           )}
 

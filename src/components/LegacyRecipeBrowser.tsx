@@ -1,30 +1,83 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Recipe, CraftJob, CRAFT_JOBS } from '../types/ff14';
-import { Search, Plus, History, Loader2, ChevronLeft, ChevronRightIcon as ChevronRight } from 'lucide-react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import { Recipe, CraftJob, CRAFT_JOBS, RecipeCategory, UniversalisItemData } from '../types/ff14';
+import { Search, Plus, History, Loader2, ChevronLeft, ChevronRightIcon as ChevronRight, ArrowUpDown, TrendingUp, Percent, AlertTriangle } from 'lucide-react';
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
 import { Expansion, ALL_EXPANSIONS, EXPANSION_LABELS, loadExpansionRecipes } from '../utils/legacyRecipeLoader';
+import { fetchUniversalisMultiPrices } from '../services/universalisApi';
 
 interface LegacyRecipeBrowserProps {
   onAddToBatch: (recipe: Recipe) => void;
   onSelectRecipeForCost: (recipe: Recipe) => void;
   onSelectRecipeForSim: (recipe: Recipe) => void;
+  selectedWorldOrDc: string;
 }
 
 const PAGE_SIZE = 30;
+const MAX_ECONOMICS_ITEMS = 300;
+
+type SortMode = 'default' | 'profitDesc' | 'profitRateDesc';
+
+const CATEGORY_OPTIONS: { id: RecipeCategory | 'ALL'; label: string }[] = [
+  { id: 'ALL', label: 'すべてのレシピ' },
+  { id: 'battleGear', label: '⚔️ 戦闘用装備' },
+  { id: 'gathererCrafterGear', label: '🔨 ギャザクラ装備' },
+  { id: 'foodPotion', label: '🍗 飯・薬' },
+  { id: 'housing', label: '⛲ ハウジング家具' },
+  { id: 'intermediate', label: '🟫 中間素材' },
+  { id: 'collectibles', label: '📦 収集品' },
+  { id: 'other', label: '👕 その他 (おしゃれ品/道具/雑貨など)' },
+];
+
+interface RecipeEconomics {
+  materialCost: number;
+  netProfit: number;
+  profitRatePercent: number;
+  isEstimate: boolean;
+}
+
+function computeEconomics(recipe: Recipe, marketData: Record<number, UniversalisItemData>): RecipeEconomics {
+  let materialCost = 0;
+  let anyEstimate = false;
+  for (const mat of recipe.materials) {
+    const md = marketData[mat.itemId];
+    const price = md?.minPriceNQ ?? mat.defaultPriceNQ ?? 0;
+    if (md?.isEstimate) anyEstimate = true;
+    materialCost += price * mat.amount;
+  }
+  const productMarket = marketData[recipe.itemId];
+  const unitSellingPrice = recipe.canHq
+    ? productMarket?.minPriceHQ ?? recipe.defaultSellingPrice ?? 0
+    : productMarket?.minPriceNQ ?? recipe.defaultSellingPrice ?? 0;
+  if (productMarket?.isEstimate) anyEstimate = true;
+
+  const yields = recipe.yields || 1;
+  const grossRevenue = unitSellingPrice * yields;
+  const marketTax = Math.round(grossRevenue * 0.05);
+  const netRevenue = grossRevenue - marketTax;
+  const netProfit = netRevenue - materialCost;
+  const profitRatePercent = grossRevenue > 0 ? Math.round((netProfit / grossRevenue) * 100) : 0;
+
+  return { materialCost, netProfit, profitRatePercent, isEstimate: anyEstimate };
+}
 
 export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   onAddToBatch,
   onSelectRecipeForCost,
   onSelectRecipeForSim,
+  selectedWorldOrDc,
 }) => {
   const [expansion, setExpansion] = useState<Expansion>('DT');
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedJob, setSelectedJob] = useState<CraftJob | 'ALL'>('ALL');
+  const [selectedCategory, setSelectedCategory] = useState<RecipeCategory | 'ALL'>('ALL');
+  const [sortMode, setSortMode] = useState<SortMode>('default');
   const [page, setPage] = useState(0);
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
+  const [marketData, setMarketData] = useState<Record<number, UniversalisItemData>>({});
+  const [loadingMarket, setLoadingMarket] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -44,6 +97,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   const filtered = useMemo(() => {
     return recipes.filter((recipe) => {
       if (selectedJob !== 'ALL' && recipe.job !== selectedJob) return false;
+      if (selectedCategory !== 'ALL' && recipe.category !== selectedCategory) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         if (
@@ -56,14 +110,60 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
       }
       return true;
     });
-  }, [recipes, selectedJob, searchQuery]);
+  }, [recipes, selectedJob, selectedCategory, searchQuery]);
+
+  // Fetch market data (capped) whenever the filtered set changes, so sort by
+  // profit/profit rate can work without eagerly pricing thousands of items.
+  const loadMarketData = useCallback(
+    async (targetRecipes: Recipe[]) => {
+      if (targetRecipes.length === 0 || targetRecipes.length > MAX_ECONOMICS_ITEMS) {
+        setMarketData({});
+        return;
+      }
+      setLoadingMarket(true);
+      try {
+        const idsSet = new Set<number>();
+        const fallbackPrices: Record<number, number> = {};
+        for (const recipe of targetRecipes) {
+          idsSet.add(recipe.itemId);
+          fallbackPrices[recipe.itemId] = recipe.defaultSellingPrice || 5000;
+          for (const mat of recipe.materials) {
+            idsSet.add(mat.itemId);
+            fallbackPrices[mat.itemId] = mat.defaultPriceNQ || 1000;
+          }
+        }
+        const data = await fetchUniversalisMultiPrices(Array.from(idsSet), selectedWorldOrDc, fallbackPrices);
+        setMarketData(data);
+      } finally {
+        setLoadingMarket(false);
+      }
+    },
+    [selectedWorldOrDc]
+  );
 
   useEffect(() => {
+    loadMarketData(filtered);
     setPage(0);
-  }, [searchQuery, selectedJob]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadMarketData, filtered.length, selectedJob, selectedCategory, searchQuery, expansion]);
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-  const pageItems = filtered.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
+  const economicsAvailable = filtered.length > 0 && filtered.length <= MAX_ECONOMICS_ITEMS;
+
+  const sorted = useMemo(() => {
+    const withEconomics = filtered.map((recipe) => ({
+      recipe,
+      econ: computeEconomics(recipe, marketData),
+    }));
+    if (sortMode === 'profitDesc') {
+      withEconomics.sort((a, b) => b.econ.netProfit - a.econ.netProfit);
+    } else if (sortMode === 'profitRateDesc') {
+      withEconomics.sort((a, b) => b.econ.profitRatePercent - a.econ.profitRatePercent);
+    }
+    return withEconomics;
+  }, [filtered, marketData, sortMode]);
+
+  const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+  const pageItems = sorted.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
 
   const handleAdd = (recipe: Recipe) => {
     onAddToBatch(recipe);
@@ -77,7 +177,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
           <History className="w-4 h-4 text-amber-400" />
           <h2 className="text-sm font-semibold text-slate-200">歴代レシピ (過去拡張パッケージ)</h2>
           <span className="text-[11px] text-slate-500">
-            採集元・秘伝書等の詳細情報は簡略化されています。マケボ価格は「製作計画」に追加後に自動取得されます。
+            採集元・秘伝書等の詳細情報は簡略化されています。カテゴリ分類はアイテム名からの推定のため一部誤分類の可能性があります。
           </span>
         </div>
 
@@ -99,8 +199,26 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
           ))}
         </div>
 
+        {/* Category filter */}
+        <div className="flex flex-wrap items-center gap-1.5 mb-3">
+          <span className="text-[11px] text-slate-400 mr-0.5">カテゴリ:</span>
+          {CATEGORY_OPTIONS.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-2 py-1 rounded-lg text-[11px] font-semibold border transition-all ${
+                selectedCategory === cat.id
+                  ? 'bg-amber-500 text-slate-950 border-amber-400'
+                  : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+              }`}
+            >
+              {cat.label}
+            </button>
+          ))}
+        </div>
+
         {/* Search & job filter */}
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3 mb-3">
           <div className="relative flex-1 min-w-[200px]">
             <Search className="w-4 h-4 text-slate-500 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
@@ -139,6 +257,52 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
           </div>
           <span className="text-xs text-slate-400 ml-auto">該当: {filtered.length.toLocaleString()} 件</span>
         </div>
+
+        {/* Sort controls */}
+        <div className="flex items-center gap-1.5">
+          <span className="text-[11px] text-slate-400 flex items-center gap-1 mr-1">
+            <ArrowUpDown className="w-3.5 h-3.5" />
+            並び替え:
+          </span>
+          <button
+            onClick={() => setSortMode('default')}
+            className={`px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              sortMode === 'default'
+                ? 'bg-slate-700 text-slate-100 border-slate-600'
+                : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+            }`}
+          >
+            デフォルト
+          </button>
+          <button
+            onClick={() => setSortMode('profitDesc')}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              sortMode === 'profitDesc'
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/60'
+                : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+            }`}
+          >
+            <TrendingUp className="w-3.5 h-3.5" />
+            利益額が高い順
+          </button>
+          <button
+            onClick={() => setSortMode('profitRateDesc')}
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold border transition-all ${
+              sortMode === 'profitRateDesc'
+                ? 'bg-sky-500/20 text-sky-300 border-sky-500/60'
+                : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+            }`}
+          >
+            <Percent className="w-3.5 h-3.5" />
+            利益率が高い順
+          </button>
+          {loadingMarket && <span className="text-[10px] text-slate-500 ml-1">マケボ価格取得中...</span>}
+          {!economicsAvailable && filtered.length > MAX_ECONOMICS_ITEMS && (
+            <span className="text-[10px] text-amber-400 ml-1">
+              絞り込み件数が{MAX_ECONOMICS_ITEMS}件を超えるためソートは無効です（カテゴリ/クラス/検索で絞り込んでください）
+            </span>
+          )}
+        </div>
       </div>
 
       {loading ? (
@@ -149,7 +313,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-            {pageItems.map((recipe) => {
+            {pageItems.map(({ recipe, econ }) => {
               const jobInfo = CRAFT_JOBS[recipe.job];
               const isAdded = addedIds.has(recipe.id);
               return (
@@ -172,6 +336,31 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                       </div>
                     </div>
                   </div>
+
+                  {economicsAvailable && (
+                    <div className="grid grid-cols-3 gap-1 bg-slate-950/50 p-1.5 rounded-lg border border-slate-800/60 text-[10px] font-rajdhani">
+                      <div>
+                        <span className="text-slate-500 block text-[9px]">原価</span>
+                        <span className="text-slate-200 font-semibold">{Math.round(econ.materialCost).toLocaleString()}G</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block text-[9px]">利益</span>
+                        <span className={`font-semibold ${econ.netProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
+                          {econ.netProfit >= 0 ? '+' : ''}
+                          {Math.round(econ.netProfit).toLocaleString()}G
+                        </span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block text-[9px] flex items-center gap-0.5">
+                          利益率
+                          {econ.isEstimate && <AlertTriangle className="w-2.5 h-2.5 text-amber-500/80" />}
+                        </span>
+                        <span className={`font-semibold ${econ.profitRatePercent >= 0 ? 'text-sky-300' : 'text-rose-400'}`}>
+                          {econ.profitRatePercent}%
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex flex-wrap gap-1">
                     {recipe.materials.slice(0, 4).map((m) => (

@@ -22,6 +22,15 @@ interface RawLegacyMaterial {
   subRecipeId: string | null;
 }
 
+export type LegacyRecipeCategory =
+  | 'battleGear'
+  | 'gathererCrafterGear'
+  | 'foodPotion'
+  | 'housing'
+  | 'intermediate'
+  | 'collectibles'
+  | 'other';
+
 interface RawLegacyRecipe {
   id: string;
   itemId: number;
@@ -33,7 +42,7 @@ interface RawLegacyRecipe {
   stars: number;
   ilvl: number;
   expansion: Expansion;
-  recipeCategory: 'gear' | 'foodPotion' | 'intermediate';
+  recipeCategory: LegacyRecipeCategory;
   durability: number;
   difficulty: number;
   maxQuality: number;
