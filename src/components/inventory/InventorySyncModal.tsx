@@ -8,8 +8,17 @@ import {
   PRESET_FULL_STOCK,
   KNOWN_FF14_ITEMS,
   resolveItemInfo,
+  resolveItemInfoFull,
   getItemStockTotal,
 } from '../../utils/inventoryStorage';
+import {
+  linkInventoryFile,
+  getLinkedFileInfo,
+  readLinkedFile,
+  writeLinkedFile,
+  unlinkInventoryFile,
+  isFileSystemAccessSupported,
+} from '../../utils/fileHandleStorage';
 import { ItemIcon } from '../common/ItemIcon';
 import {
   X,
@@ -34,6 +43,8 @@ import {
   ArrowRight,
   ShieldCheck,
   RefreshCw,
+  Link2,
+  Unlink,
 } from 'lucide-react';
 
 interface InventorySyncModalProps {
@@ -51,12 +62,10 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
   onSaveSyncData,
   activeRecipe,
 }) => {
-  const [activeTab, setActiveTab] = useState<'paste' | 'presets' | 'manager' | 'webhook'>('paste');
+  const [activeTab, setActiveTab] = useState<'paste' | 'presets' | 'manager' | 'filelink'>('paste');
   const [jsonInput, setJsonInput] = useState('');
   const [parseError, setParseError] = useState<string | null>(null);
   const [parseSuccessInfo, setParseSuccessInfo] = useState<string | null>(null);
-  const [copiedToken, setCopiedToken] = useState(false);
-  const [copiedUrl, setCopiedUrl] = useState(false);
   const [isDragOver, setIsDragOver] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -73,6 +82,82 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
   const [newItemHq, setNewItemHq] = useState(false);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Linked local file (File System Access API) state
+  const [linkedFileName, setLinkedFileName] = useState<string | null>(null);
+  const [fileLinkBusy, setFileLinkBusy] = useState(false);
+  const [fileLinkError, setFileLinkError] = useState<string | null>(null);
+  const fsaSupported = isFileSystemAccessSupported();
+
+  useEffect(() => {
+    if (!isOpen) return;
+    getLinkedFileInfo().then((info) => setLinkedFileName(info?.name || null));
+  }, [isOpen]);
+
+  const handleLinkFile = async () => {
+    setFileLinkError(null);
+    setFileLinkBusy(true);
+    try {
+      const info = await linkInventoryFile();
+      if (info) {
+        setLinkedFileName(info.name);
+        showToast(`📎「${info.name}」をリンクしました。次回以降はワンクリックで再読込できます。`);
+      }
+    } catch (err) {
+      if ((err as Error)?.name !== 'AbortError') {
+        setFileLinkError('ファイルの選択に失敗しました。');
+      }
+    } finally {
+      setFileLinkBusy(false);
+    }
+  };
+
+  const handleReloadLinkedFile = async () => {
+    setFileLinkError(null);
+    setFileLinkBusy(true);
+    try {
+      const text = await readLinkedFile();
+      if (!text) {
+        setFileLinkError('リンクされたファイルがありません。');
+        return;
+      }
+      const result = parseInventoryJson(text);
+      if (result.success && result.data) {
+        onSaveSyncData(result.data);
+        setEditingInventories(result.data.inventories);
+        showToast(`🔄 リンクファイルから ${result.data.inventories.length} 件を再読み込みしました！`);
+      } else {
+        setFileLinkError(result.error || 'ファイルの解析に失敗しました。');
+      }
+    } catch (err) {
+      setFileLinkError((err as Error)?.message || 'ファイルの読み込みに失敗しました。');
+    } finally {
+      setFileLinkBusy(false);
+    }
+  };
+
+  const handleSaveTextToLinkedFile = async () => {
+    if (!jsonInput.trim()) {
+      setFileLinkError('保存するテキストがありません（①のテキスト欄に貼り付けてください）。');
+      return;
+    }
+    setFileLinkError(null);
+    setFileLinkBusy(true);
+    try {
+      await writeLinkedFile(jsonInput);
+      showToast('💾 現在のテキストをリンクファイルに保存しました。');
+    } catch (err) {
+      setFileLinkError((err as Error)?.message || 'ファイルへの書き込みに失敗しました。');
+    } finally {
+      setFileLinkBusy(false);
+    }
+  };
+
+  const handleUnlinkFile = async () => {
+    await unlinkInventoryFile();
+    setLinkedFileName(null);
+    showToast('リンクを解除しました。');
+  };
 
   // Sync editing inventories with props syncData
   useEffect(() => {
@@ -98,6 +183,17 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     }
     return Array.from(set);
   }, [editingInventories, syncData]);
+
+  // Real storage locations already seen in synced data (actual retainer
+  // names, FC chest tabs, etc.), so manual additions can pick from the
+  // person's own real locations instead of hardcoded placeholder names.
+  const availableLocations = React.useMemo(() => {
+    const set = new Set<string>();
+    for (const item of editingInventories) {
+      if (item.location && item.location.trim()) set.add(item.location.trim());
+    }
+    return Array.from(set).sort();
+  }, [editingInventories]);
 
   // Active selected characters list (multi-select)
   const activeSelectedCharacters = React.useMemo(() => {
@@ -286,13 +382,30 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
   };
 
   // Manager: Add manual item
-  const handleAddManualItem = (e: React.FormEvent) => {
+  const [isResolvingItem, setIsResolvingItem] = useState(false);
+  const handleAddManualItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItemName.trim()) return;
 
-    const meta = resolveItemInfo(newItemName.trim());
-    const itemId = meta ? meta.itemId : Math.floor(Math.random() * 90000) + 10000;
-    const name = meta ? meta.name : newItemName.trim();
+    setIsResolvingItem(true);
+    const meta = await resolveItemInfoFull(newItemName.trim());
+    setIsResolvingItem(false);
+
+    let itemId: number;
+    let name: string;
+    if (meta) {
+      itemId = meta.itemId;
+      name = meta.name;
+    } else {
+      // Genuinely not found in the official database (typo, or a name that
+      // doesn't exist). We still let the person add it -- e.g. for tracking
+      // a custom/renamed thing -- but a random itemId would silently break
+      // recipe-material matching elsewhere in the app, so we're upfront
+      // about it instead.
+      itemId = Math.floor(Math.random() * 90000) + 10000;
+      name = newItemName.trim();
+      showToast(`⚠️「${name}」は公式データベースで見つかりませんでした。この項目は原価計算等の自動照合には使われません。`);
+    }
 
     let locType: InventoryLocationType = 'Player';
     const locLower = newItemLoc.toLowerCase();
@@ -314,7 +427,9 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     setEditingInventories(updated);
     setNewItemName('');
     setNewItemQty(1);
-    showToast(`「${name}」を所持リストに追加しました`);
+    if (meta) {
+      showToast(`「${name}」を所持リストに追加しました`);
+    }
   };
 
   // Save Manager Changes
@@ -364,8 +479,6 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     ).length;
   }
 
-  const mockApiToken = 'eorzea_sync_tok_719a84b2c89f';
-  const mockWebhookUrl = 'https://clafter.eorzeanfishing.com/api/sync-inventory';
 
   if (!isOpen) return null;
 
@@ -529,15 +642,15 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
           </button>
 
           <button
-            onClick={() => setActiveTab('webhook')}
+            onClick={() => setActiveTab('filelink')}
             className={`flex items-center gap-1.5 px-3.5 py-2 text-xs font-semibold border-b-2 whitespace-nowrap transition-all ${
-              activeTab === 'webhook'
+              activeTab === 'filelink'
                 ? 'border-amber-400 text-amber-300 bg-slate-800/40 rounded-t-lg'
                 : 'border-transparent text-slate-400 hover:text-slate-200'
             }`}
           >
-            <Key className="w-3.5 h-3.5" />
-            <span>④ Webhook 自動連携</span>
+            <Link2 className="w-3.5 h-3.5" />
+            <span>④ ファイル連携 (ワンクリック再読込)</span>
           </button>
         </div>
 
@@ -871,18 +984,23 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                     placeholder="個数"
                   />
                 </div>
-                <div>
-                  <select
+                <div className="w-40">
+                  <input
+                    type="text"
+                    list="locations-datalist"
                     value={newItemLoc}
                     onChange={(e) => setNewItemLoc(e.target.value)}
-                    className="bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
-                  >
-                    <option value="Player (手持ち)">Player (手持ち)</option>
-                    <option value="Retainer: Nana">Retainer: Nana</option>
-                    <option value="Retainer: Bob">Retainer: Bob</option>
-                    <option value="FC_Chest: Tab1">FC_Chest: Tab1</option>
-                    <option value="Saddlebag (かばん)">Saddlebag (かばん)</option>
-                  </select>
+                    placeholder="保管場所 (例: Player, Retainer: ○○)"
+                    className="w-full bg-slate-900 border border-slate-700 rounded-lg px-2 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
+                  />
+                  <datalist id="locations-datalist">
+                    {(availableLocations.length > 0
+                      ? availableLocations
+                      : ['Player (手持ち)', 'FC_Chest: Tab1', 'Saddlebag (かばん)']
+                    ).map((loc) => (
+                      <option key={loc} value={loc} />
+                    ))}
+                  </datalist>
                 </div>
                 {availableCharacters.length > 0 && (
                   <div className="w-32">
@@ -912,10 +1030,11 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                 </label>
                 <button
                   type="submit"
-                  className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 transition-all"
+                  disabled={isResolvingItem}
+                  className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 disabled:cursor-wait text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1 transition-all"
                 >
                   <Plus className="w-3.5 h-3.5" />
-                  <span>追加</span>
+                  <span>{isResolvingItem ? '検索中...' : '追加'}</span>
                 </button>
               </form>
 
@@ -1085,66 +1204,100 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
             </div>
           )}
 
-          {/* TAB 4: WEBHOOK */}
-          {activeTab === 'webhook' && (
+          {/* TAB 4: LINKED LOCAL FILE (real File System Access API feature) */}
+          {activeTab === 'filelink' && (
             <div className="space-y-4">
-              <div className="bg-slate-950/70 border border-slate-800 p-3.5 rounded-xl text-xs text-slate-300 leading-relaxed">
+              <div className="bg-slate-950/70 border border-slate-800 p-3.5 rounded-xl text-xs text-slate-300 leading-relaxed space-y-2">
                 <div className="font-semibold text-slate-100 mb-1 flex items-center gap-1.5 text-amber-300">
-                  <Key className="w-3.5 h-3.5" />
-                  Dalamud HTTP Webhook 自動同期設定
+                  <Link2 className="w-3.5 h-3.5" />
+                  ローカルファイル連携（ワンクリック再読込）
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  ゲーム内でリテイナーやFCチェスト、チョコボかばんを開くたびに、Webhook経由で最新の所持品データがWebサイトに自動同期されます。
+                  このサイトにはサーバーが無いため、ゲームから自動でデータを受け取ることはできません
+                  （Dalamud側にも、ウェブサイトへ自動送信する仕組みは現状ありません）。
+                  代わりに、お使いのブラウザの「ファイルシステムアクセス」機能を使い、一度選んだファイルを
+                  次回以降ワンクリックで再読み込みできるようにします。ファイルの中身自体は、これまで通り
+                  Allagan Tools でエクスポート → 保存、を都度行う必要があります。
                 </p>
+                {!fsaSupported && (
+                  <p className="text-[11px] text-rose-300 bg-rose-500/10 border border-rose-500/30 rounded-lg p-2 flex items-start gap-1.5">
+                    <AlertCircle className="w-3.5 h-3.5 shrink-0 mt-0.5" />
+                    <span>
+                      お使いのブラウザはこの機能に対応していません（Chrome / Edge 等の Chromium系ブラウザが必要です。
+                      Firefox / Safari では非対応）。①のタブから貼り付け/ファイル読込をご利用ください。
+                    </span>
+                  </p>
+                )}
               </div>
 
-              <div className="space-y-3 text-xs">
-                <div>
-                  <label className="block font-medium text-slate-400 mb-1">Webhook エンドポイント URL:</label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={mockWebhookUrl}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-slate-300 font-mono text-xs"
-                    />
+              {fsaSupported && (
+                <div className="space-y-3">
+                  {linkedFileName ? (
+                    <div className="bg-slate-950/60 border border-emerald-500/30 rounded-xl p-3.5 flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2 text-xs">
+                        <FileText className="w-4 h-4 text-emerald-400" />
+                        <span className="text-slate-300">
+                          リンク中: <span className="font-bold text-emerald-300">{linkedFileName}</span>
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={handleReloadLinkedFile}
+                          disabled={fileLinkBusy}
+                          className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-60 text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1.5 transition-all"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 ${fileLinkBusy ? 'animate-spin' : ''}`} />
+                          <span>今すぐ再読込</span>
+                        </button>
+                        <button
+                          onClick={handleUnlinkFile}
+                          className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs flex items-center gap-1.5 transition-all"
+                        >
+                          <Unlink className="w-3.5 h-3.5" />
+                          <span>解除</span>
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
                     <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(mockWebhookUrl);
-                        setCopiedUrl(true);
-                        setTimeout(() => setCopiedUrl(false), 2000);
-                      }}
-                      className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1 shrink-0 transition-all"
+                      onClick={handleLinkFile}
+                      disabled={fileLinkBusy}
+                      className="w-full px-4 py-3 bg-slate-800 hover:bg-slate-700 disabled:opacity-60 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all"
                     >
-                      {copiedUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedUrl ? 'コピー済' : 'URLコピー'}</span>
+                      <Link2 className="w-4 h-4 text-amber-400" />
+                      <span>ファイルを選択してリンクする</span>
                     </button>
-                  </div>
-                </div>
+                  )}
 
-                <div>
-                  <label className="block font-medium text-slate-400 mb-1">認証トークン (X-User-Token ヘッダー):</label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      readOnly
-                      value={mockApiToken}
-                      className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-1.5 text-amber-300 font-mono text-xs"
-                    />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(mockApiToken);
-                        setCopiedToken(true);
-                        setTimeout(() => setCopiedToken(false), 2000);
-                      }}
-                      className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-lg text-xs font-semibold flex items-center gap-1 shrink-0 transition-all"
-                    >
-                      {copiedToken ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                      <span>{copiedToken ? 'コピー済' : 'トークンコピー'}</span>
-                    </button>
-                  </div>
+                  {fileLinkError && (
+                    <p className="text-[11px] text-rose-300 bg-rose-500/10 border border-rose-500/30 rounded-lg p-2">
+                      {fileLinkError}
+                    </p>
+                  )}
+
+                  {linkedFileName && (
+                    <div className="bg-slate-950/50 border border-slate-800 rounded-xl p-3 text-[11px] text-slate-400 space-y-2">
+                      <p className="font-semibold text-slate-300">おすすめの使い方:</p>
+                      <ol className="list-decimal list-inside space-y-1">
+                        <li>ゲーム内で Allagan Tools から JSON をコピー</li>
+                        <li>①タブのテキスト欄に貼り付け</li>
+                        <li>
+                          下のボタンでリンク中のファイルに保存しておけば、次回このサイトを開いたときに
+                          「今すぐ再読込」だけで最新データを反映できます
+                        </li>
+                      </ol>
+                      <button
+                        onClick={handleSaveTextToLinkedFile}
+                        disabled={fileLinkBusy || !jsonInput.trim()}
+                        className="w-full px-3 py-1.5 bg-slate-800 hover:bg-slate-700 disabled:opacity-50 text-slate-200 border border-slate-700 rounded-lg text-xs font-medium flex items-center justify-center gap-1.5 transition-all"
+                      >
+                        <Save className="w-3.5 h-3.5" />
+                        <span>①のテキスト内容をリンクファイルに保存</span>
+                      </button>
+                    </div>
+                  )}
                 </div>
-              </div>
+              )}
             </div>
           )}
 

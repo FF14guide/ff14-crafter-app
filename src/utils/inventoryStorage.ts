@@ -138,6 +138,61 @@ export function resolveItemInfo(identifier: number | string): KnownItemMeta | un
   );
 }
 
+// --- Full official item name index (lazy-loaded) --------------------------
+// KNOWN_FF14_ITEMS above only covers a small hand-picked set. Resolving a
+// manually-typed item name against just that list meant most real items
+// (anything outside that ~100-item list) silently fell back to a random
+// fake itemId, which then could never match a real recipe material. This
+// index covers every item in the game with a Japanese name (~50,000
+// entries) and is only fetched the first time it's actually needed.
+type FullItemEntry = [number, string, string, number | null]; // [itemId, ja, en, iconNum]
+let fullItemIndexPromise: Promise<FullItemEntry[]> | null = null;
+let fullItemByNameLower: Map<string, FullItemEntry> | null = null;
+
+async function loadFullItemIndex(): Promise<FullItemEntry[]> {
+  if (!fullItemIndexPromise) {
+    fullItemIndexPromise = import('../data/itemNameIndex.json').then((mod) => {
+      const list = (mod.default || mod) as unknown as FullItemEntry[];
+      fullItemByNameLower = new Map(list.map((e) => [e[1].toLowerCase(), e]));
+      return list;
+    });
+  }
+  return fullItemIndexPromise;
+}
+
+/**
+ * Resolves a manually-typed item name against the FULL official item
+ * database (lazy-loaded on first call), not just the small hand-picked
+ * KNOWN_FF14_ITEMS list. Falls back to an exact-match search only (no fuzzy
+ * substring matching) to avoid false positives across 50,000+ items.
+ * Returns undefined if genuinely not found -- callers should treat that as
+ * "could not verify this item" rather than inventing a fake id.
+ */
+export async function resolveItemInfoFull(
+  name: string
+): Promise<{ itemId: number; name: string; enName: string; icon: string } | undefined> {
+  const clean = name.trim();
+  if (!clean) return undefined;
+
+  // KNOWN_FF14_ITEMS first (already includes hand-verified icon strings).
+  const known = resolveItemInfo(clean);
+  if (known) {
+    return { itemId: known.itemId, name: known.name, enName: known.enName, icon: known.icon };
+  }
+
+  await loadFullItemIndex();
+  const entry = fullItemByNameLower?.get(clean.toLowerCase());
+  if (!entry) return undefined;
+
+  const [itemId, ja, en, iconNum] = entry;
+  return {
+    itemId,
+    name: ja,
+    enName: en,
+    icon: iconNum ? String(iconNum) : '',
+  };
+}
+
 // Preset 1: Patch 7.2 最新戦闘新式 & 宝薬G3 (リアルな実用ストック)
 export const PRESET_PATCH_72: InventorySyncData = {
   timestamp: Date.now(),
