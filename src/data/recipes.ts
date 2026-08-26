@@ -1,3 +1,14 @@
+// NOTE: This file is HAND-CURATED (gathering locations, masterbook sources,
+// exact patch numbers, etc.) and is NOT touched by the automated data update
+// pipeline (scripts/update_patch_data.cjs / .github/workflows/update-game-data.yml).
+// That pipeline only regenerates:
+//   - src/data/legacy/*.json  (the full historical recipe catalog, browsable
+//     under the "歴代レシピ" tab and merged into "レシピ選定" for coverage)
+//   - src/utils/itemIcons.ts  (OFFICIAL_ITEM_ICON_BY_ID table, for whichever
+//     itemIds this file references)
+// When a new patch adds content you want the same level of hand-curated
+// detail for (gathering nodes, masterbook chapter, etc.), add it here
+// manually the same way the existing entries were built.
 import { Recipe } from '../types/ff14';
 
 export const RECIPES_DATABASE: Recipe[] = [
