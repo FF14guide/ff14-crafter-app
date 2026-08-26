@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({
   }, []);
 
   return (
-    <header className="border-b border-slate-800 bg-[#0f121d]/90 backdrop-blur-md sticky top-0 z-40">
+    <header className="border-b border-slate-800 bg-[#101a2e]/90 backdrop-blur-md sticky top-0 z-40">
       {/* Top Banner / Parent Link */}
       <div className="bg-gradient-to-r from-amber-950/40 via-slate-900 to-indigo-950/40 border-b border-slate-800/80 px-4 py-1.5 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
@@ -61,32 +61,13 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         <div className="flex items-center gap-4 text-xs">
-          <div className="flex items-center gap-2">
-            <a
-              href="/dist.zip"
-              download="cloudflare-dist.zip"
-              className="inline-flex items-center gap-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 transition-colors font-medium text-[11px]"
-              title="Cloudflare Pagesの直接アップロード用ZIP"
-            >
-              <span>📦 Cloudflare用ZIP (dist)</span>
-            </a>
-            <a
-              href="/project-source.zip"
-              download="eorzean-crafter-source.zip"
-              className="inline-flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-slate-300 px-2 py-0.5 rounded border border-slate-600 transition-colors font-medium text-[11px]"
-              title="GitHub手動アップロード用全ソースコードZIP"
-            >
-              <span>📂 ソース全ZIP</span>
-            </a>
-          </div>
-          <span className="text-slate-600">|</span>
           <a
             href="https://eorzeanfishing.com"
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-1 text-sky-400 hover:text-sky-300 transition-colors"
           >
-            <span>親サイト: eorzeanfishing.com</span>
+            <span>姉妹サイト: エオルゼア釣り図鑑</span>
             <ExternalLink className="w-3 h-3" />
           </a>
           <span className="text-slate-600">|</span>

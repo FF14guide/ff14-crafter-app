@@ -48,7 +48,7 @@ class SafeErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundar
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-[#0c0e14] text-slate-100 flex items-center justify-center p-6">
+        <div className="min-h-screen bg-[#0C1526] text-slate-100 flex items-center justify-center p-6">
           <div className="bg-slate-900 border border-slate-700 rounded-2xl p-8 max-w-lg w-full text-center shadow-2xl">
             <div className="w-12 h-12 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center mx-auto mb-4 border border-rose-500/30">
               <AlertCircle className="w-6 h-6" />
@@ -287,7 +287,7 @@ export default function App() {
 
   return (
     <SafeErrorBoundary>
-      <div className="min-h-screen bg-[#0c0e14] text-slate-100 flex flex-col">
+      <div className="min-h-screen bg-[#0C1526] text-slate-100 flex flex-col">
         {/* Header */}
         <Header
           activeTab={activeTab}
