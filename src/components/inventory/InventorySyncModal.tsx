@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { InventorySyncData, InventoryItemLocation, InventoryLocationType, Recipe } from '../../types/ff14';
 import {
   parseInventoryJson,
+  parseInventoryInputAsync,
   SAMPLE_INVENTORY_DATA,
   PRESET_PATCH_72,
   PRESET_PATCH_705,
@@ -10,6 +11,10 @@ import {
   resolveItemInfo,
   resolveItemInfoFull,
   getItemStockTotal,
+  CharacterGroup,
+  loadCharacterGroups,
+  saveCharacterGroups,
+  expandGroupSelectionToSources,
 } from '../../utils/inventoryStorage';
 import {
   linkInventoryFile,
@@ -81,6 +86,75 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
   const [newItemSource, setNewItemSource] = useState('');
   const [newItemHq, setNewItemHq] = useState(false);
 
+  // Character Groups (link retainers/alts under one owning character;
+  // persisted per-browser/PC via localStorage)
+  const [characterGroups, setCharacterGroups] = useState<CharacterGroup[]>([]);
+  const [isGroupPanelOpen, setIsGroupPanelOpen] = useState(false);
+  const [editingGroupId, setEditingGroupId] = useState<string | null>(null);
+  const [groupNameDraft, setGroupNameDraft] = useState('');
+  const [groupMembersDraft, setGroupMembersDraft] = useState<Set<string>>(new Set());
+
+  useEffect(() => {
+    if (isOpen) {
+      setCharacterGroups(loadCharacterGroups());
+    }
+  }, [isOpen]);
+
+  const persistGroups = (groups: CharacterGroup[]) => {
+    setCharacterGroups(groups);
+    saveCharacterGroups(groups);
+  };
+
+  const startNewGroup = () => {
+    setEditingGroupId('__new__');
+    setGroupNameDraft('');
+    setGroupMembersDraft(new Set());
+    setIsGroupPanelOpen(true);
+  };
+
+  const startEditGroup = (group: CharacterGroup) => {
+    setEditingGroupId(group.id);
+    setGroupNameDraft(group.displayName);
+    setGroupMembersDraft(new Set(group.memberSources));
+    setIsGroupPanelOpen(true);
+  };
+
+  const toggleGroupMemberDraft = (source: string) => {
+    setGroupMembersDraft((prev) => {
+      const next = new Set(prev);
+      if (next.has(source)) next.delete(source);
+      else next.add(source);
+      return next;
+    });
+  };
+
+  const handleSaveGroup = () => {
+    if (!groupNameDraft.trim() || groupMembersDraft.size === 0) return;
+    const members = Array.from(groupMembersDraft);
+    if (editingGroupId === '__new__') {
+      const newGroup: CharacterGroup = {
+        id: `grp_${Date.now()}_${Math.random().toString(36).slice(2, 7)}`,
+        displayName: groupNameDraft.trim(),
+        memberSources: members,
+      };
+      persistGroups([...characterGroups, newGroup]);
+      showToast(`👥 グループ「${newGroup.displayName}」を作成しました`);
+    } else if (editingGroupId) {
+      const updated = characterGroups.map((g) =>
+        g.id === editingGroupId ? { ...g, displayName: groupNameDraft.trim(), memberSources: members } : g
+      );
+      persistGroups(updated);
+      showToast(`👥 グループ「${groupNameDraft.trim()}」を更新しました`);
+    }
+    setIsGroupPanelOpen(false);
+    setEditingGroupId(null);
+  };
+
+  const handleDeleteGroup = (groupId: string) => {
+    persistGroups(characterGroups.filter((g) => g.id !== groupId));
+    showToast('グループを削除しました');
+  };
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Linked local file (File System Access API) state
@@ -121,7 +195,7 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
         setFileLinkError('リンクされたファイルがありません。');
         return;
       }
-      const result = parseInventoryJson(text);
+      const result = await parseInventoryInputAsync(text);
       if (result.success && result.data) {
         onSaveSyncData(result.data);
         setEditingInventories(result.data.inventories);
@@ -206,18 +280,36 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     return ['ALL'];
   }, [syncData]);
 
-  // Check preview characters when JSON text changes
-  const previewData = React.useMemo(() => {
-    if (!jsonInput.trim() || jsonInput.length < 5) return null;
-    try {
-      const res = parseInventoryJson(jsonInput);
-      if (res.success && res.data) {
-        return res.data;
-      }
-    } catch {
-      return null;
+  const groupedSourceSet = React.useMemo(() => {
+    const set = new Set<string>();
+    for (const g of characterGroups) for (const m of g.memberSources) set.add(m);
+    return set;
+  }, [characterGroups]);
+
+  const ungroupedCharacters = React.useMemo(
+    () => availableCharacters.filter((c) => !groupedSourceSet.has(c)),
+    [availableCharacters, groupedSourceSet]
+  );
+
+  // Check preview characters when input text changes (async: may need to
+  // resolve names against the full item database for CSV input)
+  const [previewData, setPreviewData] = useState<InventorySyncData | null>(null);
+  useEffect(() => {
+    if (!jsonInput.trim() || jsonInput.length < 5) {
+      setPreviewData(null);
+      return;
     }
-    return null;
+    let cancelled = false;
+    parseInventoryInputAsync(jsonInput)
+      .then((res) => {
+        if (!cancelled) setPreviewData(res.success && res.data ? res.data : null);
+      })
+      .catch(() => {
+        if (!cancelled) setPreviewData(null);
+      });
+    return () => {
+      cancelled = true;
+    };
   }, [jsonInput]);
 
   // Toast auto-hide
@@ -232,7 +324,7 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     setToastMessage(msg);
   };
 
-  // Toggle active character in multi-select
+  // Toggle active character (or entire character group) in multi-select
   const handleToggleActiveCharacter = (charName: string) => {
     if (!syncData) return;
 
@@ -265,8 +357,37 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     }
   };
 
+  // Toggle an entire character group (its member sources move together)
+  const handleToggleGroup = (group: CharacterGroup) => {
+    if (!syncData) return;
+    const withoutAll = activeSelectedCharacters.filter((c) => c !== 'ALL');
+    const allMembersSelected = group.memberSources.every((m) => withoutAll.includes(m));
+
+    let nextSelected: string[];
+    if (allMembersSelected) {
+      nextSelected = withoutAll.filter((c) => !group.memberSources.includes(c));
+      if (nextSelected.length === 0) nextSelected = ['ALL'];
+    } else {
+      nextSelected = Array.from(new Set([...withoutAll, ...group.memberSources]));
+    }
+
+    const updated: InventorySyncData = {
+      ...syncData,
+      selectedCharacters: nextSelected,
+      selectedCharacter: nextSelected.includes('ALL') || nextSelected.length === 0 ? 'ALL' : nextSelected[0],
+    };
+    onSaveSyncData(updated);
+
+    if (nextSelected.includes('ALL')) {
+      showToast('🌐 全キャラクターの所持品を合算計算します');
+    } else {
+      showToast(`👥 「${group.displayName}」を${allMembersSelected ? '除外' : '含めて'}計算します`);
+    }
+  };
+
   // Import Action
-  const handleImportJson = () => {
+  const [isImporting, setIsImporting] = useState(false);
+  const handleImportJson = async () => {
     setParseError(null);
     setParseSuccessInfo(null);
 
@@ -275,7 +396,10 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
       return;
     }
 
-    const result = parseInventoryJson(jsonInput);
+    setIsImporting(true);
+    const result = await parseInventoryInputAsync(jsonInput);
+    setIsImporting(false);
+
     if (result.success && result.data) {
       if (selectedCharsOnImport.length > 0 && !selectedCharsOnImport.includes('ALL')) {
         result.data.selectedCharacters = selectedCharsOnImport;
@@ -287,10 +411,13 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
       onSaveSyncData(result.data);
       setEditingInventories(result.data.inventories);
       const charCount = result.data.characters?.length || 1;
+      const unresolvedNote = result.unresolvedNames?.length
+        ? `（${result.unresolvedNames.length}件は名前を認識できず除外）`
+        : '';
       showToast(
         charCount > 1
-          ? `🎉 ${result.data.inventories.length} 件のアイテム（${charCount}キャラクター）を一括反映しました！`
-          : `🎉 ${result.data.inventories.length} 件のアイテム所持数を一括反映しました！`
+          ? `🎉 ${result.data.inventories.length} 件のアイテム（${charCount}キャラクター）を一括反映しました！${unresolvedNote}`
+          : `🎉 ${result.data.inventories.length} 件のアイテム所持数を一括反映しました！${unresolvedNote}`
       );
       setJsonInput('');
       onClose();
@@ -307,9 +434,13 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
         const text = await navigator.clipboard.readText();
         if (text && text.trim()) {
           setJsonInput(text);
-          const result = parseInventoryJson(text);
+          setIsImporting(true);
+          const result = await parseInventoryInputAsync(text);
+          setIsImporting(false);
           if (result.success && result.data) {
             setParseSuccessInfo(`✅ ${result.data.inventories.length} 件のアイテムが検出されました。「一括反映する」を押して完了してください。`);
+          } else {
+            setParseError(result.error || null);
           }
         } else {
           setParseError('クリップボードが空です。');
@@ -328,13 +459,18 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
     setParseSuccessInfo(null);
 
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       const content = e.target?.result as string;
       if (content) {
         setJsonInput(content);
-        const result = parseInventoryJson(content);
+        setIsImporting(true);
+        const result = await parseInventoryInputAsync(content);
+        setIsImporting(false);
         if (result.success && result.data) {
-          setParseSuccessInfo(`📁 ファイル「${file.name}」から ${result.data.inventories.length} 件のアイテムを検出しました！`);
+          const unresolvedNote = result.unresolvedNames?.length
+            ? `（${result.unresolvedNames.length}件は名前を認識できず除外）`
+            : '';
+          setParseSuccessInfo(`📁 ファイル「${file.name}」から ${result.data.inventories.length} 件のアイテムを検出しました！${unresolvedNote}`);
         } else {
           setParseError(result.error || 'ファイルの解析に失敗しました。');
         }
@@ -560,10 +696,37 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                   <span className="font-rajdhani font-bold opacity-80">({syncData?.inventories.length || 0})</span>
                 </button>
 
-                {/* Individual Character Buttons */}
-                {availableCharacters.map((char) => {
+                {/* Character Group Buttons (linked retainers/alts) */}
+                {characterGroups.map((group) => {
+                  const count = syncData?.inventories.filter((i) => i.source && group.memberSources.includes(i.source)).length || 0;
+                  const isDirectlySelected =
+                    !activeSelectedCharacters.includes('ALL') &&
+                    group.memberSources.every((m) => activeSelectedCharacters.includes(m));
+
+                  return (
+                    <button
+                      key={group.id}
+                      type="button"
+                      onClick={() => handleToggleGroup(group)}
+                      className={`px-2 py-0.5 rounded-lg text-[11px] font-medium border transition-all cursor-pointer flex items-center gap-1 ${
+                        isDirectlySelected
+                          ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold shadow'
+                          : activeSelectedCharacters.includes('ALL')
+                          ? 'bg-slate-950/80 text-amber-200/90 border-amber-500/30 hover:border-amber-400'
+                          : 'bg-slate-950 text-slate-400 border-slate-800 hover:bg-slate-800 hover:text-slate-200'
+                      }`}
+                      title={`「${group.displayName}」(${group.memberSources.join(', ')}) を計算対象に含める / 除外する`}
+                    >
+                      <span>🧑‍🤝‍🧑 {group.displayName}</span>
+                      <span className="font-rajdhani font-bold opacity-80">({count}品)</span>
+                      {isDirectlySelected && <Check className="w-3 h-3 text-slate-950 ml-0.5" />}
+                    </button>
+                  );
+                })}
+
+                {/* Individual (ungrouped) Character Buttons */}
+                {ungroupedCharacters.map((char) => {
                   const count = syncData?.inventories.filter((i) => i.source === char).length || 0;
-                  const isSelected = activeSelectedCharacters.includes('ALL') || activeSelectedCharacters.includes(char);
                   const isDirectlySelected = activeSelectedCharacters.includes(char) && !activeSelectedCharacters.includes('ALL');
 
                   return (
@@ -586,11 +749,30 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                     </button>
                   );
                 })}
+
+                <button
+                  type="button"
+                  onClick={startNewGroup}
+                  className="px-2 py-0.5 rounded-lg text-[11px] font-medium border border-dashed border-slate-600 text-slate-400 hover:text-amber-300 hover:border-amber-500/50 transition-all flex items-center gap-1"
+                  title="キャラクターとリテイナーを紐づけるグループを作成"
+                >
+                  <Plus className="w-3 h-3" />
+                  <span>グループ作成</span>
+                </button>
               </div>
             )}
           </div>
 
           <div className="flex items-center gap-2">
+            {characterGroups.length > 0 && (
+              <button
+                onClick={() => setIsGroupPanelOpen((v) => !v)}
+                className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 rounded-lg text-[11px] font-medium flex items-center gap-1 transition-all"
+              >
+                <Boxes className="w-3 h-3" />
+                <span>グループ管理 ({characterGroups.length})</span>
+              </button>
+            )}
             {syncData && (
               <button
                 onClick={handleClear}
@@ -602,6 +784,118 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
             )}
           </div>
         </div>
+
+        {/* Character Group Management Panel */}
+        {isGroupPanelOpen && (
+          <div className="bg-slate-950/95 border-b border-amber-500/30 px-4 py-3 space-y-3">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-amber-300 flex items-center gap-1.5">
+                <Boxes className="w-3.5 h-3.5" />
+                キャラクターグループ管理（このPCに保存されます）
+              </span>
+              <button
+                onClick={() => {
+                  setIsGroupPanelOpen(false);
+                  setEditingGroupId(null);
+                }}
+                className="text-slate-400 hover:text-slate-200"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Existing groups list */}
+            {characterGroups.length > 0 && !editingGroupId && (
+              <div className="space-y-1.5">
+                {characterGroups.map((g) => (
+                  <div key={g.id} className="flex items-center justify-between bg-slate-900/70 border border-slate-800 rounded-lg px-3 py-1.5 text-xs">
+                    <div>
+                      <span className="font-bold text-slate-200">{g.displayName}</span>
+                      <span className="text-slate-500 ml-2">{g.memberSources.join(', ')}</span>
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => startEditGroup(g)}
+                        className="px-2 py-0.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded text-[11px]"
+                      >
+                        編集
+                      </button>
+                      <button
+                        onClick={() => handleDeleteGroup(g.id)}
+                        className="px-2 py-0.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 rounded text-[11px]"
+                      >
+                        削除
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                <button
+                  onClick={startNewGroup}
+                  className="text-[11px] text-amber-300 hover:underline flex items-center gap-1"
+                >
+                  <Plus className="w-3 h-3" />
+                  新しいグループを作成
+                </button>
+              </div>
+            )}
+
+            {/* Create / Edit group form */}
+            {editingGroupId && (
+              <div className="space-y-2.5">
+                <input
+                  type="text"
+                  value={groupNameDraft}
+                  onChange={(e) => setGroupNameDraft(e.target.value)}
+                  placeholder="グループ名 (例: Moja Kun とそのリテイナー)"
+                  className="w-full bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-amber-500"
+                />
+                <div className="text-[11px] text-slate-400">紐づけるキャラクター/リテイナー名を選択:</div>
+                <div className="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto">
+                  {availableCharacters.map((c) => {
+                    const isChecked = groupMembersDraft.has(c);
+                    const belongsToOtherGroup = characterGroups.some(
+                      (g) => g.id !== editingGroupId && g.memberSources.includes(c)
+                    );
+                    return (
+                      <button
+                        key={c}
+                        type="button"
+                        disabled={belongsToOtherGroup}
+                        onClick={() => toggleGroupMemberDraft(c)}
+                        className={`px-2 py-1 rounded-lg text-[11px] font-medium border transition-all ${
+                          isChecked
+                            ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold'
+                            : belongsToOtherGroup
+                            ? 'bg-slate-900 text-slate-600 border-slate-800 cursor-not-allowed'
+                            : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'
+                        }`}
+                        title={belongsToOtherGroup ? '既に別のグループに所属しています' : undefined}
+                      >
+                        {c}
+                      </button>
+                    );
+                  })}
+                </div>
+                <div className="flex items-center gap-2 pt-1">
+                  <button
+                    onClick={handleSaveGroup}
+                    disabled={!groupNameDraft.trim() || groupMembersDraft.size === 0}
+                    className="px-3 py-1.5 bg-amber-500 hover:bg-amber-400 disabled:opacity-50 text-slate-950 font-bold rounded-lg text-xs flex items-center gap-1.5"
+                  >
+                    <Save className="w-3.5 h-3.5" />
+                    <span>保存</span>
+                  </button>
+                  <button
+                    onClick={() => setEditingGroupId(null)}
+                    className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs"
+                  >
+                    キャンセル
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Navigation Tabs */}
         <div className="flex border-b border-slate-800 bg-slate-900/90 px-4 pt-2 overflow-x-auto gap-1">
@@ -826,10 +1120,11 @@ export const InventorySyncModal: React.FC<InventorySyncModalProps> = ({
                 <button
                   type="button"
                   onClick={handleImportJson}
-                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-slate-950 font-bold rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-amber-900/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
+                  disabled={isImporting}
+                  className="px-5 py-2.5 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 disabled:opacity-60 disabled:cursor-wait text-slate-950 font-bold rounded-xl text-xs flex items-center gap-2 shadow-lg shadow-amber-900/30 transition-all hover:scale-[1.02] active:scale-[0.98]"
                 >
-                  <Upload className="w-4 h-4" />
-                  <span>プラグイン所持数を一括反映する</span>
+                  <Upload className={`w-4 h-4 ${isImporting ? 'animate-pulse' : ''}`} />
+                  <span>{isImporting ? '解析中...' : 'プラグイン所持数を一括反映する'}</span>
                 </button>
               </div>
             </div>

@@ -138,7 +138,59 @@ export function resolveItemInfo(identifier: number | string): KnownItemMeta | un
   );
 }
 
-// --- Full official item name index (lazy-loaded) --------------------------
+// --- Character Groups -------------------------------------------------
+// Allagan Tools' export has no concept of "this retainer belongs to that
+// character" -- every character, retainer, and even whichever character
+// happened to scan the FC chest all show up as flat, unrelated "Source"
+// values. This lets the person manually link them into groups (e.g. a
+// character + all of their retainers), persisted per-browser/PC via
+// localStorage so it doesn't need to be redone every visit.
+export interface CharacterGroup {
+  id: string;
+  displayName: string;
+  memberSources: string[];
+}
+
+const CHARACTER_GROUPS_KEY = 'eorzean_crafter_character_groups_v1';
+
+export function loadCharacterGroups(): CharacterGroup[] {
+  try {
+    const raw = localStorage.getItem(CHARACTER_GROUPS_KEY);
+    if (!raw) return [];
+    const parsed = safeJsonParse<CharacterGroup[]>(raw, []);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveCharacterGroups(groups: CharacterGroup[]): void {
+  try {
+    localStorage.setItem(CHARACTER_GROUPS_KEY, JSON.stringify(groups));
+  } catch {
+    // ignore (e.g. private browsing mode with storage disabled)
+  }
+}
+
+/** Expands a list of selected group ids and/or raw source names into the
+ * flat list of raw source names the stock-calculation logic actually
+ * matches against (item.source). Ungrouped raw names pass through as-is. */
+export function expandGroupSelectionToSources(
+  selected: string[],
+  groups: CharacterGroup[]
+): string[] {
+  const result = new Set<string>();
+  const groupById = new Map(groups.map((g) => [g.id, g]));
+  for (const sel of selected) {
+    const group = groupById.get(sel);
+    if (group) {
+      for (const m of group.memberSources) result.add(m);
+    } else {
+      result.add(sel);
+    }
+  }
+  return Array.from(result);
+}
 // KNOWN_FF14_ITEMS above only covers a small hand-picked set. Resolving a
 // manually-typed item name against just that list meant most real items
 // (anything outside that ~100-item list) silently fell back to a random
@@ -408,6 +460,148 @@ function buildSyncResult(
  *    49214, 10
  *    コチニールクロス x3
  */
+/** Splits one CSV line into fields, respecting double-quoted fields that may contain commas. */
+function splitCsvLine(line: string): string[] {
+  const result: string[] = [];
+  let cur = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const ch = line[i];
+    if (inQuotes) {
+      if (ch === '"') {
+        if (line[i + 1] === '"') {
+          cur += '"';
+          i++;
+        } else {
+          inQuotes = false;
+        }
+      } else {
+        cur += ch;
+      }
+    } else if (ch === '"') {
+      inQuotes = true;
+    } else if (ch === ',') {
+      result.push(cur);
+      cur = '';
+    } else {
+      cur += ch;
+    }
+  }
+  result.push(cur);
+  return result;
+}
+
+/**
+ * Dedicated parser for Allagan Tools' real CSV export
+ * (header: Icon,Name,Type,Quantity/Total Quantity Available,Source,Inventory Location).
+ *
+ * Columns are located by NAME (not fixed position) so it's robust to the
+ * Icon column being empty/reordered. Each item name is resolved against the
+ * full official item database (async, lazy-loaded) -- rows that genuinely
+ * can't be resolved are skipped rather than assigned a fabricated itemId,
+ * since a wrong itemId would silently corrupt cost/material calculations
+ * elsewhere in the app.
+ */
+export async function parseAllaganToolsCsv(
+  input: string
+): Promise<{ success: boolean; data?: InventorySyncData; error?: string; unresolvedNames?: string[] }> {
+  const text = input.replace(/^\uFEFF/, '');
+  const rawLines = text.split(/\r?\n/).filter((l) => l.trim().length > 0);
+  if (rawLines.length < 2) {
+    return { success: false, error: 'CSVデータが空か、ヘッダー行しかありません。' };
+  }
+
+  const header = splitCsvLine(rawLines[0]).map((h) => h.trim().toLowerCase());
+  const findCol = (candidates: string[]): number => {
+    for (const c of candidates) {
+      const i = header.indexOf(c);
+      if (i !== -1) return i;
+    }
+    return -1;
+  };
+
+  const nameIdx = findCol(['name']);
+  const typeIdx = findCol(['type']);
+  const qtyIdx = findCol(['quantity/total quantity available', 'quantity', 'quantity/total quantity  available']);
+  const sourceIdx = findCol(['source']);
+  const locIdx = findCol(['inventory location', 'location']);
+
+  if (nameIdx === -1 || qtyIdx === -1) {
+    return {
+      success: false,
+      error: 'CSVのヘッダーに Name / Quantity 列が見つかりませんでした。Allagan Tools の「Copy List Contents > CSV Format」で出力した形式であることを確認してください。',
+    };
+  }
+
+  const items: InventoryItemLocation[] = [];
+  const unresolvedNames = new Set<string>();
+
+  for (let i = 1; i < rawLines.length; i++) {
+    const parts = splitCsvLine(rawLines[i]);
+    const name = (parts[nameIdx] || '').trim();
+    if (!name) continue;
+
+    const qtyRaw = (parts[qtyIdx] || '').trim();
+    const qty = parseInt(qtyRaw.replace(/[^0-9]/g, ''), 10) || 0;
+    if (qty <= 0) continue;
+
+    const type = typeIdx !== -1 ? (parts[typeIdx] || '').trim().toUpperCase() : '';
+    const source = sourceIdx !== -1 ? (parts[sourceIdx] || '').trim() : '';
+    const location = locIdx !== -1 ? (parts[locIdx] || '').trim() : 'Player';
+
+    const meta = await resolveItemInfoFull(name);
+    if (!meta) {
+      unresolvedNames.add(name);
+      continue;
+    }
+
+    items.push({
+      location: location || 'Player',
+      locationType: normalizeLocationType(location),
+      itemId: meta.itemId,
+      name: meta.name,
+      quantity: qty,
+      isHq: type === 'HQ',
+      source: source || undefined,
+    });
+  }
+
+  if (items.length === 0) {
+    return {
+      success: false,
+      error: `有効なアイテムが見つかりませんでした（${unresolvedNames.size}件の名前を解決できず除外しました）。`,
+      unresolvedNames: Array.from(unresolvedNames),
+    };
+  }
+
+  return {
+    success: true,
+    data: buildSyncResult(items, 'Allagan Tools CSV Import'),
+    unresolvedNames: unresolvedNames.size > 0 ? Array.from(unresolvedNames) : undefined,
+  };
+}
+
+/** True if the input's first line looks like Allagan Tools' real CSV export header. */
+export function looksLikeAllaganToolsCsv(input: string): boolean {
+  const firstLine = input.replace(/^\uFEFF/, '').split(/\r?\n/)[0] || '';
+  const lower = firstLine.toLowerCase();
+  return lower.includes('name') && (lower.includes('quantity') || lower.includes('inventory location'));
+}
+
+/**
+ * Async front door: routes to the dedicated Allagan Tools CSV parser when
+ * the input is detected as that format, otherwise falls back to the
+ * synchronous parseInventoryJson (JSON / simple text formats).
+ */
+export async function parseInventoryInputAsync(
+  input: string
+): Promise<{ success: boolean; data?: InventorySyncData; error?: string; unresolvedNames?: string[] }> {
+  if (looksLikeAllaganToolsCsv(input)) {
+    return parseAllaganToolsCsv(input);
+  }
+  return parseInventoryJson(input);
+}
+
 export function parseInventoryJson(input: string): { success: boolean; data?: InventorySyncData; error?: string } {
   if (!input || !input.trim()) {
     return { success: false, error: '入力データが空です。JSONまたはテキストを入力してください。' };
