@@ -22,11 +22,12 @@ const CATEGORY_OPTIONS: { id: RecipeCategory | 'ALL'; label: string }[] = [
   { id: 'ALL', label: 'すべてのレシピ' },
   { id: 'battleGear', label: '⚔️ 戦闘用装備' },
   { id: 'gathererCrafterGear', label: '🔨 ギャザクラ装備' },
+  { id: 'fashion', label: '👗 おしゃれ装備' },
   { id: 'foodPotion', label: '🍗 飯・薬' },
   { id: 'housing', label: '⛲ ハウジング家具' },
   { id: 'intermediate', label: '🟫 中間素材' },
   { id: 'collectibles', label: '📦 収集品' },
-  { id: 'other', label: '👕 その他 (おしゃれ品/道具/雑貨など)' },
+  { id: 'other', label: '📎 その他 (道具/雑貨など)' },
 ];
 
 interface RecipeEconomics {

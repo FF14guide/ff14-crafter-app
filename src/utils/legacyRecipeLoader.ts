@@ -27,6 +27,7 @@ export type LegacyRecipeCategory =
   | 'gathererCrafterGear'
   | 'foodPotion'
   | 'housing'
+  | 'fashion'
   | 'intermediate'
   | 'collectibles'
   | 'other';

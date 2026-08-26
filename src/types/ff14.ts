@@ -30,6 +30,7 @@ export type RecipeCategory =
   | 'legacy'
   | 'battleGear'
   | 'gathererCrafterGear'
+  | 'fashion'
   | 'other';
 
 export interface MaterialRequirement {
