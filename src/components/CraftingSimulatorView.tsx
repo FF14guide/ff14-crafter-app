@@ -591,7 +591,7 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
             <div key={idx} className="bg-slate-950 border border-slate-800 rounded-xl p-3 flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-bold text-amber-300 font-cinzel">{block.title}</span>
+                  <span className="text-xs font-bold text-amber-300">{block.title}</span>
                   <button
                     onClick={() => handleCopyMacro(block.text, idx)}
                     className="flex items-center gap-1 px-2.5 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 rounded text-xs border border-amber-500/40 transition-all"

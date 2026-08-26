@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
       {/* Top Banner / Parent Link */}
       <div className="bg-gradient-to-r from-amber-950/40 via-slate-900 to-indigo-950/40 border-b border-slate-800/80 px-4 py-1.5 text-xs text-slate-400 flex flex-wrap items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1 text-amber-400 font-medium font-cinzel">
+          <span className="inline-flex items-center gap-1 text-amber-400 font-medium">
             <Sparkles className="w-3.5 h-3.5" /> Eorzean Crafter
           </span>
           <span className="text-slate-600">|</span>
@@ -90,7 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h1 className="text-lg font-bold text-slate-100 tracking-wide font-cinzel">Eorzean Crafter</h1>
+              <h1 className="text-lg font-bold text-slate-100 tracking-wide">Eorzean Crafter</h1>
               <span className="text-[10px] bg-amber-500/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/40">
                 v7.1
               </span>
@@ -159,7 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <Compass className="w-4 h-4 text-amber-400" />
+            <span className="text-base leading-none">🧭</span>
             <span>製作ワークフロー (ToDo)</span>
           </button>
 
@@ -172,7 +172,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <ScrollText className="w-4 h-4" />
+            <span className="text-base leading-none">📜</span>
             <span>レシピ選定</span>
           </button>
 
@@ -185,7 +185,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <History className="w-4 h-4" />
+            <span className="text-base leading-none">🕰️</span>
             <span>歴代レシピ</span>
           </button>
 
@@ -198,7 +198,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <BarChart3 className="w-4 h-4" />
+            <span className="text-base leading-none">💰</span>
             <span>原価・利益計算</span>
           </button>
 
@@ -211,7 +211,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <TreeDeciduous className="w-4 h-4" />
+            <span className="text-base leading-none">🌳</span>
             <span>素材集め & 未知</span>
           </button>
 
@@ -224,7 +224,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <Hammer className="w-4 h-4" />
+            <span className="text-base leading-none">⚒️</span>
             <span>シミュレータ & マクロ</span>
           </button>
 
@@ -237,7 +237,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <ListPlus className="w-4 h-4" />
+            <span className="text-base leading-none">📋</span>
             <span>製作計画</span>
             {batchCount > 0 && (
               <span className="bg-amber-500 text-slate-950 text-[10px] font-bold px-1.5 py-0.2 rounded-full">

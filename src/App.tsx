@@ -420,7 +420,7 @@ export default function App() {
         <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
           <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="font-cinzel text-slate-300 font-bold">Eorzean Crafter</span>
+              <span className="text-slate-300 font-bold">Eorzean Crafter</span>
               <span>- FF14 クラフター総合支援ツール (Patch 7.1)</span>
             </div>
             <div className="flex items-center gap-4 text-slate-400">

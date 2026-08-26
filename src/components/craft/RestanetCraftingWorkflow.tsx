@@ -317,7 +317,7 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-slate-100 font-cinzel">
+              <h2 className="text-base font-bold text-slate-100">
                 製作ワークフロー & ToDo (FF14 レストラネット式)
               </h2>
               <span className="text-xs bg-amber-500/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full border border-amber-500/40">
@@ -949,6 +949,13 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
               </div>
             </div>
 
+            {finalMacro.warning && (
+              <div className="mb-4 flex items-start gap-2 text-xs text-amber-300 bg-amber-950/40 border border-amber-500/40 rounded-xl p-3">
+                <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                <span>{finalMacro.warning}</span>
+              </div>
+            )}
+
             {/* Macro Parts Output Container */}
             <div className="space-y-3">
               {/* Macro 1 */}
@@ -957,7 +964,7 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                   <div className="flex items-center gap-2">
                     <FileCode className="w-4 h-4 text-amber-400" />
                     <span className="text-xs font-bold text-slate-200">
-                      【マクロ 1】 確信スタート・インナースタック・下地作業
+                      【マクロ 1】{finalMacro.isSingleMacro ? '完成まで一括実行' : '前半パート'}
                     </span>
                     <span className="text-[10px] text-slate-400 font-rajdhani">
                       ({finalMacro.macro1.length}行 / 約32秒)
@@ -985,7 +992,7 @@ export const RestanetCraftingWorkflow: React.FC<RestanetCraftingWorkflowProps> =
                     <div className="flex items-center gap-2">
                       <FileCode className="w-4 h-4 text-sky-400" />
                       <span className="text-xs font-bold text-slate-200">
-                        【マクロ 2】 グレートストライド・ビエルゴの祝福 100%HQフィニッシュ
+                        【マクロ 2】{finalMacro.isFullyAchieved ? '完成・100%HQフィニッシュ' : '後半パート'}
                       </span>
                       <span className="text-[10px] text-slate-400 font-rajdhani">
                         ({finalMacro.macro2.length}行 / 約26秒)
