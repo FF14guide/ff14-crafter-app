@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Recipe, CrafterStats } from '../types/ff14';
 import { CRAFTER_SKILLS, CrafterSkill, SKILL_MAP } from '../data/crafterSkills';
-import { simulateRotation, generateMacroBlocks } from '../utils/craftingSimulator';
+import { simulateRotation, generateMacroBlocks, calculateInitialQuality } from '../utils/craftingSimulator';
 import { generateGameMacro } from '../utils/macroGenerator';
 import { ItemIcon } from './common/ItemIcon';
 import { ActionIcon } from './common/ActionIcon';
@@ -56,10 +56,31 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
   const [activeSkillCategory, setActiveSkillCategory] = useState<'all' | 'progression' | 'quality' | 'buff' | 'durability'>('all');
   const [copiedMacroIndex, setCopiedMacroIndex] = useState<number | null>(null);
 
+  // Which materials the crafter is bringing in as HQ (full required amount
+  // for each). Only materials with a real quality-contribution weight ever
+  // matter here; the rest are ignored even if toggled.
+  const [hqMaterialIds, setHqMaterialIds] = useState<Set<number>>(new Set());
+  const eligibleHqMaterials = useMemo(
+    () => recipe.materials.filter((m) => (m.qualityContribution || 0) > 0),
+    [recipe]
+  );
+  const initialQuality = useMemo(
+    () => calculateInitialQuality(recipe, hqMaterialIds),
+    [recipe, hqMaterialIds]
+  );
+  const toggleHqMaterial = (itemId: number) => {
+    setHqMaterialIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(itemId)) next.delete(itemId);
+      else next.add(itemId);
+      return next;
+    });
+  };
+
   // Run simulation
   const simResult = useMemo(() => {
-    return simulateRotation(recipe, stats, selectedSkillIds);
-  }, [recipe, stats, selectedSkillIds]);
+    return simulateRotation(recipe, stats, selectedSkillIds, initialQuality);
+  }, [recipe, stats, selectedSkillIds, initialQuality]);
 
   // Add skill to sequence
   const handleAddSkill = (skillId: string) => {
@@ -83,7 +104,7 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
   const [autoGenerateInfo, setAutoGenerateInfo] = useState<{ isFullyAchieved: boolean; warning?: string } | null>(null);
 
   const handleAutoGenerate = () => {
-    const result = generateGameMacro(recipe, stats);
+    const result = generateGameMacro(recipe, stats, undefined, hqMaterialIds);
     setSelectedSkillIds(result.simulationResult.steps.map((s) => s.actionId));
     setAutoGenerateInfo({ isFullyAchieved: result.isFullyAchieved, warning: result.warning });
   };
@@ -287,6 +308,44 @@ export const CraftingSimulatorView: React.FC<CraftingSimulatorViewProps> = ({
           </div>
         </div>
       </div>
+
+      {/* HQ Material Selection -- affects starting quality */}
+      {eligibleHqMaterials.length > 0 && (
+        <div className="bg-slate-900/60 border border-slate-800 rounded-2xl p-4">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-sky-400" />
+              <h3 className="text-xs font-semibold text-slate-200">中間素材のHQ選択（初期品質に反映）</h3>
+            </div>
+            <span className="text-xs font-rajdhani text-sky-300 font-bold">
+              初期品質: +{initialQuality.toLocaleString()} / {recipe.maxQuality.toLocaleString()}
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {eligibleHqMaterials.map((mat) => {
+              const isHq = hqMaterialIds.has(mat.itemId);
+              return (
+                <button
+                  key={mat.itemId}
+                  onClick={() => toggleHqMaterial(mat.itemId)}
+                  className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs border transition-all ${
+                    isHq
+                      ? 'bg-sky-500/20 text-sky-300 border-sky-500/60'
+                      : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                  }`}
+                  title={`${mat.name} を${isHq ? 'NQ' : 'HQ'}として扱う`}
+                >
+                  <ItemIcon itemId={mat.itemId} icon={mat.icon} name={mat.name} size="xs" />
+                  <span>{mat.name}</span>
+                  <span className={`font-rajdhani font-bold ${isHq ? 'text-sky-300' : 'text-slate-500'}`}>
+                    {isHq ? 'HQ' : 'NQ'}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Crafting Gauges Dashboard */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">

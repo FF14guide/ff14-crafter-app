@@ -46,6 +46,14 @@ export interface MaterialRequirement {
   // for everything else. The UI must not show an HQ price or toggle when
   // this is false.
   hqAvailable?: boolean;
+  // Per-unit "quality" weight this material contributes toward the craft's
+  // starting quality when brought in as HQ (real game mechanic: initial
+  // quality = maxQuality * 0.5 * (sum of qualityContribution*amount for
+  // materials actually used as HQ) / (sum of qualityContribution*amount for
+  // all materials in the recipe)). Sourced directly from the official
+  // recipe data; materials with no real quality variant (crystals, etc.)
+  // have this at 0.
+  qualityContribution?: number;
   gatheringInfo?: {
     location: string;
     zone: string;

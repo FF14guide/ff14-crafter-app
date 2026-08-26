@@ -54,6 +54,34 @@ export function calculateBaseQuality(control: number, recipe: Recipe): number {
 /**
  * Runs a complete simulation from a sequence of skill IDs
  */
+/**
+ * Real game mechanic: bringing materials in as HQ contributes toward the
+ * craft's STARTING quality, capped at 50% of the recipe's maxQuality when
+ * every eligible material is HQ. Each material's weight (`qualityContribution`)
+ * comes directly from the official recipe data; materials with no real HQ
+ * variant (crystals, etc.) have a weight of 0 and never contribute.
+ *
+ * `hqMaterialItemIds` should contain the itemIds of materials the crafter is
+ * bringing in as HQ (for their full required amount).
+ */
+export function calculateInitialQuality(recipe: Recipe, hqMaterialItemIds: Set<number> | number[]): number {
+  const hqSet = hqMaterialItemIds instanceof Set ? hqMaterialItemIds : new Set(hqMaterialItemIds);
+
+  let totalWeight = 0;
+  let hqWeight = 0;
+  for (const mat of recipe.materials) {
+    const weight = (mat.qualityContribution || 0) * mat.amount;
+    totalWeight += weight;
+    if (hqSet.has(mat.itemId)) {
+      hqWeight += weight;
+    }
+  }
+
+  if (totalWeight <= 0) return 0;
+  const ratio = Math.min(1, hqWeight / totalWeight);
+  return Math.floor(recipe.maxQuality * 0.5 * ratio);
+}
+
 export function simulateRotation(
   recipe: Recipe,
   stats: CrafterStats,

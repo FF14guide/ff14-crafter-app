@@ -1,5 +1,5 @@
 import { CrafterStats, Recipe } from '../types/ff14';
-import { simulateRotation, CraftingSimulationResult } from './craftingSimulator';
+import { simulateRotation, calculateInitialQuality, CraftingSimulationResult } from './craftingSimulator';
 
 export interface GeneratedMacro {
   macro1: string[];
@@ -21,6 +21,9 @@ export interface GeneratedMacro {
   // explains what's short.
   isFullyAchieved: boolean;
   warning?: string;
+  // Starting quality granted by HQ materials before any actions are taken
+  // (0 if no HQ materials were selected or the recipe has no eligible ones).
+  initialQuality: number;
 }
 
 /**
@@ -98,7 +101,8 @@ function durabilityDivisor(buffs: Record<string, number>): number {
 function buildQualityPhase(
   recipe: Recipe,
   simStats: CrafterStats,
-  opener: 'muscle_memory' | 'reflect'
+  opener: 'muscle_memory' | 'reflect',
+  initialQuality: number
 ): string[] {
   const skills: string[] = [opener];
 
@@ -119,7 +123,7 @@ function buildQualityPhase(
 
   const MAX_ITER = 24;
   for (let i = 0; i < MAX_ITER; i++) {
-    const sim = simulateRotation(recipe, simStats, skills);
+    const sim = simulateRotation(recipe, simStats, skills, initialQuality);
 
     if (sim.isFailed) {
       // The last action broke durability -- undo it and stop the quality phase.
@@ -196,12 +200,12 @@ function buildQualityPhase(
  * to CP-free Basic Synthesis) until the recipe's difficulty is met or the
  * remaining budget runs out.
  */
-function buildProgressPhase(recipe: Recipe, simStats: CrafterStats, base: string[]): string[] {
+function buildProgressPhase(recipe: Recipe, simStats: CrafterStats, base: string[], initialQuality: number): string[] {
   const skills = [...base];
 
   const MAX_ITER = 20;
   for (let i = 0; i < MAX_ITER; i++) {
-    const sim = simulateRotation(recipe, simStats, skills);
+    const sim = simulateRotation(recipe, simStats, skills, initialQuality);
 
     if (sim.isCompleted) break;
     if (sim.isFailed) {
@@ -249,11 +253,11 @@ function buildProgressPhase(recipe: Recipe, simStats: CrafterStats, base: string
  * This never fabricates success -- the caller is told via `isFullyAchieved`
  * and `warning` whether the recipe was actually completed.
  */
-function repairIncompleteProgress(recipe: Recipe, simStats: CrafterStats, base: string[]): string[] {
+function repairIncompleteProgress(recipe: Recipe, simStats: CrafterStats, base: string[], initialQuality: number): string[] {
   const skills = [...base];
   const MAX_ITER = 10;
   for (let i = 0; i < MAX_ITER; i++) {
-    const sim = simulateRotation(recipe, simStats, skills);
+    const sim = simulateRotation(recipe, simStats, skills, initialQuality);
     if (sim.isCompleted || sim.isFailed) break;
     const durDivisor = durabilityDivisor(lastBuffs(sim));
     const groundworkDurCost = Math.floor(20 / durDivisor);
@@ -279,15 +283,16 @@ function repairIncompleteProgress(recipe: Recipe, simStats: CrafterStats, base: 
 function buildCandidate(
   recipe: Recipe,
   simStats: CrafterStats,
-  opener: 'muscle_memory' | 'reflect'
+  opener: 'muscle_memory' | 'reflect',
+  initialQuality: number
 ): { skillIds: string[]; sim: CraftingSimulationResult } {
-  let skillIds = buildQualityPhase(recipe, simStats, opener);
-  skillIds = buildProgressPhase(recipe, simStats, skillIds);
+  let skillIds = buildQualityPhase(recipe, simStats, opener, initialQuality);
+  skillIds = buildProgressPhase(recipe, simStats, skillIds, initialQuality);
 
-  let sim = simulateRotation(recipe, simStats, skillIds);
+  let sim = simulateRotation(recipe, simStats, skillIds, initialQuality);
   if (!sim.isCompleted && !sim.isFailed) {
-    skillIds = repairIncompleteProgress(recipe, simStats, skillIds);
-    sim = simulateRotation(recipe, simStats, skillIds);
+    skillIds = repairIncompleteProgress(recipe, simStats, skillIds, initialQuality);
+    sim = simulateRotation(recipe, simStats, skillIds, initialQuality);
   }
 
   return { skillIds, sim };
@@ -327,10 +332,12 @@ function scoreCandidate(sim: CraftingSimulationResult, recipe: Recipe): number {
 export function generateGameMacro(
   recipe: Recipe,
   stats: CrafterStats,
-  macroNamePrefix?: string
+  macroNamePrefix?: string,
+  hqMaterialItemIds: Set<number> | number[] = []
 ): GeneratedMacro {
   const effective = getEffectiveCrafterStats(stats);
   const label = macroNamePrefix || recipe.name;
+  const initialQuality = calculateInitialQuality(recipe, hqMaterialItemIds);
 
   // Clone stats object with effective values for simulator -- food/potion/
   // specialist bonuses are already folded into craftsmanship/control/cp
@@ -347,8 +354,8 @@ export function generateGameMacro(
 
   // Try both openers and keep whichever candidate actually performs better.
   const candidates = [
-    buildCandidate(recipe, simStats, 'muscle_memory'),
-    buildCandidate(recipe, simStats, 'reflect'),
+    buildCandidate(recipe, simStats, 'muscle_memory', initialQuality),
+    buildCandidate(recipe, simStats, 'reflect', initialQuality),
   ];
 
   candidates.sort((a, b) => scoreCandidate(b.sim, recipe) - scoreCandidate(a.sim, recipe));
@@ -434,5 +441,6 @@ export function generateGameMacro(
     isSingleMacro: formattedMacros.length === 1,
     isFullyAchieved,
     warning,
+    initialQuality,
   };
 }

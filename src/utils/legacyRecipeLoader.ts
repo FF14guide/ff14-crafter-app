@@ -20,6 +20,7 @@ interface RawLegacyMaterial {
   icon: number | null;
   sourceType: 'gathering' | 'subcraft';
   subRecipeId: string | null;
+  qualityContribution?: number;
 }
 
 export type LegacyRecipeCategory =
@@ -66,6 +67,7 @@ function toMaterialRequirement(m: RawLegacyMaterial): MaterialRequirement {
     isSubCraft: m.sourceType === 'subcraft',
     subRecipeId: m.subRecipeId || undefined,
     sourceType: m.sourceType,
+    qualityContribution: m.qualityContribution,
   };
 }
 
