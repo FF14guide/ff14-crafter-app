@@ -45,6 +45,7 @@ interface RawLegacyRecipe {
   ilvl: number;
   expansion: Expansion;
   patchVersion: string | null;
+  masterbookName: string | null;
   recipeCategory: LegacyRecipeCategory;
   durability: number;
   difficulty: number;
@@ -93,6 +94,7 @@ function toRecipe(r: RawLegacyRecipe): Recipe {
     materials: r.materials.map(toMaterialRequirement),
     yields: r.yields,
     canHq: r.canHq,
+    masterBook: r.masterbookName || undefined,
     description: undefined,
   };
 }

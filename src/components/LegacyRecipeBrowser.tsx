@@ -85,6 +85,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   const [selectedJob, setSelectedJob] = useState<CraftJob | 'ALL'>('ALL');
   const [selectedCategory, setSelectedCategory] = useState<RecipeCategory | 'ALL'>('ALL');
   const [selectedSubPatches, setSelectedSubPatches] = useState<string[]>([]);
+  const [masterbookOnly, setMasterbookOnly] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('default');
   const [page, setPage] = useState(0);
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
@@ -134,6 +135,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
       if (selectedJob !== 'ALL' && recipe.job !== selectedJob) return false;
       if (selectedCategory !== 'ALL' && recipe.category !== selectedCategory) return false;
       if (selectedSubPatches.length > 0 && !selectedSubPatches.includes(recipe.patch)) return false;
+      if (masterbookOnly && !recipe.masterBook) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         if (
@@ -146,7 +148,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
       }
       return true;
     });
-  }, [recipes, selectedJob, selectedCategory, selectedSubPatches, searchQuery]);
+  }, [recipes, selectedJob, selectedCategory, selectedSubPatches, masterbookOnly, searchQuery]);
 
   // Fetch market data (capped) whenever the filtered set changes, so sort by
   // profit/profit rate can work without eagerly pricing thousands of items.
@@ -260,6 +262,17 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                 クリア
               </button>
             )}
+            <button
+              onClick={() => setMasterbookOnly((v) => !v)}
+              className={`ml-2 px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all flex items-center gap-1 ${
+                masterbookOnly
+                  ? 'bg-amber-500 text-slate-950 border-amber-400'
+                  : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+              }`}
+              title="秘伝書(マスターブック)が必要なレシピのみ表示"
+            >
+              <span>📖 秘伝書が必要なもののみ</span>
+            </button>
           </div>
         )}
 
@@ -410,6 +423,12 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                         </span>
                         {recipe.stars > 0 && <span className="text-amber-400">{'★'.repeat(recipe.stars)}</span>}
                       </div>
+                      {recipe.masterBook && (
+                        <div className="text-[9px] text-amber-300/90 bg-amber-500/10 border border-amber-500/20 rounded px-1 py-0.5 mt-1 inline-flex items-center gap-1">
+                          <span>📖</span>
+                          <span className="truncate">{recipe.masterBook}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
 
