@@ -4,6 +4,7 @@ import { Search, Plus, History, Loader2, ChevronLeft, ChevronRightIcon as Chevro
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
 import { Expansion, ALL_EXPANSIONS, EXPANSION_LABELS, loadExpansionRecipes } from '../utils/legacyRecipeLoader';
+import { loadLodestoneMap, buildLodestoneUrlFromHash } from '../utils/lodestoneLinks';
 import { fetchUniversalisMultiPrices } from '../services/universalisApi';
 
 interface LegacyRecipeBrowserProps {
@@ -69,6 +70,11 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   selectedWorldOrDc,
 }) => {
   const [expansion, setExpansion] = useState<Expansion>('DT');
+  const [lodestoneMap, setLodestoneMap] = useState<Record<number, string>>({});
+
+  useEffect(() => {
+    loadLodestoneMap().then(setLodestoneMap);
+  }, []);
   const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -326,11 +332,15 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                     <ItemIcon itemId={recipe.itemId} icon={recipe.icon} name={recipe.name} size="md" />
                     <div className="min-w-0">
                       <a
-                        href={`https://garlandtools.org/db/#item/${recipe.itemId}`}
+                        href={
+                          lodestoneMap[recipe.itemId]
+                            ? buildLodestoneUrlFromHash(lodestoneMap[recipe.itemId])
+                            : `https://garlandtools.org/db/#item/${recipe.itemId}`
+                        }
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-xs font-bold text-slate-100 hover:text-amber-300 truncate transition-colors"
-                        title="公式アイテムデータ (Garland Tools) を新しいタブで開く"
+                        title={lodestoneMap[recipe.itemId] ? 'FF14公式アイテムページ (Lodestone) を新しいタブで開く' : '公式アイテムデータ (Garland Tools) を新しいタブで開く'}
                       >
                         {recipe.name}
                       </a>

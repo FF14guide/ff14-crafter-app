@@ -4,6 +4,7 @@ import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, C
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
 import { fetchUniversalisMultiPrices } from '../services/universalisApi';
+import { loadLodestoneMap, buildLodestoneUrlFromHash } from '../utils/lodestoneLinks';
 import { loadExpansionRecipes } from '../utils/legacyRecipeLoader';
 
 interface RecipeCatalogProps {
@@ -113,6 +114,11 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   const [marketData, setMarketData] = useState<Record<number, UniversalisItemData>>({});
   const [loadingMarket, setLoadingMarket] = useState(false);
   const [allDtRecipes, setAllDtRecipes] = useState<Recipe[] | null>(null);
+  const [lodestoneMap, setLodestoneMap] = useState<Record<number, string>>({});
+
+  useEffect(() => {
+    loadLodestoneMap().then(setLodestoneMap);
+  }, []);
   const [page, setPage] = useState(0);
   const CATALOG_PAGE_SIZE = 30;
 
@@ -473,11 +479,15 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                   />
                   <div>
                     <a
-                      href={`https://garlandtools.org/db/#item/${recipe.itemId}`}
+                      href={
+                        lodestoneMap[recipe.itemId]
+                          ? buildLodestoneUrlFromHash(lodestoneMap[recipe.itemId])
+                          : `https://garlandtools.org/db/#item/${recipe.itemId}`
+                      }
                       target="_blank"
                       rel="noopener noreferrer"
                       className="group/link inline-flex items-center gap-1 text-sm font-bold text-slate-100 hover:text-amber-300 transition-colors"
-                      title="公式アイテムデータ (Garland Tools) を新しいタブで開く"
+                      title={lodestoneMap[recipe.itemId] ? 'FF14公式アイテムページ (Lodestone) を新しいタブで開く' : '公式アイテムデータ (Garland Tools) を新しいタブで開く'}
                     >
                       <h3>{recipe.name}</h3>
                       <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-70 transition-opacity shrink-0" />
