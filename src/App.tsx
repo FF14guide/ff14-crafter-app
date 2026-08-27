@@ -421,7 +421,7 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <span className="text-slate-300 font-bold">Eorzean Crafter</span>
-              <span>- FF14 クラフター総合支援ツール (Patch 7.1)</span>
+              <span>- FF14 クラフター総合支援ツール</span>
             </div>
             <div className="flex items-center gap-4 text-slate-400">
               <a

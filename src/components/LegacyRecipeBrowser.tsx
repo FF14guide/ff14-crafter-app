@@ -325,7 +325,15 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                   <div className="flex items-center gap-2">
                     <ItemIcon itemId={recipe.itemId} icon={recipe.icon} name={recipe.name} size="md" />
                     <div className="min-w-0">
-                      <div className="text-xs font-bold text-slate-100 truncate">{recipe.name}</div>
+                      <a
+                        href={`https://garlandtools.org/db/#item/${recipe.itemId}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-bold text-slate-100 hover:text-amber-300 truncate transition-colors"
+                        title="公式アイテムデータ (Garland Tools) を新しいタブで開く"
+                      >
+                        {recipe.name}
+                      </a>
                       <div className="flex items-center gap-1 text-[10px] text-slate-400">
                         <span
                           className="px-1 py-0.5 rounded font-rajdhani font-semibold text-white"

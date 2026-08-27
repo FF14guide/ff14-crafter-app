@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Recipe, CraftJob, CRAFT_JOBS, UniversalisItemData } from '../types/ff14';
-import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass, ArrowUpDown, TrendingUp, Percent, AlertTriangle, Globe, Loader2, ChevronLeft } from 'lucide-react';
+import { Search, Sparkles, Plus, Play, ChevronRight, BarChart3, TreeDeciduous, Compass, ArrowUpDown, TrendingUp, Percent, AlertTriangle, Globe, Loader2, ChevronLeft, ExternalLink } from 'lucide-react';
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
 import { fetchUniversalisMultiPrices } from '../services/universalisApi';
@@ -21,6 +21,27 @@ interface RecipeCatalogProps {
 type SortMode = 'default' | 'profitDesc' | 'profitRateDesc';
 
 const PATCH_OPTIONS = ['7.0', '7.1', '7.2', '7.3', '7.4', '7.5'];
+
+// Minimum item level to be considered "latest patch" content. This threshold
+// is intentionally the only thing that needs bumping when a new even-higher
+// tier ships -- everything else (the filter itself, and the label text
+// below) is derived from it plus the curated data, so it won't silently
+// become wrong the way a hardcoded "Patch 7.4" string would.
+const LATEST_PATCH_IL_THRESHOLD = 740;
+
+/** Builds an evergreen "latest patch" category label from whatever curated
+ * recipes actually meet the threshold, instead of a hardcoded patch number
+ * that would go stale the moment a newer patch ships. */
+function buildLatestPatchLabel(recipes: Recipe[]): { label: string; desc: string } {
+  const qualifying = recipes.filter((r) => r.ilvl >= LATEST_PATCH_IL_THRESHOLD);
+  const patches = Array.from(new Set(qualifying.map((r) => r.patch))).sort().reverse();
+  const maxIlvl = qualifying.reduce((max, r) => Math.max(max, r.ilvl), 0);
+  const patchLabel = patches.length > 0 ? patches.slice(0, 2).join('/') : '';
+  return {
+    label: patchLabel ? `🔥 最新パッチ ${patchLabel}` : '🔥 最新パッチ',
+    desc: maxIlvl > 0 ? `新式IL${maxIlvl}・宝薬・最新飯` : '新式装備・宝薬・最新飯',
+  };
+}
 
 // Approximate patch grouping for the bulk (non-curated) Dawntrail recipes,
 // based on the item-level tiers verified during this session's research.
@@ -161,7 +182,7 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   const filteredRecipes = mergedRecipes.filter((recipe) => {
     // Purpose filter
     if (currentPurpose === 'latestPatch') {
-      if (recipe.patch !== '7.4' && recipe.patch !== '7.2' && recipe.ilvl < 740) return false;
+      if (recipe.ilvl < LATEST_PATCH_IL_THRESHOLD) return false;
     } else if (currentPurpose !== 'all') {
       if (recipe.category !== currentPurpose) return false;
     }
@@ -218,9 +239,20 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
   const pageRecipes = sortedRecipes.slice(page * CATALOG_PAGE_SIZE, (page + 1) * CATALOG_PAGE_SIZE);
 
   const categories = [
-    { id: 'latestPatch', label: '🔥 最新パッチ 7.4/7.2', desc: '新式IL770・宝薬G3・最新飯' },
-    { id: 'foodPotion', label: '🍗 レイド飯・薬', desc: '最新飯・宝薬G3/G2・薬茶' },
-    { id: 'gear', label: '🛡️ 新式装備・防具', desc: 'IL770 コートリーラヴァー / IL710' },
+    (() => {
+      const { label, desc } = buildLatestPatchLabel(recipes);
+      return { id: 'latestPatch', label, desc };
+    })(),
+    { id: 'foodPotion', label: '🍗 レイド飯・薬', desc: 'レイド飯・宝薬・薬茶' },
+    (() => {
+      const gearItems = recipes.filter((r) => r.category === 'gear');
+      const maxGearIl = gearItems.reduce((max, r) => Math.max(max, r.ilvl), 0);
+      return {
+        id: 'gear',
+        label: '🛡️ 新式装備・防具',
+        desc: maxGearIl > 0 ? `最高IL${maxGearIl}の新式装備` : '新式装備・防具',
+      };
+    })(),
     { id: 'intermediate', label: '🟫 中間素材', desc: '黄金のレザー・インゴット・布' },
     { id: 'collectibles', label: '📦 収集品 (橙貨/紫貨)', desc: 'クラフター貨幣集め用' },
     { id: 'housing', label: '⛲ ハウジング家具', desc: '庭具・調度品' },
@@ -440,9 +472,16 @@ export const RecipeCatalog: React.FC<RecipeCatalogProps> = ({
                     className="shadow-inner border-slate-700 bg-slate-900"
                   />
                   <div>
-                    <h3 className="text-sm font-bold text-slate-100 group-hover:text-amber-300 transition-colors">
-                      {recipe.name}
-                    </h3>
+                    <a
+                      href={`https://garlandtools.org/db/#item/${recipe.itemId}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group/link inline-flex items-center gap-1 text-sm font-bold text-slate-100 hover:text-amber-300 transition-colors"
+                      title="公式アイテムデータ (Garland Tools) を新しいタブで開く"
+                    >
+                      <h3>{recipe.name}</h3>
+                      <ExternalLink className="w-3 h-3 opacity-0 group-hover/link:opacity-70 transition-opacity shrink-0" />
+                    </a>
                     <p className="text-[11px] text-slate-400 font-rajdhani line-clamp-1">{recipe.enName}</p>
                   </div>
                 </div>

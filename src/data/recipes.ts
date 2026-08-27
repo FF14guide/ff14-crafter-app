@@ -34,7 +34,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '甲冑師秘伝書:第12巻',
     defaultSellingPrice: 160000,
-    description: 'パッチ7.4最新戦闘新式 タンク胴防具 IL770 (零式・高難易度レイド対応)',
+    description: 'タンク胴防具（零式・高難易度レイド対応）',
     materials: [
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000, qualityContribution: 1344.65 },
       { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000, qualityContribution: 1344.65 },
@@ -66,7 +66,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '甲冑師秘伝書:第12巻',
     defaultSellingPrice: 160000,
-    description: 'パッチ7.4最新戦闘新式 スレイヤー胴防具 (竜騎士/リーパー) IL770',
+    description: 'スレイヤー胴防具（竜騎士/リーパー）',
     materials: [
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 2, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000, qualityContribution: 1344.65 },
       { itemId: 49217, name: 'オルコ・リネン', amount: 3, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000, qualityContribution: 1344.65 },
@@ -98,7 +98,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 170000,
-    description: 'パッチ7.4最新戦闘新式 ストライカー胴防具 (モンク/侍) IL770',
+    description: 'ストライカー胴防具（モンク/侍）',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000, qualityContribution: 1344.65 },
       { itemId: 49213, name: 'エレクトロパイン材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -130,7 +130,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 170000,
-    description: 'パッチ7.4最新戦闘新式 スカウト胴防具 (忍者/ヴァイパー) IL770',
+    description: 'スカウト胴防具（忍者/ヴァイパー）',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000, qualityContribution: 1344.65 },
       { itemId: 49215, name: 'ローズガーネット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000, qualityContribution: 1344.65 },
@@ -162,7 +162,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 175000,
-    description: 'パッチ7.4最新戦闘新式 キャスター胴防具 (黒魔/召喚/赤魔/ピクト) IL770',
+    description: 'キャスター胴防具（黒魔/召喚/赤魔/ピクト）',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 4, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000, qualityContribution: 1344.65 },
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000, qualityContribution: 1344.65 },
@@ -194,7 +194,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 85000,
-    description: 'パッチ7.4最新戦闘新式 アタッカー指輪 IL770',
+    description: 'アタッカー指輪',
     materials: [
       { itemId: 49215, name: 'ローズガーネット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000, qualityContribution: 2729.77 },
       { itemId: 49214, name: 'スーパージュラルミンインゴット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_tungsten_ingot', defaultPriceNQ: 14000, defaultPriceHQ: 22000, qualityContribution: 2729.77 },
@@ -226,7 +226,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '裁縫師秘伝書:第12巻',
     defaultSellingPrice: 90000,
-    description: 'パッチ7.4最新戦闘新式 アタッカー首飾り IL770',
+    description: 'アタッカー首飾り',
     materials: [
       { itemId: 49217, name: 'オルコ・リネン', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cochineal_cloth', defaultPriceNQ: 12000, defaultPriceHQ: 18000, qualityContribution: 2729.77 },
       { itemId: 49213, name: 'エレクトロパイン材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -258,7 +258,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '彫金師秘伝書:第12巻',
     defaultSellingPrice: 88000,
-    description: 'パッチ7.4最新戦闘新式 アタッカー耳飾り IL770',
+    description: 'アタッカー耳飾り',
     materials: [
       { itemId: 49215, name: 'ローズガーネット', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_rhodochrosite', defaultPriceNQ: 13000, defaultPriceHQ: 20000, qualityContribution: 2729.77 },
       { itemId: 49213, name: 'エレクトロパイン材', amount: 1, sourceType: 'subcraft', isSubCraft: true, subRecipeId: 'sub_cordia_lumber', defaultPriceNQ: 13000, defaultPriceHQ: 20000 },
@@ -756,7 +756,7 @@ export const RECIPES_DATABASE: Recipe[] = [
     canHq: true,
     masterBook: '錬金術師秘伝書:第12巻',
     defaultSellingPrice: 100,
-    description: 'パッチ7.2最新錬金薬 (宝薬G3製造用)',
+    description: '宝薬G3製造用の錬金薬',
     materials: [
       { itemId: 44034, name: 'ヤクテル天然水', amount: 1, sourceType: 'gathering', defaultPriceNQ: 120 },
       { itemId: 44035, name: '黄金の霊砂', hqAvailable: false, amount: 1, sourceType: 'reduction', defaultPriceNQ: 300 },

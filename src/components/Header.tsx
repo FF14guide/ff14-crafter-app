@@ -57,7 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
             <Sparkles className="w-3.5 h-3.5" /> Eorzean Crafter
           </span>
           <span className="text-slate-600">|</span>
-          <span className="text-slate-400">FFXIV Patch 7.55 / 7.4 / 7.2 黄金のレガシー完全対応</span>
+          <span className="text-slate-400">FFXIV 黄金のレガシー 全パッチ対応</span>
         </div>
 
         <div className="flex items-center gap-4 text-xs">
