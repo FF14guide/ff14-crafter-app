@@ -3,7 +3,6 @@ import { useState, useEffect, useRef, ReactNode, ErrorInfo } from 'react';
 import { Recipe, CrafterStats, BatchCraftItem, InventorySyncData } from './types/ff14';
 import { RECIPES_DATABASE } from './data/recipes';
 import { Header, MainTabType } from './components/Header';
-import { RecipeCatalog } from './components/RecipeCatalog';
 import { LegacyRecipeBrowser } from './components/LegacyRecipeBrowser';
 import { CostProfitCalculator } from './components/CostProfitCalculator';
 import { MaterialTreeGathering } from './components/MaterialTreeGathering';
@@ -75,7 +74,6 @@ class SafeErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundar
 export default function App() {
   const [activeTab, setActiveTab] = useState<MainTabType>('workflow');
   const [selectedWorldOrDc, setSelectedWorldOrDc] = useState<string>('Mana');
-  const [currentPurpose, setCurrentPurpose] = useState<string>('latestPatch');
   const [selectedRecipe, setSelectedRecipe] = useState<Recipe>(RECIPES_DATABASE[0]);
   const [isPresetsOpen, setIsPresetsOpen] = useState<boolean>(false);
   const [isInventoryModalOpen, setIsInventoryModalOpen] = useState<boolean>(false);
@@ -156,9 +154,6 @@ export default function App() {
   // Handle URL Search Params on initial mount (?purpose=latestPatch, etc.)
   useEffect(() => {
     const params = getSafeUrlParams();
-    if (params.purpose) {
-      setCurrentPurpose(params.purpose);
-    }
     if (params.itemId) {
       const found = RECIPES_DATABASE.find((r) => r.itemId === parseInt(params.itemId!));
       if (found) {
@@ -166,7 +161,8 @@ export default function App() {
       }
     }
     if (params.tab) {
-      setActiveTab(params.tab as MainTabType);
+      // Migrate old bookmarks pointing at the removed レシピ選定 tab.
+      setActiveTab((params.tab === 'recipeCatalog' ? 'legacyRecipes' : params.tab) as MainTabType);
     }
     // Establish a baseline history entry carrying the initial tab so the
     // very first Back press has something of ours to land on.
@@ -187,7 +183,7 @@ export default function App() {
       isHandlingPopState.current = true;
       const params = getSafeUrlParams();
       if (params.tab) {
-        setActiveTab(params.tab as MainTabType);
+        setActiveTab((params.tab === 'recipeCatalog' ? 'legacyRecipes' : params.tab) as MainTabType);
       }
       if (params.itemId) {
         const found = RECIPES_DATABASE.find((r) => r.itemId === parseInt(params.itemId!));
@@ -223,11 +219,6 @@ export default function App() {
     if (!isHandlingPopState.current) {
       pushUrlState({ tab, itemId: String(recipe.itemId) });
     }
-  };
-
-  const handleChangePurpose = (purpose: string) => {
-    setCurrentPurpose(purpose);
-    updateUrlQueryParam('purpose', purpose);
   };
 
   const handleSelectRecipeForWorkflow = (recipe: Recipe) => {
@@ -350,24 +341,12 @@ export default function App() {
             />
           )}
 
-          {activeTab === 'recipeCatalog' && (
-            <RecipeCatalog
-              recipes={RECIPES_DATABASE}
-              currentPurpose={currentPurpose}
-              onChangePurpose={handleChangePurpose}
-              onSelectRecipeForWorkflow={handleSelectRecipeForWorkflow}
-              onSelectRecipeForCost={handleSelectRecipeForCost}
-              onSelectRecipeForTree={handleSelectRecipeForTree}
-              onSelectRecipeForSim={handleSelectRecipeForSim}
-              onAddToBatch={handleAddToBatch}
-              selectedWorldOrDc={selectedWorldOrDc}
-            />
-          )}
-
           {activeTab === 'legacyRecipes' && (
             <LegacyRecipeBrowser
               onAddToBatch={handleAddToBatch}
+              onSelectRecipeForWorkflow={handleSelectRecipeForWorkflow}
               onSelectRecipeForCost={handleSelectRecipeForCost}
+              onSelectRecipeForTree={handleSelectRecipeForTree}
               onSelectRecipeForSim={handleSelectRecipeForSim}
               selectedWorldOrDc={selectedWorldOrDc}
             />

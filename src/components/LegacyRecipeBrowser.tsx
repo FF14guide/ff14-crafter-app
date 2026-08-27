@@ -9,7 +9,9 @@ import { fetchUniversalisMultiPrices } from '../services/universalisApi';
 
 interface LegacyRecipeBrowserProps {
   onAddToBatch: (recipe: Recipe) => void;
+  onSelectRecipeForWorkflow?: (recipe: Recipe) => void;
   onSelectRecipeForCost: (recipe: Recipe) => void;
+  onSelectRecipeForTree?: (recipe: Recipe) => void;
   onSelectRecipeForSim: (recipe: Recipe) => void;
   selectedWorldOrDc: string;
 }
@@ -65,7 +67,9 @@ function computeEconomics(recipe: Recipe, marketData: Record<number, Universalis
 
 export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   onAddToBatch,
+  onSelectRecipeForWorkflow,
   onSelectRecipeForCost,
+  onSelectRecipeForTree,
   onSelectRecipeForSim,
   selectedWorldOrDc,
 }) => {
@@ -80,6 +84,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedJob, setSelectedJob] = useState<CraftJob | 'ALL'>('ALL');
   const [selectedCategory, setSelectedCategory] = useState<RecipeCategory | 'ALL'>('ALL');
+  const [selectedSubPatches, setSelectedSubPatches] = useState<string[]>([]);
   const [sortMode, setSortMode] = useState<SortMode>('default');
   const [page, setPage] = useState(0);
   const [addedIds, setAddedIds] = useState<Set<string>>(new Set());
@@ -90,6 +95,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
     let cancelled = false;
     setLoading(true);
     setPage(0);
+    setSelectedSubPatches([]);
     loadExpansionRecipes(expansion).then((data) => {
       if (!cancelled) {
         setRecipes(data);
@@ -101,10 +107,33 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
     };
   }, [expansion]);
 
+  // Distinct sub-patches actually present in this expansion (e.g. 7.0, 7.05,
+  // 7.1... for DT), sorted chronologically, for the multi-select filter.
+  // Filtered to plausible major-version prefixes for the expansion, since a
+  // small number of items carry a *later* patch version (their data was
+  // touched in a balance patch) even though their level keeps them bucketed
+  // in an earlier expansion -- showing that here would be confusing.
+  const EXPANSION_MAJOR_VERSION: Record<Expansion, string> = {
+    ARR: '2', HW: '3', SB: '4', ShB: '5', EW: '6', DT: '7',
+  };
+  const availableSubPatches = useMemo(() => {
+    const expectedMajor = EXPANSION_MAJOR_VERSION[expansion];
+    const set = new Set<string>();
+    for (const r of recipes) {
+      if (r.patch && r.patch.startsWith(expectedMajor)) set.add(r.patch);
+    }
+    return Array.from(set).sort((a, b) => parseFloat(a) - parseFloat(b) || a.localeCompare(b));
+  }, [recipes, expansion]);
+
+  const toggleSubPatch = (patch: string) => {
+    setSelectedSubPatches((prev) => (prev.includes(patch) ? prev.filter((p) => p !== patch) : [...prev, patch]));
+  };
+
   const filtered = useMemo(() => {
     return recipes.filter((recipe) => {
       if (selectedJob !== 'ALL' && recipe.job !== selectedJob) return false;
       if (selectedCategory !== 'ALL' && recipe.category !== selectedCategory) return false;
+      if (selectedSubPatches.length > 0 && !selectedSubPatches.includes(recipe.patch)) return false;
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase();
         if (
@@ -117,7 +146,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
       }
       return true;
     });
-  }, [recipes, selectedJob, selectedCategory, searchQuery]);
+  }, [recipes, selectedJob, selectedCategory, selectedSubPatches, searchQuery]);
 
   // Fetch market data (capped) whenever the filtered set changes, so sort by
   // profit/profit rate can work without eagerly pricing thousands of items.
@@ -205,6 +234,34 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
             </button>
           ))}
         </div>
+
+        {/* Sub-patch filter (multi-select within the selected expansion) */}
+        {!loading && availableSubPatches.length > 0 && (
+          <div className="flex flex-wrap items-center gap-1.5 mb-3">
+            <span className="text-[11px] text-slate-400 mr-0.5">サブパッチ:</span>
+            {availableSubPatches.map((patch) => (
+              <button
+                key={patch}
+                onClick={() => toggleSubPatch(patch)}
+                className={`px-2 py-0.5 rounded-lg text-[11px] font-rajdhani font-bold border transition-all ${
+                  selectedSubPatches.includes(patch)
+                    ? 'bg-sky-500 text-slate-950 border-sky-400'
+                    : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
+                }`}
+              >
+                {patch}
+              </button>
+            ))}
+            {selectedSubPatches.length > 0 && (
+              <button
+                onClick={() => setSelectedSubPatches([])}
+                className="text-[10px] text-slate-500 hover:text-slate-300 underline ml-1"
+              >
+                クリア
+              </button>
+            )}
+          </div>
+        )}
 
         {/* Category filter */}
         <div className="flex flex-wrap items-center gap-1.5 mb-3">
@@ -396,32 +453,51 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                     )}
                   </div>
 
-                  <div className="flex items-center gap-1.5 mt-auto pt-1">
-                    <button
-                      onClick={() => onSelectRecipeForCost(recipe)}
-                      className="flex-1 bg-slate-850 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2 py-1 rounded-lg text-[10px] font-medium transition-all"
-                    >
-                      原価
-                    </button>
-                    <button
-                      onClick={() => onSelectRecipeForSim(recipe)}
-                      className="flex-1 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-500/40 px-2 py-1 rounded-lg text-[10px] font-medium transition-all"
-                    >
-                      シミュ
-                    </button>
-                    <button
-                      onClick={() => handleAdd(recipe)}
-                      disabled={isAdded}
-                      className={`px-2 py-1 rounded-lg text-[10px] border transition-all flex items-center gap-1 ${
-                        isAdded
-                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                          : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
-                      }`}
-                      title="製作計画リストに追加"
-                    >
-                      <Plus className="w-3 h-3" />
-                      {isAdded ? '追加済' : '計画へ'}
-                    </button>
+                  <div className="flex flex-col gap-1.5 mt-auto pt-1">
+                    {onSelectRecipeForWorkflow && (
+                      <button
+                        onClick={() => onSelectRecipeForWorkflow(recipe)}
+                        className="w-full bg-gradient-to-r from-amber-500/20 via-amber-500/30 to-amber-600/20 hover:from-amber-500/30 hover:to-amber-600/30 text-amber-200 border border-amber-500/40 px-2 py-1 rounded-lg text-[10px] font-bold flex items-center justify-center gap-1 transition-all"
+                        title="レストラネット風 製作ワークフローへ"
+                      >
+                        <span>🧭 製作ワークフローを開く</span>
+                      </button>
+                    )}
+                    <div className="flex items-center gap-1.5">
+                      <button
+                        onClick={() => onSelectRecipeForCost(recipe)}
+                        className="flex-1 bg-slate-850 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2 py-1 rounded-lg text-[10px] font-medium transition-all"
+                      >
+                        原価
+                      </button>
+                      {onSelectRecipeForTree && (
+                        <button
+                          onClick={() => onSelectRecipeForTree(recipe)}
+                          className="flex-1 bg-slate-850 hover:bg-slate-800 text-slate-300 border border-slate-700/80 px-2 py-1 rounded-lg text-[10px] font-medium transition-all"
+                        >
+                          素材
+                        </button>
+                      )}
+                      <button
+                        onClick={() => onSelectRecipeForSim(recipe)}
+                        className="flex-1 bg-indigo-500/20 hover:bg-indigo-500/30 text-indigo-200 border border-indigo-500/40 px-2 py-1 rounded-lg text-[10px] font-medium transition-all"
+                      >
+                        シミュ
+                      </button>
+                      <button
+                        onClick={() => handleAdd(recipe)}
+                        disabled={isAdded}
+                        className={`px-2 py-1 rounded-lg text-[10px] border transition-all flex items-center gap-1 ${
+                          isAdded
+                            ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                            : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
+                        }`}
+                        title="製作計画リストに追加"
+                      >
+                        <Plus className="w-3 h-3" />
+                        {isAdded ? '追加済' : '計画へ'}
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

@@ -44,6 +44,7 @@ interface RawLegacyRecipe {
   stars: number;
   ilvl: number;
   expansion: Expansion;
+  patchVersion: string | null;
   recipeCategory: LegacyRecipeCategory;
   durability: number;
   difficulty: number;
@@ -79,7 +80,7 @@ function toRecipe(r: RawLegacyRecipe): Recipe {
     enName: r.enName,
     icon: iconUrl(r.icon),
     category: r.recipeCategory,
-    patch: r.expansion, // precise patch isn't tracked for legacy data; expansion is the best available grouping
+    patch: r.patchVersion || r.expansion, // real sub-patch (e.g. "7.4") when resolvable; falls back to the coarse expansion label otherwise
     job: r.job,
     level: r.level,
     stars: r.stars,

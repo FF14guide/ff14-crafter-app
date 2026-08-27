@@ -3,7 +3,7 @@
 // pipeline (scripts/update_patch_data.cjs / .github/workflows/update-game-data.yml).
 // That pipeline only regenerates:
 //   - src/data/legacy/*.json  (the full historical recipe catalog, browsable
-//     under the "歴代レシピ" tab and merged into "レシピ選定" for coverage)
+//     and filterable by expansion/sub-patch under the "レシピ一覧" tab)
 //   - src/utils/itemIcons.ts  (OFFICIAL_ITEM_ICON_BY_ID table, for whichever
 //     itemIds this file references)
 // When a new patch adds content you want the same level of hand-curated

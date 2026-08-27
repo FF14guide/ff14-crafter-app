@@ -18,7 +18,7 @@ import {
   History,
 } from 'lucide-react';
 
-export type MainTabType = 'workflow' | 'recipeCatalog' | 'legacyRecipes' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
+export type MainTabType = 'workflow' | 'legacyRecipes' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
 
 interface HeaderProps {
   activeTab: MainTabType;
@@ -164,19 +164,6 @@ export const Header: React.FC<HeaderProps> = ({
           </button>
 
           <button
-            id="tab-recipe-catalog"
-            onClick={() => onSelectTab('recipeCatalog')}
-            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-              activeTab === 'recipeCatalog'
-                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
-            }`}
-          >
-            <span className="text-base leading-none">📜</span>
-            <span>レシピ選定</span>
-          </button>
-
-          <button
             id="tab-legacy-recipes"
             onClick={() => onSelectTab('legacyRecipes')}
             className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
@@ -185,8 +172,8 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">🕰️</span>
-            <span>歴代レシピ</span>
+            <span className="text-base leading-none">📜</span>
+            <span>レシピ一覧</span>
           </button>
 
           <button
