@@ -37,6 +37,7 @@ const CATEGORY_OPTIONS: { id: RecipeCategory | 'ALL'; label: string }[] = [
 
 interface RecipeEconomics {
   materialCost: number;
+  sellingPrice: number;
   netProfit: number;
   profitRatePercent: number;
   isEstimate: boolean;
@@ -73,7 +74,7 @@ function computeEconomics(
   const netProfit = netRevenue - materialCost;
   const profitRatePercent = grossRevenue > 0 ? Math.round((netProfit / grossRevenue) * 100) : 0;
 
-  return { materialCost, netProfit, profitRatePercent, isEstimate: anyEstimate, anyOwned };
+  return { materialCost, sellingPrice: unitSellingPrice, netProfit, profitRatePercent, isEstimate: anyEstimate, anyOwned };
 }
 
 export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
@@ -445,31 +446,35 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                   </div>
 
                   {economicsAvailable && (
-                    <div className="grid grid-cols-3 gap-1 bg-slate-950/50 p-1.5 rounded-lg border border-slate-800/60 text-[10px] font-rajdhani">
+                    <div className="grid grid-cols-2 gap-1.5 bg-slate-950/50 p-2 rounded-lg border border-slate-800/60 font-rajdhani">
                       <div>
-                        <span className="text-slate-500 block text-[9px] flex items-center gap-0.5">
+                        <span className="text-slate-500 block text-[10px] flex items-center gap-0.5">
                           原価
                           {econ.anyOwned && (
                             <span title="所持品を保有分だけ差し引いて計算しています">
-                              <Package className="w-2.5 h-2.5 text-emerald-400" />
+                              <Package className="w-3 h-3 text-emerald-400" />
                             </span>
                           )}
                         </span>
-                        <span className="text-slate-200 font-semibold">{Math.round(econ.materialCost).toLocaleString()}G</span>
+                        <span className="text-slate-200 font-bold text-base">{Math.round(econ.materialCost).toLocaleString()}G</span>
                       </div>
                       <div>
-                        <span className="text-slate-500 block text-[9px]">利益</span>
-                        <span className={`font-semibold ${econ.netProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
+                        <span className="text-slate-500 block text-[10px]">売価</span>
+                        <span className="text-slate-200 font-bold text-base">{Math.round(econ.sellingPrice).toLocaleString()}G</span>
+                      </div>
+                      <div>
+                        <span className="text-slate-500 block text-[10px]">利益</span>
+                        <span className={`font-bold text-base ${econ.netProfit >= 0 ? 'text-emerald-300' : 'text-rose-400'}`}>
                           {econ.netProfit >= 0 ? '+' : ''}
                           {Math.round(econ.netProfit).toLocaleString()}G
                         </span>
                       </div>
                       <div>
-                        <span className="text-slate-500 block text-[9px] flex items-center gap-0.5">
+                        <span className="text-slate-500 block text-[10px] flex items-center gap-0.5">
                           利益率
-                          {econ.isEstimate && <AlertTriangle className="w-2.5 h-2.5 text-amber-500/80" />}
+                          {econ.isEstimate && <AlertTriangle className="w-3 h-3 text-amber-500/80" />}
                         </span>
-                        <span className={`font-semibold ${econ.profitRatePercent >= 0 ? 'text-sky-300' : 'text-rose-400'}`}>
+                        <span className={`font-bold text-base ${econ.profitRatePercent >= 0 ? 'text-sky-300' : 'text-rose-400'}`}>
                           {econ.profitRatePercent}%
                         </span>
                       </div>
