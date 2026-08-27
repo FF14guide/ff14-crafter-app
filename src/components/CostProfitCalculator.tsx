@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Recipe, UniversalisItemData } from '../types/ff14';
+import { Recipe, UniversalisItemData, InventorySyncData } from '../types/ff14';
 import { fetchUniversalisMultiPrices } from '../services/universalisApi';
+import { getItemStockTotal } from '../utils/inventoryStorage';
 import { ItemIcon } from './common/ItemIcon';
 import {
   TrendingUp,
@@ -15,11 +16,13 @@ import {
   Layers,
   HelpCircle,
   AlertTriangle,
+  Package,
 } from 'lucide-react';
 
 interface CostProfitCalculatorProps {
   recipe: Recipe;
   selectedWorldOrDc: string;
+  inventoryData: InventorySyncData | null;
   onNavigateToSim: (recipe: Recipe) => void;
   onNavigateToTree: (recipe: Recipe) => void;
 }
@@ -36,6 +39,7 @@ interface MaterialPriceState {
 export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
   recipe,
   selectedWorldOrDc,
+  inventoryData,
   onNavigateToSim,
   onNavigateToTree,
 }) => {
@@ -108,21 +112,28 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
       ? productMarket?.minPriceNQ || recipe.defaultSellingPrice || 8000
       : customSellingPrice;
 
-  // Single craft material cost
-  const singleCraftCost = recipe.materials.reduce((total, mat) => {
-    const p = materialPrices[mat.itemId];
-    if (!p || p.isSelfGathered || p.selectedTier === 'SELF') return total;
-    return total + p.price * mat.amount;
-  }, 0);
-
   // Total produced units per craft
   const producedPerCraft = recipe.yields || 1;
-  const unitMaterialCost = Math.round(singleCraftCost / producedPerCraft);
 
   // Total batch calculations
   const totalCrafts = batchQuantity;
   const totalProducedUnits = totalCrafts * producedPerCraft;
-  const totalMaterialCost = singleCraftCost * totalCrafts;
+
+  // Material cost accounting for owned inventory: only the shortfall (total
+  // needed across the whole batch, minus what's already in stock) is
+  // charged. Owned stock is a fixed pool shared across the batch, not a
+  // per-craft allowance, so this is computed at the batch level rather than
+  // per single craft.
+  const totalMaterialCost = recipe.materials.reduce((total, mat) => {
+    const p = materialPrices[mat.itemId];
+    if (!p || p.isSelfGathered || p.selectedTier === 'SELF') return total;
+    const totalNeeded = mat.amount * totalCrafts;
+    const owned = inventoryData ? getItemStockTotal(mat.itemId, inventoryData) : 0;
+    const shortfall = Math.max(0, totalNeeded - owned);
+    return total + p.price * shortfall;
+  }, 0);
+
+  const unitMaterialCost = totalProducedUnits > 0 ? Math.round(totalMaterialCost / totalProducedUnits) : 0;
 
   const totalGrossRevenue = unitSellingPrice * totalProducedUnits;
   const marketTax = Math.round(totalGrossRevenue * 0.05); // 5% Market Board Tax
@@ -311,8 +322,8 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
           </div>
           <div className="mt-3 pt-2 border-t border-slate-800/80 text-[11px] text-slate-400 space-y-0.5 font-rajdhani">
             <div className="flex justify-between">
-              <span>1クラフト素材費:</span>
-              <span className="text-slate-200 font-semibold">{singleCraftCost.toLocaleString()} G</span>
+              <span>1クラフトあたり素材費 (所持品差引後):</span>
+              <span className="text-slate-200 font-semibold">{Math.round(totalMaterialCost / totalCrafts).toLocaleString()} G</span>
             </div>
             <div className="flex justify-between">
               <span>製作完成数:</span>
@@ -457,7 +468,10 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
 
                 const effectivePrice = priceState.isSelfGathered || priceState.selectedTier === 'SELF' ? 0 : priceState.price;
                 const totalReqAmount = mat.amount * batchQuantity;
-                const subTotal = effectivePrice * totalReqAmount;
+                const ownedQty = inventoryData ? getItemStockTotal(mat.itemId, inventoryData) : 0;
+                const shortfallQty = Math.max(0, totalReqAmount - ownedQty);
+                const isFullyCovered = ownedQty > 0 && shortfallQty === 0;
+                const subTotal = effectivePrice * shortfallQty;
 
                 return (
                   <tr key={mat.itemId} className="hover:bg-slate-800/40 transition-colors">
@@ -512,7 +526,18 @@ export const CostProfitCalculator: React.FC<CostProfitCalculatorProps> = ({
 
                     {/* Total quantity for batch */}
                     <td className="py-3 px-4 text-center font-rajdhani font-bold text-amber-300 text-sm">
-                      x{totalReqAmount}
+                      <div>x{totalReqAmount}</div>
+                      {ownedQty > 0 && (
+                        <div
+                          className={`text-[10px] font-medium mt-0.5 flex items-center justify-center gap-1 ${
+                            isFullyCovered ? 'text-emerald-400' : 'text-sky-300'
+                          }`}
+                          title="所持品から自動的に差し引かれています"
+                        >
+                          <Package className="w-2.5 h-2.5" />
+                          <span>所持{ownedQty}{isFullyCovered ? '・充足' : `・不足${shortfallQty}`}</span>
+                        </div>
+                      )}
                     </td>
 
                     {/* Live Market NQ/HQ values */}

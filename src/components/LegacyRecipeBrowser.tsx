@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { Recipe, CraftJob, CRAFT_JOBS, RecipeCategory, UniversalisItemData } from '../types/ff14';
-import { Search, Plus, History, Loader2, ChevronLeft, ChevronRightIcon as ChevronRight, ArrowUpDown, TrendingUp, Percent, AlertTriangle } from 'lucide-react';
+import { Recipe, CraftJob, CRAFT_JOBS, RecipeCategory, UniversalisItemData, InventorySyncData } from '../types/ff14';
+import { getItemStockTotal } from '../utils/inventoryStorage';
+import { Search, Plus, History, Loader2, ChevronLeft, ChevronRightIcon as ChevronRight, ArrowUpDown, TrendingUp, Percent, AlertTriangle, Package } from 'lucide-react';
 import { ItemIcon } from './common/ItemIcon';
 import { JobIcon } from './common/JobIcon';
 import { Expansion, ALL_EXPANSIONS, EXPANSION_LABELS, loadExpansionRecipes } from '../utils/legacyRecipeLoader';
@@ -14,6 +15,7 @@ interface LegacyRecipeBrowserProps {
   onSelectRecipeForTree?: (recipe: Recipe) => void;
   onSelectRecipeForSim: (recipe: Recipe) => void;
   selectedWorldOrDc: string;
+  inventoryData: InventorySyncData | null;
 }
 
 const PAGE_SIZE = 30;
@@ -38,16 +40,25 @@ interface RecipeEconomics {
   netProfit: number;
   profitRatePercent: number;
   isEstimate: boolean;
+  anyOwned: boolean;
 }
 
-function computeEconomics(recipe: Recipe, marketData: Record<number, UniversalisItemData>): RecipeEconomics {
+function computeEconomics(
+  recipe: Recipe,
+  marketData: Record<number, UniversalisItemData>,
+  inventoryData: InventorySyncData | null
+): RecipeEconomics {
   let materialCost = 0;
   let anyEstimate = false;
+  let anyOwned = false;
   for (const mat of recipe.materials) {
     const md = marketData[mat.itemId];
     const price = md?.minPriceNQ ?? mat.defaultPriceNQ ?? 0;
     if (md?.isEstimate) anyEstimate = true;
-    materialCost += price * mat.amount;
+    const owned = inventoryData ? getItemStockTotal(mat.itemId, inventoryData) : 0;
+    const shortfall = Math.max(0, mat.amount - owned);
+    if (owned > 0) anyOwned = true;
+    materialCost += price * shortfall;
   }
   const productMarket = marketData[recipe.itemId];
   const unitSellingPrice = recipe.canHq
@@ -62,7 +73,7 @@ function computeEconomics(recipe: Recipe, marketData: Record<number, Universalis
   const netProfit = netRevenue - materialCost;
   const profitRatePercent = grossRevenue > 0 ? Math.round((netProfit / grossRevenue) * 100) : 0;
 
-  return { materialCost, netProfit, profitRatePercent, isEstimate: anyEstimate };
+  return { materialCost, netProfit, profitRatePercent, isEstimate: anyEstimate, anyOwned };
 }
 
 export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
@@ -72,6 +83,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   onSelectRecipeForTree,
   onSelectRecipeForSim,
   selectedWorldOrDc,
+  inventoryData,
 }) => {
   const [expansion, setExpansion] = useState<Expansion>('DT');
   const [lodestoneMap, setLodestoneMap] = useState<Record<number, string>>({});
@@ -190,7 +202,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
   const sorted = useMemo(() => {
     const withEconomics = filtered.map((recipe) => ({
       recipe,
-      econ: computeEconomics(recipe, marketData),
+      econ: computeEconomics(recipe, marketData, inventoryData),
     }));
     if (sortMode === 'profitDesc') {
       withEconomics.sort((a, b) => b.econ.netProfit - a.econ.netProfit);
@@ -198,7 +210,7 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
       withEconomics.sort((a, b) => b.econ.profitRatePercent - a.econ.profitRatePercent);
     }
     return withEconomics;
-  }, [filtered, marketData, sortMode]);
+  }, [filtered, marketData, sortMode, inventoryData]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
   const pageItems = sorted.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -435,7 +447,14 @@ export const LegacyRecipeBrowser: React.FC<LegacyRecipeBrowserProps> = ({
                   {economicsAvailable && (
                     <div className="grid grid-cols-3 gap-1 bg-slate-950/50 p-1.5 rounded-lg border border-slate-800/60 text-[10px] font-rajdhani">
                       <div>
-                        <span className="text-slate-500 block text-[9px]">原価</span>
+                        <span className="text-slate-500 block text-[9px] flex items-center gap-0.5">
+                          原価
+                          {econ.anyOwned && (
+                            <span title="所持品を保有分だけ差し引いて計算しています">
+                              <Package className="w-2.5 h-2.5 text-emerald-400" />
+                            </span>
+                          )}
+                        </span>
                         <span className="text-slate-200 font-semibold">{Math.round(econ.materialCost).toLocaleString()}G</span>
                       </div>
                       <div>

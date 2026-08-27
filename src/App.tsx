@@ -349,6 +349,7 @@ export default function App() {
               onSelectRecipeForTree={handleSelectRecipeForTree}
               onSelectRecipeForSim={handleSelectRecipeForSim}
               selectedWorldOrDc={selectedWorldOrDc}
+              inventoryData={inventoryData}
             />
           )}
 
@@ -356,6 +357,7 @@ export default function App() {
             <CostProfitCalculator
               recipe={selectedRecipe}
               selectedWorldOrDc={selectedWorldOrDc}
+              inventoryData={inventoryData}
               onNavigateToSim={handleSelectRecipeForSim}
               onNavigateToTree={handleSelectRecipeForTree}
             />
