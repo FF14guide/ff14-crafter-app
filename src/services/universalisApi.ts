@@ -14,10 +14,10 @@ export interface DataCenterOption {
 export const DATA_CENTERS: DataCenterOption[] = [
   // --- 日本 (Japan) ---
   {
-    name: 'Elemental',
+    name: 'Mana',
     region: 'Japan',
     regionJa: '日本',
-    worlds: ['Aegis', 'Atomos', 'Carbuncle', 'Garuda', 'Gungnir', 'Kujata', 'Tonberry', 'Typhon'],
+    worlds: ['Anima', 'Asura', 'Chocobo', 'Hades', 'Ixion', 'Masamune', 'Pandaemonium', 'Titan'],
   },
   {
     name: 'Gaia',
@@ -26,10 +26,10 @@ export const DATA_CENTERS: DataCenterOption[] = [
     worlds: ['Alexander', 'Bahamut', 'Durandal', 'Fenrir', 'Ifrit', 'Ridill', 'Tiamat', 'Ultima'],
   },
   {
-    name: 'Mana',
+    name: 'Elemental',
     region: 'Japan',
     regionJa: '日本',
-    worlds: ['Anima', 'Asura', 'Chocobo', 'Hades', 'Ixion', 'Masamune', 'Pandaemonium', 'Titan'],
+    worlds: ['Aegis', 'Atomos', 'Carbuncle', 'Garuda', 'Gungnir', 'Kujata', 'Tonberry', 'Typhon'],
   },
   {
     name: 'Meteor',
