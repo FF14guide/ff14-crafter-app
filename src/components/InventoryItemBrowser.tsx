@@ -19,6 +19,27 @@ interface AggregatedItem {
   bySource: Record<string, number>;
 }
 
+let iconMapPromise: Promise<Record<number, number>> | null = null;
+
+/** Loads (and caches) a full itemId -> icon-number map, derived from the
+ * same official item index used for name resolution elsewhere. Needed
+ * because the curated OFFICIAL_ITEM_ICON_BY_ID table only covers the
+ * hand-picked recipe itemIds, not the thousands of arbitrary items that can
+ * show up in a person's real inventory. */
+async function loadFullIconMap(): Promise<Record<number, number>> {
+  if (!iconMapPromise) {
+    iconMapPromise = import('../data/itemNameIndex.json').then((mod) => {
+      const list = (mod.default || mod) as unknown as [number, string, string, number | null][];
+      const map: Record<number, number> = {};
+      for (const [itemId, , , iconNum] of list) {
+        if (iconNum) map[itemId] = iconNum;
+      }
+      return map;
+    });
+  }
+  return iconMapPromise;
+}
+
 const PAGE_SIZE = 60;
 
 export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inventoryData, onOpenInventorySync }) => {
@@ -26,6 +47,7 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
   const [selectedTargets, setSelectedTargets] = useState<string[]>(['ALL']); // group ids and/or raw source names
   const [itemTypeMap, setItemTypeMap] = useState<Record<number, ItemType>>({});
   const [typeMapLoading, setTypeMapLoading] = useState(true);
+  const [iconMap, setIconMap] = useState<Record<number, number>>({});
   const [selectedType, setSelectedType] = useState<ItemType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(0);
@@ -36,6 +58,7 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
       setItemTypeMap(m);
       setTypeMapLoading(false);
     });
+    loadFullIconMap().then(setIconMap);
   }, []);
 
   const availableCharacters = useMemo(() => {
@@ -264,7 +287,12 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
                 key={item.itemId}
                 className="bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-xl p-2.5 flex items-center gap-2.5 transition-all"
               >
-                <ItemIcon itemId={item.itemId} name={item.name} size="md" />
+                <ItemIcon
+                  itemId={item.itemId}
+                  name={item.name}
+                  icon={iconMap[item.itemId] ? String(iconMap[item.itemId]) : undefined}
+                  size="md"
+                />
                 <div className="min-w-0 flex-1">
                   <div className="text-xs font-bold text-slate-100 truncate" title={item.name}>
                     {item.name}
