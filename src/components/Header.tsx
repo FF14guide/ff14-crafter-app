@@ -16,6 +16,7 @@ import {
   Layers,
   Check,
   History,
+  Package,
 } from 'lucide-react';
 
 export type MainTabType = 'workflow' | 'legacyRecipes' | 'itemBrowser' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
@@ -159,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">🧭</span>
+            <Compass className="w-4 h-4 text-amber-400" />
             <span>製作ワークフロー (ToDo)</span>
           </button>
 
@@ -172,7 +173,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">📜</span>
+            <ScrollText className="w-4 h-4" />
             <span>レシピ一覧</span>
           </button>
 
@@ -185,7 +186,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">📦</span>
+            <Package className="w-4 h-4" />
             <span>所持品一覧</span>
           </button>
 
@@ -198,7 +199,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">💰</span>
+            <BarChart3 className="w-4 h-4" />
             <span>原価・利益計算</span>
           </button>
 
@@ -211,7 +212,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">🌳</span>
+            <TreeDeciduous className="w-4 h-4" />
             <span>素材集め & 未知</span>
           </button>
 
@@ -224,7 +225,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">⚒️</span>
+            <Hammer className="w-4 h-4" />
             <span>シミュレータ & マクロ</span>
           </button>
 
@@ -237,7 +238,7 @@ export const Header: React.FC<HeaderProps> = ({
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             }`}
           >
-            <span className="text-base leading-none">📋</span>
+            <ListPlus className="w-4 h-4" />
             <span>製作計画</span>
             {batchCount > 0 && (
               <span className="bg-amber-500 text-slate-950 text-[10px] font-bold px-1.5 py-0.2 rounded-full">

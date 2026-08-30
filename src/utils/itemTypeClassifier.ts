@@ -2,6 +2,8 @@
 // etc.) covering essentially every item in the game -- not just crafted
 // output items. Backs the "所持品一覧" item browser's category filter.
 
+import { LucideIcon, Swords, Shield, Gem, Wrench, Shirt, Package, Palette, Utensils, Home, Diamond, Coins, Paperclip } from 'lucide-react';
+
 export type ItemType =
   | 'weapon'
   | 'armor'
@@ -17,20 +19,25 @@ export type ItemType =
   | 'collectible'
   | 'other';
 
-export const ITEM_TYPE_LABELS: Record<ItemType, string> = {
-  weapon: '⚔️ 武器',
-  armor: '🛡️ 防具',
-  accessory: '💍 アクセサリー',
-  gathererCrafterGear: '🔨 ギャザクラ装備',
-  fashion: '👗 おしゃれ装備',
-  material: '🪨 素材',
-  dye: '🎨 染料',
-  foodPotion: '🍗 食料・薬',
-  housing: '⛲ 家具・庭具',
-  materia: '💠 マテリア',
-  currency: '🪙 通貨',
-  collectible: '📦 収集品・その他',
-  other: '📎 その他',
+export interface ItemTypeMeta {
+  icon: LucideIcon;
+  label: string;
+}
+
+export const ITEM_TYPE_LABELS: Record<ItemType, ItemTypeMeta> = {
+  weapon: { icon: Swords, label: '武器' },
+  armor: { icon: Shield, label: '防具' },
+  accessory: { icon: Gem, label: 'アクセサリー' },
+  gathererCrafterGear: { icon: Wrench, label: 'ギャザクラ装備' },
+  fashion: { icon: Shirt, label: 'おしゃれ装備' },
+  material: { icon: Package, label: '素材' },
+  dye: { icon: Palette, label: '染料' },
+  foodPotion: { icon: Utensils, label: '食料・薬' },
+  housing: { icon: Home, label: '家具・庭具' },
+  materia: { icon: Diamond, label: 'マテリア' },
+  currency: { icon: Coins, label: '通貨' },
+  collectible: { icon: Package, label: '収集品・その他' },
+  other: { icon: Paperclip, label: 'その他' },
 };
 
 let mapPromise: Promise<Record<number, ItemType>> | null = null;

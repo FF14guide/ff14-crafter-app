@@ -3,7 +3,7 @@ import { InventorySyncData } from '../types/ff14';
 import { CharacterGroup, loadCharacterGroups } from '../utils/inventoryStorage';
 import { ItemType, ITEM_TYPE_LABELS, loadItemTypeMap, getItemType } from '../utils/itemTypeClassifier';
 import { ItemIcon } from './common/ItemIcon';
-import { Search, Boxes, Package, Loader2 } from 'lucide-react';
+import { Search, Boxes, Package, Loader2, Globe, Users, User, Archive, Shirt, Sparkles } from 'lucide-react';
 
 interface InventoryItemBrowserProps {
   inventoryData: InventorySyncData | null;
@@ -255,38 +255,41 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
         <div className="flex flex-wrap items-center gap-1.5 mb-3">
           <button
             onClick={() => toggleTarget('ALL')}
-            className={`px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-bold border transition-all ${
               selectedTargets.includes('ALL')
                 ? 'bg-amber-500 text-slate-950 border-amber-400'
                 : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
             }`}
           >
-            🌐 全キャラ合算
+            <Globe className="w-3.5 h-3.5" />
+            全キャラ合算
           </button>
           {characterGroups.map((g) => (
             <button
               key={g.id}
               onClick={() => toggleTarget(g.id)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
                 !selectedTargets.includes('ALL') && selectedTargets.includes(g.id)
                   ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold'
                   : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
               }`}
             >
-              🧑‍🤝‍🧑 {g.displayName}
+              <Users className="w-3.5 h-3.5" />
+              {g.displayName}
             </button>
           ))}
           {ungroupedCharacters.map((c) => (
             <button
               key={c}
               onClick={() => toggleTarget(c)}
-              className={`px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
+              className={`flex items-center gap-1 px-2.5 py-1 rounded-lg text-[11px] font-medium border transition-all ${
                 !selectedTargets.includes('ALL') && selectedTargets.includes(c)
                   ? 'bg-sky-500 text-slate-950 border-sky-400 font-bold'
                   : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
               }`}
             >
-              👤 {c}
+              <User className="w-3.5 h-3.5" />
+              {c}
             </button>
           ))}
         </div>
@@ -296,43 +299,47 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
           <span className="text-[11px] text-slate-400 mr-0.5">表示する保管場所:</span>
           <button
             onClick={() => setSpecialToggles((p) => ({ ...p, armoire: !p.armoire }))}
-            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
               specialToggles.armoire
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                 : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
             }`}
           >
-            📦 愛蔵品 (Armoire)
+            <Archive className="w-3.5 h-3.5" />
+            愛蔵品 (Armoire)
           </button>
           <button
             onClick={() => setSpecialToggles((p) => ({ ...p, glamourChest: !p.glamourChest }))}
-            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
               specialToggles.glamourChest
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                 : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
             }`}
           >
-            🪞 ミラージュドレッサー
+            <Sparkles className="w-3.5 h-3.5" />
+            ミラージュドレッサー
           </button>
           <button
             onClick={() => setSpecialToggles((p) => ({ ...p, armory: !p.armory }))}
-            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
               specialToggles.armory
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                 : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
             }`}
           >
-            🗄️ アーマリーチェスト
+            <Boxes className="w-3.5 h-3.5" />
+            アーマリーチェスト
           </button>
           <button
             onClick={() => setSpecialToggles((p) => ({ ...p, equippedGear: !p.equippedGear }))}
-            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+            className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
               specialToggles.equippedGear
                 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                 : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
             }`}
           >
-            👕 装備品 (Equipped)
+            <Shirt className="w-3.5 h-3.5" />
+            装備品 (Equipped)
           </button>
         </div>
 
@@ -352,17 +359,20 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
           {(Object.keys(ITEM_TYPE_LABELS) as ItemType[]).map((t) => {
             const count = typeCounts[t] || 0;
             if (count === 0) return null;
+            const meta = ITEM_TYPE_LABELS[t];
+            const Icon = meta.icon;
             return (
               <button
                 key={t}
                 onClick={() => setSelectedType(t)}
-                className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+                className={`flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
                   selectedType === t
                     ? 'bg-amber-500 text-slate-950 border-amber-400'
                     : 'bg-slate-950/60 text-slate-400 border-slate-800 hover:text-slate-200'
                 }`}
               >
-                {ITEM_TYPE_LABELS[t]} ({count})
+                <Icon className="w-3.5 h-3.5" />
+                {meta.label} ({count})
               </button>
             );
           })}
@@ -412,23 +422,23 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
                   {(item.inArmoire || item.inGlamourChest || item.inArmory || item.isEquipped) && (
                     <div className="flex flex-wrap gap-1 mt-0.5">
                       {item.inArmoire && (
-                        <span className="text-[9px] bg-purple-500/15 text-purple-300 border border-purple-500/30 rounded px-1 py-0.5">
-                          📦 愛蔵品
+                        <span className="text-[9px] bg-purple-500/15 text-purple-300 border border-purple-500/30 rounded px-1 py-0.5 flex items-center gap-0.5">
+                          <Archive className="w-2.5 h-2.5" /> 愛蔵品
                         </span>
                       )}
                       {item.inGlamourChest && (
-                        <span className="text-[9px] bg-pink-500/15 text-pink-300 border border-pink-500/30 rounded px-1 py-0.5">
-                          🪞 ミラージュ
+                        <span className="text-[9px] bg-pink-500/15 text-pink-300 border border-pink-500/30 rounded px-1 py-0.5 flex items-center gap-0.5">
+                          <Sparkles className="w-2.5 h-2.5" /> ミラージュ
                         </span>
                       )}
                       {item.inArmory && (
-                        <span className="text-[9px] bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 rounded px-1 py-0.5">
-                          🗄️ アーマリー
+                        <span className="text-[9px] bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 rounded px-1 py-0.5 flex items-center gap-0.5">
+                          <Boxes className="w-2.5 h-2.5" /> アーマリー
                         </span>
                       )}
                       {item.isEquipped && (
-                        <span className="text-[9px] bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded px-1 py-0.5">
-                          👕 装備中
+                        <span className="text-[9px] bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded px-1 py-0.5 flex items-center gap-0.5">
+                          <Shirt className="w-2.5 h-2.5" /> 装備中
                         </span>
                       )}
                     </div>
@@ -441,9 +451,9 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
                         .map(([source, qty]) => (
                           <span
                             key={source}
-                            className="text-[9px] text-slate-400 bg-slate-950/60 border border-slate-800 rounded px-1 py-0.5 whitespace-nowrap"
+                            className="text-[9px] text-slate-400 bg-slate-950/60 border border-slate-800 rounded px-1 py-0.5 whitespace-nowrap flex items-center gap-0.5"
                           >
-                            👤 {source} <span className="text-slate-300 font-semibold">x{qty}</span>
+                            <User className="w-2.5 h-2.5" /> {source} <span className="text-slate-300 font-semibold">x{qty}</span>
                           </span>
                         ))}
                     </div>
