@@ -285,7 +285,7 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
             {pageItems.map((item) => (
               <div
                 key={item.itemId}
-                className="bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-xl p-2.5 flex items-center gap-2.5 transition-all"
+                className="bg-slate-900/60 border border-slate-800 hover:border-slate-700 rounded-xl p-2.5 flex items-start gap-2.5 transition-all"
               >
                 <ItemIcon
                   itemId={item.itemId}
@@ -300,12 +300,22 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
                   <div className="flex items-center gap-1.5 text-[10px] text-slate-400 font-rajdhani">
                     <span className="text-amber-300 font-bold">x{item.totalQty.toLocaleString()}</span>
                     {item.hqQty > 0 && <span className="text-sky-300">HQ:{item.hqQty}</span>}
-                    {Object.keys(item.bySource).length > 1 && (
-                      <span title={Object.entries(item.bySource).map(([s, q]) => `${s}: ${q}`).join(', ')}>
-                        ({Object.keys(item.bySource).length}箇所)
-                      </span>
-                    )}
                   </div>
+                  {/* Who actually has this item */}
+                  {Object.keys(item.bySource).length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-x-1.5 gap-y-0.5">
+                      {Object.entries(item.bySource)
+                        .sort((a, b) => b[1] - a[1])
+                        .map(([source, qty]) => (
+                          <span
+                            key={source}
+                            className="text-[9px] text-slate-400 bg-slate-950/60 border border-slate-800 rounded px-1 py-0.5 whitespace-nowrap"
+                          >
+                            👤 {source} <span className="text-slate-300 font-semibold">x{qty}</span>
+                          </span>
+                        ))}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
