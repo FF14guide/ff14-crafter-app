@@ -17,9 +17,45 @@ interface AggregatedItem {
   hqQty: number;
   nqQty: number;
   bySource: Record<string, number>;
+  inArmoire: boolean;
+  inGlamourChest: boolean;
+  inArmory: boolean;
+  isEquipped: boolean;
 }
 
 let iconMapPromise: Promise<Record<number, number>> | null = null;
+
+// --- Special storage location detection -----------------------------------
+// Allagan Tools' raw "Inventory Location" strings for these (confirmed from
+// real exports): "Armoire - <category> -", "Armory - <slot> -",
+// "Equipped Gear -", "Glamour Chest".
+function isArmoireLocation(location: string): boolean {
+  return location.startsWith('Armoire');
+}
+function isGlamourChestLocation(location: string): boolean {
+  return location.startsWith('Glamour Chest');
+}
+function isArmoryLocation(location: string): boolean {
+  return location.startsWith('Armory');
+}
+function isEquippedGearLocation(location: string): boolean {
+  return location.startsWith('Equipped Gear');
+}
+
+interface SpecialLocationToggles {
+  armoire: boolean;
+  glamourChest: boolean;
+  armory: boolean;
+  equippedGear: boolean;
+}
+
+const DEFAULT_SPECIAL_TOGGLES: SpecialLocationToggles = {
+  armoire: true,
+  glamourChest: true,
+  armory: true,
+  equippedGear: true,
+};
+
 
 /** Loads (and caches) a full itemId -> icon-number map, derived from the
  * same official item index used for name resolution elsewhere. Needed
@@ -51,6 +87,7 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
   const [selectedType, setSelectedType] = useState<ItemType | 'ALL'>('ALL');
   const [searchQuery, setSearchQuery] = useState('');
   const [page, setPage] = useState(0);
+  const [specialToggles, setSpecialToggles] = useState<SpecialLocationToggles>(DEFAULT_SPECIAL_TOGGLES);
 
   useEffect(() => {
     setCharacterGroups(loadCharacterGroups());
@@ -115,9 +152,31 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
     const map = new Map<number, AggregatedItem>();
     for (const item of inventoryData?.inventories || []) {
       if (activeSources && (!item.source || !activeSources.has(item.source))) continue;
+
+      const inArmoire = isArmoireLocation(item.location);
+      const inGlamourChest = isGlamourChestLocation(item.location);
+      const inArmory = isArmoryLocation(item.location);
+      const isEquipped = isEquippedGearLocation(item.location);
+
+      if (inArmoire && !specialToggles.armoire) continue;
+      if (inGlamourChest && !specialToggles.glamourChest) continue;
+      if (inArmory && !specialToggles.armory) continue;
+      if (isEquipped && !specialToggles.equippedGear) continue;
+
       let entry = map.get(item.itemId);
       if (!entry) {
-        entry = { itemId: item.itemId, name: item.name, totalQty: 0, hqQty: 0, nqQty: 0, bySource: {} };
+        entry = {
+          itemId: item.itemId,
+          name: item.name,
+          totalQty: 0,
+          hqQty: 0,
+          nqQty: 0,
+          bySource: {},
+          inArmoire: false,
+          inGlamourChest: false,
+          inArmory: false,
+          isEquipped: false,
+        };
         map.set(item.itemId, entry);
       }
       entry.totalQty += item.quantity;
@@ -126,9 +185,13 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
       if (item.source) {
         entry.bySource[item.source] = (entry.bySource[item.source] || 0) + item.quantity;
       }
+      if (inArmoire) entry.inArmoire = true;
+      if (inGlamourChest) entry.inGlamourChest = true;
+      if (inArmory) entry.inArmory = true;
+      if (isEquipped) entry.isEquipped = true;
     }
     return Array.from(map.values());
-  }, [inventoryData, activeSources]);
+  }, [inventoryData, activeSources, specialToggles]);
 
   // Category breakdown counts (for the filter buttons), computed once the
   // type map has loaded.
@@ -159,7 +222,7 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
 
   useEffect(() => {
     setPage(0);
-  }, [selectedTargets, selectedType, searchQuery]);
+  }, [selectedTargets, selectedType, searchQuery, specialToggles]);
 
   const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
   const pageItems = sorted.slice(page * PAGE_SIZE, (page + 1) * PAGE_SIZE);
@@ -226,6 +289,51 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
               👤 {c}
             </button>
           ))}
+        </div>
+
+        {/* Special storage location toggles */}
+        <div className="flex flex-wrap items-center gap-1.5 mb-3">
+          <span className="text-[11px] text-slate-400 mr-0.5">表示する保管場所:</span>
+          <button
+            onClick={() => setSpecialToggles((p) => ({ ...p, armoire: !p.armoire }))}
+            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+              specialToggles.armoire
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
+            }`}
+          >
+            📦 愛蔵品 (Armoire)
+          </button>
+          <button
+            onClick={() => setSpecialToggles((p) => ({ ...p, glamourChest: !p.glamourChest }))}
+            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+              specialToggles.glamourChest
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
+            }`}
+          >
+            🪞 ミラージュドレッサー
+          </button>
+          <button
+            onClick={() => setSpecialToggles((p) => ({ ...p, armory: !p.armory }))}
+            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+              specialToggles.armory
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
+            }`}
+          >
+            🗄️ アーマリーチェスト
+          </button>
+          <button
+            onClick={() => setSpecialToggles((p) => ({ ...p, equippedGear: !p.equippedGear }))}
+            className={`px-2 py-0.5 rounded-lg text-[11px] font-semibold border transition-all ${
+              specialToggles.equippedGear
+                ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                : 'bg-slate-950/60 text-slate-500 border-slate-800 line-through'
+            }`}
+          >
+            👕 装備品 (Equipped)
+          </button>
         </div>
 
         {/* Item type filter */}
@@ -301,6 +409,30 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
                     <span className="text-amber-300 font-bold">x{item.totalQty.toLocaleString()}</span>
                     {item.hqQty > 0 && <span className="text-sky-300">HQ:{item.hqQty}</span>}
                   </div>
+                  {(item.inArmoire || item.inGlamourChest || item.inArmory || item.isEquipped) && (
+                    <div className="flex flex-wrap gap-1 mt-0.5">
+                      {item.inArmoire && (
+                        <span className="text-[9px] bg-purple-500/15 text-purple-300 border border-purple-500/30 rounded px-1 py-0.5">
+                          📦 愛蔵品
+                        </span>
+                      )}
+                      {item.inGlamourChest && (
+                        <span className="text-[9px] bg-pink-500/15 text-pink-300 border border-pink-500/30 rounded px-1 py-0.5">
+                          🪞 ミラージュ
+                        </span>
+                      )}
+                      {item.inArmory && (
+                        <span className="text-[9px] bg-indigo-500/15 text-indigo-300 border border-indigo-500/30 rounded px-1 py-0.5">
+                          🗄️ アーマリー
+                        </span>
+                      )}
+                      {item.isEquipped && (
+                        <span className="text-[9px] bg-amber-500/15 text-amber-300 border border-amber-500/30 rounded px-1 py-0.5">
+                          👕 装備中
+                        </span>
+                      )}
+                    </div>
+                  )}
                   {/* Who actually has this item */}
                   {Object.keys(item.bySource).length > 0 && (
                     <div className="mt-1 flex flex-wrap gap-x-1.5 gap-y-0.5">

@@ -412,9 +412,12 @@ export function saveStoredInventory(data: InventorySyncData | null): void {
 function normalizeLocationType(loc: string): InventoryLocationType {
   const l = loc.toLowerCase();
   if (l.includes('retainer') || l.includes('リテイナー') || l.includes('market')) return 'Retainer';
+  // Check these specific patterns BEFORE the generic "chest" check below --
+  // "Glamour Chest" contains the substring "chest" and would otherwise be
+  // misclassified as FC_Chest.
+  if (l.includes('armory') || l.includes('armoury') || l.includes('アーマリー') || l.includes('equipped') || l.includes('armoire') || l.includes('glamour')) return 'Armoury';
   if (l.includes('fc') || l.includes('chest') || l.includes('カンパニー') || l.includes('チェスト') || l.includes('free company')) return 'FC_Chest';
   if (l.includes('saddlebag') || l.includes('chocobo') || l.includes('チョコボ') || l.includes('かばん')) return 'Saddlebag';
-  if (l.includes('armory') || l.includes('armoury') || l.includes('アーマリー') || l.includes('equipped') || l.includes('armoire') || l.includes('glamour')) return 'Armoury';
   return 'Player';
 }
 
