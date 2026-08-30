@@ -18,7 +18,7 @@ import {
   History,
 } from 'lucide-react';
 
-export type MainTabType = 'workflow' | 'legacyRecipes' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
+export type MainTabType = 'workflow' | 'legacyRecipes' | 'itemBrowser' | 'costProfit' | 'gatheringTree' | 'simulator' | 'batchPlanner';
 
 interface HeaderProps {
   activeTab: MainTabType;
@@ -174,6 +174,19 @@ export const Header: React.FC<HeaderProps> = ({
           >
             <span className="text-base leading-none">📜</span>
             <span>レシピ一覧</span>
+          </button>
+
+          <button
+            id="tab-item-browser"
+            onClick={() => onSelectTab('itemBrowser')}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
+              activeTab === 'itemBrowser'
+                ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm'
+                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+            }`}
+          >
+            <span className="text-base leading-none">📦</span>
+            <span>所持品一覧</span>
           </button>
 
           <button

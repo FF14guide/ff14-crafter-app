@@ -4,6 +4,7 @@ import { Recipe, CrafterStats, BatchCraftItem, InventorySyncData } from './types
 import { RECIPES_DATABASE } from './data/recipes';
 import { Header, MainTabType } from './components/Header';
 import { LegacyRecipeBrowser } from './components/LegacyRecipeBrowser';
+import { InventoryItemBrowser } from './components/InventoryItemBrowser';
 import { CostProfitCalculator } from './components/CostProfitCalculator';
 import { MaterialTreeGathering } from './components/MaterialTreeGathering';
 import { CraftingSimulatorView } from './components/CraftingSimulatorView';
@@ -350,6 +351,13 @@ export default function App() {
               onSelectRecipeForSim={handleSelectRecipeForSim}
               selectedWorldOrDc={selectedWorldOrDc}
               inventoryData={inventoryData}
+            />
+          )}
+
+          {activeTab === 'itemBrowser' && (
+            <InventoryItemBrowser
+              inventoryData={inventoryData}
+              onOpenInventorySync={() => setIsInventoryModalOpen(true)}
             />
           )}
 
