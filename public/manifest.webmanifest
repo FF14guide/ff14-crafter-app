@@ -1,0 +1,12 @@
+{
+  "name": "Eorzean Crafter",
+  "short_name": "Eorzean Crafter",
+  "description": "FF14 クラフター総合支援ツール",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "theme_color": "#0C1526",
+  "background_color": "#0C1526",
+  "display": "standalone"
+}
