@@ -117,6 +117,19 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
     [availableCharacters, groupedSourceSet]
   );
 
+  // Maps a raw source (character/retainer name) to its group id, or to
+  // itself if it isn't in any group. Used to detect when several rows
+  // (e.g. a character's retainers) really represent the "same owner" for
+  // account/character-level stats like currency.
+  const sourceToGroupKey = useMemo(() => {
+    const map = new Map<string, string>();
+    for (const g of characterGroups) {
+      for (const m of g.memberSources) map.set(m, g.id);
+    }
+    return map;
+  }, [characterGroups]);
+  const groupKeyFor = (source: string | undefined) => (source ? sourceToGroupKey.get(source) || source : '__unknown__');
+
   const toggleTarget = (target: string) => {
     if (target === 'ALL') {
       setSelectedTargets(['ALL']);
@@ -150,6 +163,18 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
   // Aggregate items across the selected sources
   const aggregated = useMemo(() => {
     const map = new Map<number, AggregatedItem>();
+
+    // For currency-type items (Gil, MGP, Grand Company seals, PvP series,
+    // etc.): these are character/account-level stats, not something a
+    // retainer separately holds. Allagan Tools' export can end up repeating
+    // the owning character's total on every retainer row scanned for that
+    // character -- summing every row naively would multiply the real value
+    // by however many retainers were exported. Instead, track the MAX value
+    // seen per character-group (main character + its linked retainers) and
+    // sum those per-group maxes, so each real character's currency is only
+    // counted once.
+    const currencyGroupMax = new Map<number, Map<string, number>>();
+
     for (const item of inventoryData?.inventories || []) {
       if (activeSources && (!item.source || !activeSources.has(item.source))) continue;
 
@@ -179,19 +204,50 @@ export const InventoryItemBrowser: React.FC<InventoryItemBrowserProps> = ({ inve
         };
         map.set(item.itemId, entry);
       }
-      entry.totalQty += item.quantity;
-      if (item.isHq) entry.hqQty += item.quantity;
-      else entry.nqQty += item.quantity;
-      if (item.source) {
-        entry.bySource[item.source] = (entry.bySource[item.source] || 0) + item.quantity;
+
+      const isCurrency = !typeMapLoading && getItemType(item.itemId, itemTypeMap) === 'currency';
+
+      if (isCurrency) {
+        const gKey = groupKeyFor(item.source);
+        let groupMap = currencyGroupMax.get(item.itemId);
+        if (!groupMap) {
+          groupMap = new Map();
+          currencyGroupMax.set(item.itemId, groupMap);
+        }
+        groupMap.set(gKey, Math.max(groupMap.get(gKey) || 0, item.quantity));
+        // Keep the "who has it" breakdown informative using the raw
+        // per-source value (not deduped across the group) rather than
+        // summing duplicated rows.
+        if (item.source) {
+          entry.bySource[item.source] = Math.max(entry.bySource[item.source] || 0, item.quantity);
+        }
+      } else {
+        entry.totalQty += item.quantity;
+        if (item.isHq) entry.hqQty += item.quantity;
+        else entry.nqQty += item.quantity;
+        if (item.source) {
+          entry.bySource[item.source] = (entry.bySource[item.source] || 0) + item.quantity;
+        }
       }
+
       if (inArmoire) entry.inArmoire = true;
       if (inGlamourChest) entry.inGlamourChest = true;
       if (inArmory) entry.inArmory = true;
       if (isEquipped) entry.isEquipped = true;
     }
+
+    // Finalize currency totals from the deduplicated per-group maxes.
+    for (const [itemId, groupMap] of currencyGroupMax.entries()) {
+      const entry = map.get(itemId);
+      if (!entry) continue;
+      let total = 0;
+      for (const v of groupMap.values()) total += v;
+      entry.totalQty = total;
+      entry.nqQty = total;
+    }
+
     return Array.from(map.values());
-  }, [inventoryData, activeSources, specialToggles]);
+  }, [inventoryData, activeSources, specialToggles, itemTypeMap, typeMapLoading, sourceToGroupKey]);
 
   // Category breakdown counts (for the filter buttons), computed once the
   // type map has loaded.
